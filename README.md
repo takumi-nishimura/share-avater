@@ -14,6 +14,6 @@
 ## questionnaire
 実験用アンケート
 ### mimimal_self.py
-身体性アンケート
+身体認識アンケート
 ### NASA_TLX.py
 心理的作業負荷アンケート
