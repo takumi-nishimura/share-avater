@@ -51,7 +51,7 @@ def main():
 	# solox_graph(x,y1,'x',vy1,'vx',ay1,'ax',jy1,'jx')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
 	# twinx_graph(x,v1,'v1',a1,'a1',y1,'j1',y1,'x')
-	cs,ce,column_c = read(data,'time',58,70)
+	cs,ce,column_c = read(data,'time',212,223)
 	write_csv(cs,ce,x,y1,y2,y3,vy1,vy2,vy3,ay1,ay2,ay3,jy1,jy2,jy3)
 
 def read(data,columns,s,e):
@@ -199,6 +199,6 @@ def write_csv(cs,ce,t,x,y,z,vx,vy,vz,ax,ay,az,jx,jy,jz):
 	print('write csv')
 
 if __name__ == "__main__":
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1536.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
 	data = pd.read_csv(path)
 	main()

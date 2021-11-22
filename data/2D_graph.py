@@ -123,7 +123,6 @@ def mean_jrk(jx,jy,jz):
 		jrk_norm_list.append(jrk_norm)
 	jrk_mean = mean(jrk_norm_list)
 	print(jrk_mean)
-	return(jrk_norm_list)
 
 def lowpass(x,fp,fs):
 	samplerate = 170
