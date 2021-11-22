@@ -47,8 +47,9 @@ def main():
 	fb_vel_2 = y3+y6*0.8
 	data_out_1 = fb_vel_1
 	data_out_2 = fb_vel_2
-	solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
-	solox_graph(x,y3,'z',vy3,'vz',ay3,'az',jy3,'jz')
+	mean_jrk(jy1,jy2,jy3)
+	# solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
+	# solox_graph(x,y3,'z',vy3,'vz',vy3,'az',jy3,'jz')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
 	# twinx_graph(x,v1,'v1',a1,'a1',y1,'j1',y1,'x')
 
@@ -113,6 +114,16 @@ def getSpeed(t,g1):
 		else:
 			speed.append((g1[i+1]-g1[i-1])/(2*mean_dt))
 	return speed
+
+def mean_jrk(jx,jy,jz):
+	jrk_norm_list = []
+	for i in range(len(jx)):
+		jrk_list = np.array([jx[i],jy[i],jz[i]])
+		jrk_norm = np.linalg.norm(jrk_list)
+		jrk_norm_list.append(jrk_norm)
+	jrk_mean = mean(jrk_norm_list)
+	print(jrk_mean)
+	return(jrk_norm_list)
 
 def lowpass(x,fp,fs):
 	samplerate = 170
@@ -179,7 +190,7 @@ def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
 	plt.show()
 
 if __name__ == "__main__":
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1536.csv'
-	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/solo/20211112_tanada_solo_1.csv'
+	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_5.csv'
 	data = pd.read_csv(path)
 	main()
