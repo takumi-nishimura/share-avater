@@ -8,28 +8,34 @@ df = pd.read_csv(path)
 filename = os.path.splitext(os.path.basename(path))[0]
 print("file:",filename)
 
-if 'x' in df.columns:
-	tf = df.loc[:,'time'].sum()
-	x = df.loc[:,'x']
-	y = df.loc[:,'y']
-	z = df.loc[:,'z']
-	dx = np.diff(x,axis=0)
-	dy = np.diff(y,axis=0)
-	dz = np.diff(z,axis=0)
+def Kojima_2006(tl,xl,yl,zl,j_x,j_y,j_z):
+	sum_t = sum(tl)
+	dx = np.diff(xl,axis=0)
+	dy = np.diff(yl,axis=0)
+	dz = np.diff(zl,axis=0)
 	pos_d = np.c_[dx,dy,dz]
 	norm = np.linalg.norm(pos_d,axis=1)
 	d = np.sum(norm)
+	jrk_d = np.c_[j_x,j_y,j_z]
+	jrk = np.linalg.norm(jrk_d,axis=1)
+	jrk_sq = np.power(jrk,2)
+	all_jrk_sq = np.sum(jrk_sq)
+	Jerk_index = sum_t**5/(d**2)*all_jrk_sq/2
+	return Jerk_index
+
+if 'x' in df.columns:
+	t = df.loc[:,'time']
+	x = df.loc[:,'x']
+	y = df.loc[:,'y']
+	z = df.loc[:,'z']
 
 	jrk_x = df['jx'].values
 	jrk_y = df['jy'].values
 	jrk_z = df['jz'].values
-	jrk_d = np.c_[jrk_x,jrk_y,jrk_z]
-	jrk = np.linalg.norm(jrk_d,axis=1)
-	jrk_sq = np.power(jrk,2)
-	all_jrk_sq = np.sum(jrk_sq)
 
-	Jerk_index = tf**5/(d**2)*all_jrk_sq/2
-	print('robot :','{:.5g}'.format(Jerk_index))
+	Jrk_index = Kojima_2006(t,x,y,z,jrk_x,jrk_y,jrk_z)
+
+	print('robot :','{:.5g}'.format(Jrk_index))
 
 if 'x1' in df.columns:
 	tf = df.loc[:,'time'].sum()
