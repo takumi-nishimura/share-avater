@@ -37,6 +37,6 @@ def search_data(number,o_path):
 
 if __name__ == '__main__':
 	for i in range(5):
-		t,x,y,z,jrk_x,jrk_y,jrk_z = search_data(i,'/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/solo/20211112_tsuruoka_solo_')
+		t,x,y,z,jrk_x,jrk_y,jrk_z = search_data(i,'/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_')
 		Jrk_index = Teulings_1997(t,x,y,z,jrk_x,jrk_y,jrk_z)
 		print('robot :','{:.5g}'.format(Jrk_index))
