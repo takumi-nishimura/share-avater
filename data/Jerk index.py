@@ -23,6 +23,9 @@ def Kojima_2006(tl,xl,yl,zl,j_x,j_y,j_z):
 	Jerk_index = sum_t**5/(d**2)*all_jrk_sq/2
 	return Jerk_index
 
+def Teulings_1997():
+	pass
+
 if 'x' in df.columns:
 	t = df.loc[:,'time']
 	x = df.loc[:,'x']
