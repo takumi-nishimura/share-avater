@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 def Teulings_1997(tl,xl,yl,zl,j_x,j_y,j_z):
-	sum_t = sum(tl)
+	sum_t = tl[len(tl)-1] - tl[0]
 	dx = np.diff(xl,axis=0)
 	dy = np.diff(yl,axis=0)
 	dz = np.diff(zl,axis=0)
