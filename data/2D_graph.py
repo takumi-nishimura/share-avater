@@ -7,7 +7,7 @@ from statistics import mean
 from scipy import fftpack
 
 def main():
-	start,end,column = read(data,'time',0,10000.0)
+	start,end,column = read(data,'time',166,10000.0)
 	x,y1,y2,y3,y4,y5,y6 = get_data(start,end,column,'x','y','z','z','z','z')
 	dt_mean = np.mean(np.diff(x))
 	fs_mean = round(1/dt_mean)
@@ -50,7 +50,7 @@ def main():
 	mean_jrk(jy1,jy2,jy3)
 	solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
 	v_norm = get_norm(vy1,vy2,vy3)
-	solox_graph(x,y3,'z',vy3,'vz',v_norm,'az',jy3,'jz')
+	solox_graph(x,y3,'z',vy3,'vz',v_norm,'v_norm',jy3,'jz')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
 	# twinx_graph(x,v1,'v1',a1,'a1',y1,'j1',y1,'x')
 
@@ -199,6 +199,7 @@ def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
 
 if __name__ == "__main__":
 	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_5.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_4.csv'
+	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/solo/20211112_tsuruoka_solo_4.csv'
 	data = pd.read_csv(path)
 	main()
