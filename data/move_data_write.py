@@ -8,9 +8,10 @@ from scipy import fftpack
 
 def main():
 	start,end,column = read(data,'time',0,10000.0)
-	x,y1,y2,y3,y4,y5,y6 = get_data(start,end,column,'x','y','z','z','z','z')
-	dt_mean = np.mean(np.diff(x))
-	fs_mean = round(1/dt_mean)
+	x,y1,y2,y3 = get_data(start,end,column,'x','y','z')
+	x_1,y1_1,y2_1,y3_1 = get_data(start,end,column,'x1','y1','z1')
+	x_2,y1_2,y2_2,y3_2 = get_data(start,end,column,'x2','y2','z2')
+
 	y1_filt = lowpass(y1,0.3,5)
 	y2_filt = lowpass(y2,0.3,5)
 	y3_filt = lowpass(y3,0.3,5)
@@ -32,27 +33,53 @@ def main():
 	jy2_filt = lowpass(jy2,1,5)
 	jy3 = getSpeed(x,ay3_filt)
 	jy3_filt = lowpass(jy3,1,5)
-	fft_data = np.abs(np.fft.rfft(y1))
-	freqList = np.fft.rfftfreq(len(y1), 1.0 / fs_mean)
-	fft_data_filt = np.abs(np.fft.rfft(y1_filt))
-	freqList_filt = np.fft.rfftfreq(len(y1_filt), 1.0 / fs_mean)
-	# fft_data_a1 = np.abs(np.fft.rfft(a1))
-	# freqList_a1 = np.fft.rfftfreq(len(a1), 1.0 / fs_mean)
-	# fft_data_j1 = np.abs(np.fft.rfft(j1))
-	# freqList_j1 = np.fft.rfftfreq(len(j1), 1.0 / fs_mean)
-	# y4 = np.rad2deg(y4)
-	# y5 = np.rad2deg(y5)
-	fb_vel_r = y1+y4*0.8
-	fb_vel_1 = y2+y5*0.8
-	fb_vel_2 = y3+y6*0.8
-	data_out_1 = fb_vel_1
-	data_out_2 = fb_vel_2
-	# solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
-	# solox_graph(x,y1,'x',vy1,'vx',ay1,'ax',jy1,'jx')
-	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
-	# twinx_graph(x,v1,'v1',a1,'a1',y1,'j1',y1,'x')
-	cs,ce,column_c = read(data,'time',166,300)
-	write_csv(cs,ce,x,y1,y2,y3,vy1,vy2,vy3,ay1,ay2,ay3,jy1,jy2,jy3)
+
+	y1_1_filt = lowpass(y1_1,0.4,5)
+	y2_1_filt = lowpass(y2_1,0.4,5)
+	y3_1_filt = lowpass(y3_1,0.4,5)
+	vy1_1 = getSpeed(x_1,y1_1_filt)
+	vy1_1_filt = lowpass(vy1_1,1,5)
+	vy2_1 = getSpeed(x_1,y2_1_filt)
+	vy2_1_filt = lowpass(vy2_1,1,5)
+	vy3_1 = getSpeed(x_1,y3_1_filt)
+	vy3_1_filt = lowpass(vy3_1,1,5)
+	ay1_1 = getSpeed(x_1,vy1_1_filt)
+	ay1_1_filt = lowpass(ay1_1,1,5)
+	ay2_1 = getSpeed(x_1,vy2_1_filt)
+	ay2_1_filt = lowpass(ay2_1,1,5)
+	ay3_1 = getSpeed(x_1,vy3_1_filt)
+	ay3_1_filt = lowpass(ay3_1,1,5)
+	jy1_1 = getSpeed(x_1,ay1_1_filt)
+	jy1_1_filt = lowpass(jy1_1,1,5)
+	jy2_1 = getSpeed(x_1,ay2_1_filt)
+	jy2_1_filt = lowpass(jy2_1,1,5)
+	jy3_1 = getSpeed(x_1,ay3_1_filt)
+	jy3_1_filt = lowpass(jy3_1,1,5)
+
+	y1_2_filt = lowpass(y1_2,0.4,5)
+	y2_2_filt = lowpass(y2_2,0.4,5)
+	y3_2_filt = lowpass(y3_2,0.4,5)
+	vy1_2 = getSpeed(x_2,y1_2_filt)
+	vy1_2_filt = lowpass(vy1_2,1,5)
+	vy2_2 = getSpeed(x_2,y2_2_filt)
+	vy2_2_filt = lowpass(vy2_2,1,5)
+	vy3_2 = getSpeed(x_2,y3_2_filt)
+	vy3_2_filt = lowpass(vy3_2,1,5)
+	ay1_2 = getSpeed(x_2,vy1_2_filt)
+	ay1_2_filt = lowpass(ay1_2,1,5)
+	ay2_2 = getSpeed(x_2,vy2_2_filt)
+	ay2_2_filt = lowpass(ay2_2,1,5)
+	ay3_2 = getSpeed(x_2,vy3_2_filt)
+	ay3_2_filt = lowpass(ay3_2,1,5)
+	jy1_2 = getSpeed(x_2,ay1_2_filt)
+	jy1_2_filt = lowpass(jy1_2,1,5)
+	jy2_2 = getSpeed(x_2,ay2_2_filt)
+	jy2_2_filt = lowpass(jy2_2,1,5)
+	jy3_2 = getSpeed(x_2,ay3_2_filt)
+	jy3_2_filt = lowpass(jy3_2,1,5)
+	
+	cs,ce,column_c = read(data,'time',236,250)
+	write_csv(cs,ce,x,y1,y2,y3,vy1,vy2,vy3,ay1,ay2,ay3,jy1,jy2,jy3,y1_1,y2_1,y3_1,vy1_1,vy2_1,vy3_1,ay1_1,ay2_1,ay3_1,jy1_1,jy2_1,jy3_1,y1_2,y2_2,y3_2,vy1_2,vy2_2,vy3_2,ay1_2,ay2_2,ay3_2,jy1_2,jy2_2,jy3_2)
 
 def read(data,columns,s,e):
 	search_start = s
@@ -84,27 +111,18 @@ def read(data,columns,s,e):
 			print('end time',data.iloc[end,search_column_n])
 			return start,end,search_column
 
-def get_data(start,end,column,c1,c2,c3,c4,c5,c6):
+def get_data(start,end,column,c1,c2,c3):
 	x = data.loc[start:end,column]
 	y1 = data.loc[start:end,c1]
 	y2 = data.loc[start:end,c2]
 	y3 = data.loc[start:end,c3]
-	y4 = data.loc[start:end,c4]
-	y5 = data.loc[start:end,c5]
-	y6 = data.loc[start:end,c6]
 	x = x.reset_index(drop=True)
 	y1 = y1.reset_index(drop=True)
 	y2 = y2.reset_index(drop=True)
 	y3 = y3.reset_index(drop=True)
-	y4 = y4.reset_index(drop=True)
-	y5 = y5.reset_index(drop=True)
-	y6 = y6.reset_index(drop=True)
-	return x,y1,y2,y3,y4,y5,y6
+	return x,y1,y2,y3
 
 def getSpeed(t,g1):
-	# get = pd.DataFrame(list(zip(t,g1)))
-	# diff = get.diff()
-	# speed = diff[1]/diff[0]
 	mean_dt = mean(np.diff(t))
 	speed = []
 	for i in range(len(t)):
@@ -180,10 +198,9 @@ def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
 	plt.title(filename)
 	plt.show()
 
-def write_csv(cs,ce,t,x,y,z,vx,vy,vz,ax,ay,az,jx,jy,jz):
-	# name = input('名前を入力してください--> ')
+def write_csv(cs,ce,t,x,y,z,vx,vy,vz,ax,ay,az,jx,jy,jz,x_1,y_1,z_1,vx_1,vy_1,vz_1,ax_1,ay_1,az_1,jx_1,jy_1,jz_1,x_2,y_2,z_2,vx_2,vy_2,vz_2,ax_2,ay_2,az_2,jx_2,jy_2,jz_2):
 	name = 'tsuruoka_tanada'
-	conditions = 'robot'
+	conditions = 'partner+robot'
 	comment = input('part--> ')
 	date = '20211112'
 	folder = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion'
@@ -192,13 +209,13 @@ def write_csv(cs,ce,t,x,y,z,vx,vy,vz,ax,ay,az,jx,jy,jz):
 	if check:
 		os.remove(filename)
 		print('remove')
-	df = pd.DataFrame(data={'time':t,'x':x,'y':y,'z':z,'vx':vx,'vy':vy,'vz':vz,'ax':ax,'ay':ay,'az':az,'jx':jx,'jy':jy,'jz':jz})
+	df = pd.DataFrame(data={'time':t,'x':x,'y':y,'z':z,'vx':vx,'vy':vy,'vz':vz,'ax':ax,'ay':ay,'az':az,'jx':jx,'jy':jy,'jz':jz,'x1':x_1,'y1':y_1,'z1':z_1,'vx1':vx_1,'vy1':vy_1,'vz1':vz_1,'ax1':ax_1,'ay1':ay_1,'az1':az_1,'jx1':jx_1,'jy1':jy_1,'jz1':jz_1,'x2':x_2,'y2':y_2,'z2':z_2,'vx2':vx_2,'vy2':vy_2,'vz2':vz_2,'ax2':ax_2,'ay2':ay_2,'az2':az_2,'jx2':jx_2,'jy2':jy_2,'jz2':jz_2})
 	df_c = pd.DataFrame(df[cs:ce])
 	df_r = df_c.reset_index(drop=True)
 	df_r.to_csv(filename)
 	print('write csv')
 
 if __name__ == "__main__":
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_4.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
 	data = pd.read_csv(path)
 	main()

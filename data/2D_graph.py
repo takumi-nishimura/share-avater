@@ -7,10 +7,11 @@ from statistics import mean
 from scipy import fftpack
 
 def main():
-	start,end,column = read(data,'time',166,10000.0)
+	start,end,column = read(data,'time',139,152)
 	x,y1,y2,y3 = get_data(start,end,column,'x','y','z')
-	dt_mean = np.mean(np.diff(x))
-	fs_mean = round(1/dt_mean)
+	# x_1,y1_1,y2_1,y3_1 = get_data(start,end,column,'x1','y1','z1')
+	# x_2,y1_2,y2_2,y3_2 = get_data(start,end,column,'x2','y2','z2')
+
 	y1_filt = lowpass(y1,0.4,5)
 	y2_filt = lowpass(y2,0.4,5)
 	y3_filt = lowpass(y3,0.4,5)
@@ -32,20 +33,65 @@ def main():
 	jy2_filt = lowpass(jy2,1,5)
 	jy3 = getSpeed(x,ay3_filt)
 	jy3_filt = lowpass(jy3,1,5)
-	fft_data = np.abs(np.fft.rfft(y1))
-	freqList = np.fft.rfftfreq(len(y1), 1.0 / fs_mean)
-	fft_data_filt = np.abs(np.fft.rfft(y1_filt))
-	freqList_filt = np.fft.rfftfreq(len(y1_filt), 1.0 / fs_mean)
-	# fft_data_a1 = np.abs(np.fft.rfft(a1))
-	# freqList_a1 = np.fft.rfftfreq(len(a1), 1.0 / fs_mean)
-	# fft_data_j1 = np.abs(np.fft.rfft(j1))
-	# freqList_j1 = np.fft.rfftfreq(len(j1), 1.0 / fs_mean)
-	mean_jrk(jy1,jy2,jy3)
+
+	# y1_1_filt = lowpass(y1_1,0.4,5)
+	# y2_1_filt = lowpass(y2_1,0.4,5)
+	# y3_1_filt = lowpass(y3_1,0.4,5)
+	# vy1_1 = getSpeed(x_1,y1_1_filt)
+	# vy1_1_filt = lowpass(vy1_1,1,5)
+	# vy2_1 = getSpeed(x_1,y2_1_filt)
+	# vy2_1_filt = lowpass(vy2_1,1,5)
+	# vy3_1 = getSpeed(x_1,y3_1_filt)
+	# vy3_1_filt = lowpass(vy3_1,1,5)
+	# ay1_1 = getSpeed(x_1,vy1_1_filt)
+	# ay1_1_filt = lowpass(ay1_1,1,5)
+	# ay2_1 = getSpeed(x_1,vy2_1_filt)
+	# ay2_1_filt = lowpass(ay2_1,1,5)
+	# ay3_1 = getSpeed(x_1,vy3_1_filt)
+	# ay3_1_filt = lowpass(ay3_1,1,5)
+	# jy1_1 = getSpeed(x_1,ay1_1_filt)
+	# jy1_1_filt = lowpass(jy1_1,1,5)
+	# jy2_1 = getSpeed(x_1,ay2_1_filt)
+	# jy2_1_filt = lowpass(jy2_1,1,5)
+	# jy3_1 = getSpeed(x_1,ay3_1_filt)
+	# jy3_1_filt = lowpass(jy3_1,1,5)
+
+	# y1_2_filt = lowpass(y1_2,0.4,5)
+	# y2_2_filt = lowpass(y2_2,0.4,5)
+	# y3_2_filt = lowpass(y3_2,0.4,5)
+	# vy1_2 = getSpeed(x_2,y1_2_filt)
+	# vy1_2_filt = lowpass(vy1_2,1,5)
+	# vy2_2 = getSpeed(x_2,y2_2_filt)
+	# vy2_2_filt = lowpass(vy2_2,1,5)
+	# vy3_2 = getSpeed(x_2,y3_2_filt)
+	# vy3_2_filt = lowpass(vy3_2,1,5)
+	# ay1_2 = getSpeed(x_2,vy1_2_filt)
+	# ay1_2_filt = lowpass(ay1_2,1,5)
+	# ay2_2 = getSpeed(x_2,vy2_2_filt)
+	# ay2_2_filt = lowpass(ay2_2,1,5)
+	# ay3_2 = getSpeed(x_2,vy3_2_filt)
+	# ay3_2_filt = lowpass(ay3_2,1,5)
+	# jy1_2 = getSpeed(x_2,ay1_2_filt)
+	# jy1_2_filt = lowpass(jy1_2,1,5)
+	# jy2_2 = getSpeed(x_2,ay2_2_filt)
+	# jy2_2_filt = lowpass(jy2_2,1,5)
+	# jy3_2 = getSpeed(x_2,ay3_2_filt)
+	# jy3_2_filt = lowpass(jy3_2,1,5)
+
+	dt_mean = np.mean(np.diff(x))
+	fs_mean = round(1/dt_mean)
+	fft_data = np.abs(np.fft.rfft(vy1))
+	freqList = np.fft.rfftfreq(len(vy1), 1.0 / fs_mean)
+	fft_data_filt = np.abs(np.fft.rfft(vy1_filt))
+	freqList_filt = np.fft.rfftfreq(len(vy1_filt), 1.0 / fs_mean)
 	solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
+
+	mean_jrk(jy1,jy2,jy3)
+	
 	v_norm = get_norm(vy1,vy2,vy3)
-	solox_graph(x,y3,'z',vy3,'vz',v_norm,'v_norm',jy3,'jz')
+	solox_graph(x,y3,'z',vy3,'vz',ay3,'vz_1',jy3,'vx_2')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
-	# twinx_graph(x,v1,'v1',a1,'a1',y1,'j1',y1,'x')
+	# twinx_graph(x,vy1,'v1',ay1,'a1',y1,'j1',y1,'x')
 
 def read(data,columns,s,e):
 	search_start = s
@@ -89,9 +135,6 @@ def get_data(start,end,column,c1,c2,c3):
 	return x,y1,y2,y3
 
 def getSpeed(t,g1):
-	# get = pd.DataFrame(list(zip(t,g1)))
-	# diff = get.diff()
-	# speed = diff[1]/diff[0]
 	mean_dt = mean(np.diff(t))
 	speed = []
 	for i in range(len(t)):
@@ -185,8 +228,8 @@ def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
 	plt.show()
 
 if __name__ == "__main__":
-	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_4.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_3.csv'
+	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_4.csv'
 	# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/solo/20211112_tsuruoka_solo_4.csv'
 	data = pd.read_csv(path)
 	main()
