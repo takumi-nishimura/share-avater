@@ -15,6 +15,7 @@ def Teulings_1997(tl,xl,yl,zl,j_x,j_y,j_z):
 	jrk_sq = np.power(jrk_norm,2)
 	sum_jrk_sq = np.sum(jrk_sq)
 	Jerk_index = np.sqrt(1/2*sum_jrk_sq*dt**5/d**2)
+	print('Teulings_1997 : ','{:.5g}'.format(Jerk_index))
 	return Jerk_index
 
 def Ahmad_2016(tl,v_x,v_y,v_z,j_x,j_y,j_z):
@@ -30,7 +31,18 @@ def Ahmad_2016(tl,v_x,v_y,v_z,j_x,j_y,j_z):
 		vel_sq_list.append(vel_sq)
 	sum_vel = np.sum(vel_sq_list)
 	normalized_Jrk_index = sum_jrk * dt**5 / (sum_vel**2)
+	print('Ahmad_2016 : ','{:.5g}'.format(normalized_Jrk_index))
 	return normalized_Jrk_index
+
+def mean_jrk(j_x,j_y,j_z):
+	jrk_norm_list = []
+	for i in range(len(j_x)):
+		jrk_list = np.array([j_x[i],j_y[i],j_z[i]])
+		jrk_norm = np.linalg.norm(jrk_list)
+		jrk_norm_list.append(jrk_norm)
+	jrk_mean = np.mean(jrk_norm_list)
+	print('mean_jerk : ','{:.5g}'.format(jrk_mean))
+	return jrk_mean
 
 def search_data(number,o_path):
 	n = number + 1
@@ -56,7 +68,6 @@ def search_data(number,o_path):
 if __name__ == '__main__':
 	for i in range(5):
 		t,x,y,z,vel_x,vel_y,vel_z,jrk_x,jrk_y,jrk_z = search_data(i,'/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_')
+		mean_jerk = mean_jrk(jrk_x,jrk_y,jrk_z)
 		Jrk_index = Teulings_1997(t,x,y,z,jrk_x,jrk_y,jrk_z)
 		Normlized_Jrk_index = Ahmad_2016(t,vel_x,vel_y,vel_z,jrk_x,jrk_y,jrk_z)
-		# print('robot :','{:.5g}'.format(Jrk_index))
-		print('robot :','{:.5g}'.format(Normlized_Jrk_index))
