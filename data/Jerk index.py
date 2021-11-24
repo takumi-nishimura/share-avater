@@ -26,7 +26,7 @@ def Ahmad_2016(tl,v_x,v_y,v_z,j_x,j_y,j_z):
 	dt = tl[len(tl)-1] - tl[0]
 	vel_sq_list = []
 	for i in range(len(v_x)):
-		vel_sq = np.sqrt(vel_x[i]**2 + vel_y[i]**2 +  vel_z[i]**2)
+		vel_sq = np.sqrt(v_x[i]**2 + v_y[i]**2 +  v_z[i]**2)
 		vel_sq_list.append(vel_sq)
 	sum_vel = np.sum(vel_sq_list)
 	normalized_Jrk_index = sum_jrk * dt**5 / (sum_vel**2)
