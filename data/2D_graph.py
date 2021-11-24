@@ -8,7 +8,7 @@ from scipy import fftpack
 
 def main():
 	start,end,column = read(data,'time',166,10000.0)
-	x,y1,y2,y3,y4,y5,y6 = get_data(start,end,column,'x','y','z','z','z','z')
+	x,y1,y2,y3 = get_data(start,end,column,'x','y','z')
 	dt_mean = np.mean(np.diff(x))
 	fs_mean = round(1/dt_mean)
 	y1_filt = lowpass(y1,0.4,5)
@@ -40,13 +40,6 @@ def main():
 	# freqList_a1 = np.fft.rfftfreq(len(a1), 1.0 / fs_mean)
 	# fft_data_j1 = np.abs(np.fft.rfft(j1))
 	# freqList_j1 = np.fft.rfftfreq(len(j1), 1.0 / fs_mean)
-	# y4 = np.rad2deg(y4)
-	# y5 = np.rad2deg(y5)
-	fb_vel_r = y1+y4*0.8
-	fb_vel_1 = y2+y5*0.8
-	fb_vel_2 = y3+y6*0.8
-	data_out_1 = fb_vel_1
-	data_out_2 = fb_vel_2
 	mean_jrk(jy1,jy2,jy3)
 	solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
 	v_norm = get_norm(vy1,vy2,vy3)
@@ -84,22 +77,16 @@ def read(data,columns,s,e):
 			print('end time',data.iloc[end,search_column_n])
 			return start,end,search_column
 
-def get_data(start,end,column,c1,c2,c3,c4,c5,c6):
+def get_data(start,end,column,c1,c2,c3):
 	x = data.loc[start:end,column]
 	y1 = data.loc[start:end,c1]
 	y2 = data.loc[start:end,c2]
 	y3 = data.loc[start:end,c3]
-	y4 = data.loc[start:end,c4]
-	y5 = data.loc[start:end,c5]
-	y6 = data.loc[start:end,c6]
 	x = x.reset_index(drop=True)
 	y1 = y1.reset_index(drop=True)
 	y2 = y2.reset_index(drop=True)
 	y3 = y3.reset_index(drop=True)
-	y4 = y4.reset_index(drop=True)
-	y5 = y5.reset_index(drop=True)
-	y6 = y6.reset_index(drop=True)
-	return x,y1,y2,y3,y4,y5,y6
+	return x,y1,y2,y3
 
 def getSpeed(t,g1):
 	# get = pd.DataFrame(list(zip(t,g1)))
