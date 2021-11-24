@@ -48,8 +48,9 @@ def main():
 	data_out_1 = fb_vel_1
 	data_out_2 = fb_vel_2
 	mean_jrk(jy1,jy2,jy3)
-	# solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
-	# solox_graph(x,y3,'z',vy3,'vz',vy3,'az',jy3,'jz')
+	solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
+	v_norm = get_norm(vy1,vy2,vy3)
+	solox_graph(x,y3,'z',vy3,'vz',v_norm,'az',jy3,'jz')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
 	# twinx_graph(x,v1,'v1',a1,'a1',y1,'j1',y1,'x')
 
@@ -114,6 +115,14 @@ def getSpeed(t,g1):
 		else:
 			speed.append((g1[i+1]-g1[i-1])/(2*mean_dt))
 	return speed
+
+def get_norm(d1,d2,d3):
+	v_n_l = []
+	for i in range(len(d1)):
+		v_l = np.array([d1[i],d2[i],d3[i]])
+		v_n = np.linalg.norm(v_l)
+		v_n_l.append(v_n)
+	return v_n_l
 
 def mean_jrk(jx,jy,jz):
 	jrk_norm_list = []
