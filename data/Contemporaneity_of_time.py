@@ -10,13 +10,13 @@ def contemporaneity_time(d1,d2,d3,i):
 	maxid = signal.argrelmax(d_norm, order=1)
 	maxid_o = []
 	for i in range(len(maxid[0])):
-		if d_norm[maxid[0][i]] > 20:
+		if d_norm[maxid[0][i]] > 40:
 			maxid_o.append(maxid[0][i])
-	plt.plot(t,d_norm)
-	plt.plot(t[maxid_o],d_norm[maxid_o],'bo')
-	plt.show()
+	# plt.plot(t,d_norm)
+	# plt.plot(t[maxid_o],d_norm[maxid_o],'bo')
+	# plt.show()
 	max_d_norm = d_norm[maxid_o[1]]
-	reaction = max_d_norm * 0.3
+	reaction = max_d_norm * 0.4
 	for reaction_index in range(maxid_o[1],0,-1):
 		if reaction > d_norm[reaction_index]:
 			return t[reaction_index]
@@ -44,7 +44,7 @@ def get_data(number,index,o_path):
 
 def write_csv():
 	name = 'tsuruoka_tanada'
-	conditions = 'woFB'
+	conditions = 'partner+robot'
 	date = '20211112'
 	folder = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用'
 	filename = folder + '/' + 'ct_' + date + '_' + name + '_' + conditions + '.csv'
@@ -57,7 +57,7 @@ def write_csv():
 
 if __name__ == '__main__':
 	df = pd.DataFrame(columns=['robot','begginer','expert','diff','percentage'])
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_'
 	print(os.path.splitext(os.path.basename(path))[0])
 	for i in range(5):
 		t,vel_x,vel_y,vel_z = get_data(i,'x',path)
