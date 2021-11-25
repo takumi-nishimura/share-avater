@@ -12,9 +12,9 @@ def main():
 	x_1,y1_1,y2_1,y3_1 = get_data(start,end,column,'x1','y1','z1')
 	x_2,y1_2,y2_2,y3_2 = get_data(start,end,column,'x2','y2','z2')
 
-	y1_filt = lowpass(y1,0.3,5)
-	y2_filt = lowpass(y2,0.3,5)
-	y3_filt = lowpass(y3,0.3,5)
+	y1_filt = lowpass(y1,0.4,5)
+	y2_filt = lowpass(y2,0.4,5)
+	y3_filt = lowpass(y3,0.4,5)
 	vy1 = getSpeed(x,y1_filt)
 	vy1_filt = lowpass(vy1,1,5)
 	vy2 = getSpeed(x,y2_filt)
@@ -77,8 +77,8 @@ def main():
 	jy2_2_filt = lowpass(jy2_2,1,5)
 	jy3_2 = getSpeed(x_2,ay3_2_filt)
 	jy3_2_filt = lowpass(jy3_2,1,5)
-	
-	cs,ce,column_c = read(data,'time',236,250)
+
+	cs,ce,column_c = read(data,'time',85,97)
 	write_csv(cs,ce,x,y1,y2,y3,vy1,vy2,vy3,ay1,ay2,ay3,jy1,jy2,jy3,y1_1,y2_1,y3_1,vy1_1,vy2_1,vy3_1,ay1_1,ay2_1,ay3_1,jy1_1,jy2_1,jy3_1,y1_2,y2_2,y3_2,vy1_2,vy2_2,vy3_2,ay1_2,ay2_2,ay3_2,jy1_2,jy2_2,jy3_2)
 
 def read(data,columns,s,e):
@@ -200,7 +200,7 @@ def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
 
 def write_csv(cs,ce,t,x,y,z,vx,vy,vz,ax,ay,az,jx,jy,jz,x_1,y_1,z_1,vx_1,vy_1,vz_1,ax_1,ay_1,az_1,jx_1,jy_1,jz_1,x_2,y_2,z_2,vx_2,vy_2,vz_2,ax_2,ay_2,az_2,jx_2,jy_2,jz_2):
 	name = 'tsuruoka_tanada'
-	conditions = 'partner+robot'
+	conditions = 'robot'
 	comment = input('part--> ')
 	date = '20211112'
 	folder = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion'
@@ -216,6 +216,6 @@ def write_csv(cs,ce,t,x,y,z,vx,vy,vz,ax,ay,az,jx,jy,jz,x_1,y_1,z_1,vx_1,vy_1,vz_
 	print('write csv')
 
 if __name__ == "__main__":
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1531.csv'
 	data = pd.read_csv(path)
 	main()

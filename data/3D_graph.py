@@ -2,9 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-# path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1545.csv'
-path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/solo/20211112_tsuruoka_solo_1.csv'
-path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/fusion_20211112_1536.csv'
+path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_1.csv'
 data = pd.read_csv(path)
 
 search_start = 56
