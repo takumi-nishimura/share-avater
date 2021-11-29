@@ -92,7 +92,7 @@ def main():
 	v_norm = get_norm(vy_1,vy_2,vy_3)
 	v_norm_1 = get_norm(vy_1_1,vy_2_1,vy_3_1)
 	v_norm_2 = get_norm(vy_1_2,vy_2_2,vy_3_2)
-	solox_graph(x,y3,'z',v_norm,'v',v_norm_1,'v_1',v_norm_2,'v_2')
+	solox_graph(x,y3,'z',v_norm,'v_r',v_norm_1,'v_1',v_norm_2,'v_2')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
 	# twinx_graph(x,vy1,'v1',ay1,'a1',y1,'j1',y1,'x')
 
@@ -233,6 +233,6 @@ def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
 	plt.show()
 
 if __name__ == "__main__":
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_3.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_5.csv'
 	data = pd.read_csv(path)
 	main()

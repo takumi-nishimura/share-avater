@@ -67,7 +67,7 @@ def search_data(number,o_path):
 
 if __name__ == '__main__':
 	for i in range(5):
-		t,x,y,z,vel_x,vel_y,vel_z,jrk_x,jrk_y,jrk_z = search_data(i,'/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
+		t,x,y,z,vel_x,vel_y,vel_z,jrk_x,jrk_y,jrk_z = search_data(i,'/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/solo/20211112_tsuruoka_solo_')
 		# mean_jerk = mean_jrk(jrk_x,jrk_y,jrk_z)
 		# Jrk_index = Teulings_1997(t,x,y,z,jrk_x,jrk_y,jrk_z)
 		Normlized_Jrk_index = Ahmad_2016(t,vel_x,vel_y,vel_z,jrk_x,jrk_y,jrk_z)
