@@ -2,10 +2,11 @@ from dtaidistance import dtw_ndim
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 def import_data(path):
 	data = pd.read_csv(path)
-	return data
+	return data,path
 
 def get_data(d):
 	x = d['x']
@@ -46,10 +47,12 @@ def plot_3d():
 	ax.plot(expert[0],expert[1],expert[2],label='expert')
 	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
 	ax.set_box_aspect((1,1,1))
+	filename = os.path.splitext(os.path.basename(path))[0]
+	plt.title(filename)
 	plt.show()
 
 if __name__ == '__main__':
-	data = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_5.csv')
+	data,path = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_5.csv')
 	robot,expert,begginer = get_data(data)
 	dtw = dtw_n(expert,begginer)
 	print(dtw)
