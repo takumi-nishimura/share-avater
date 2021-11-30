@@ -27,9 +27,9 @@ def get_data(d):
 	y2 = y2 - y2[0]
 	z2 = z2 - z2[0]
 	robot_lsit = np.array([x,y,z])
-	begginer_list = np.array([x1,y1,z1])
-	expert_lsit = np.array([x2,y2,z2])
-	return robot_lsit,begginer_list,expert_lsit
+	expert_list = np.array([x1,y1,z1])
+	begginner_lsit = np.array([x2,y2,z2])
+	return robot_lsit,expert_list,begginner_lsit
 
 def dtw_n(d1,d2):
 	dtw_n = dtw_ndim.distance(d1,d2)
@@ -50,6 +50,7 @@ def plot_3d():
 
 if __name__ == '__main__':
 	data = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_5.csv')
-	robot,begginer,expert = get_data(data)
-	dtw = dtw_n(begginer,expert)
+	robot,expert,begginer = get_data(data)
+	dtw = dtw_n(expert,begginer)
 	print(dtw)
+	plot_3d()
