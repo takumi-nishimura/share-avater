@@ -7,6 +7,8 @@ import os
 
 def import_data(path):
 	data = pd.read_csv(path)
+	filename = os.path.splitext(os.path.basename(path))[0]
+	print(filename)
 	return data,path
 
 def get_data(d):
@@ -28,23 +30,29 @@ def get_data(d):
 	x2 = x2 - x2[0]
 	y2 = y2 - y2[0]
 	z2 = z2 - z2[0]
-	robot_lsit = np.array([x,y,z])
-	expert_list = np.array([x1,y1,z1])
-	begginner_lsit = np.array([x2,y2,z2])
+	robot_lsit = pd.DataFrame(data=np.c_[x,y,z],columns=['x','y','z'])
+	expert_list = pd.DataFrame(data=np.c_[x1,y1,z1],columns=['x1','y1','z1'])
+	begginner_lsit = pd.DataFrame(data=np.c_[x2,y2,z2],columns=['x2','y2','z2'])
 	return robot_lsit,expert_list,begginner_lsit
 
 def dtw_n(d1,d2):
-	dtw_n = dtw_ndim.distance(d1,d2)
+	a1 = np.array(d1)
+	a2 = np.array(d2)
+	dtw_n = dtw_ndim.distance(a1,a2)
+	print(dtw_n)
 	return dtw_n
 
-def plot_3d():
+def norm_cost(d1,d2):
+	norm = np.linalg.norm(d1-d2,axis=1)
+	# print(norm)
+
+def plot_3d(d1,d2):
 	fig = plt.figure()
 	ax = plt.gca(projection='3d')
 	ax.set_xlabel("X-axis")
 	ax.set_ylabel("Y-axis")
 	ax.set_zlabel("Z-axis")
-	ax.plot(robot[0],robot[1],robot[2],label='robot')
-	ax.plot(begginer[0],begginer[1],begginer[2],label='begginer')
+	ax.plot(begginer[0][:],begginer[1],begginer[2],label='begginer')
 	ax.plot(expert[0],expert[1],expert[2],label='expert')
 	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
 	ax.set_box_aspect((1,1,1))
@@ -53,9 +61,8 @@ def plot_3d():
 	plt.show()
 
 if __name__ == '__main__':
-	data,path = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_5.csv')
+	data,path = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_5.csv')
 	robot,expert,begginer = get_data(data)
-	dtw = dtw_n(expert,begginer)
-	print(dtw)
-	dtw_n_paths(expert,robot)
+	norm_cost(expert,begginer)
+	# dtw_n(expert,begginer)
 	# plot_3d()
