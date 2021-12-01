@@ -58,15 +58,16 @@ def plot_3d():
 	ax.set_zlabel("Z-axis")
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
-	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
+	ax.view_init(elev=60, azim=45)
+	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
 	ax.set_box_aspect((1,1,1))
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
-	plt.show()
+	plt.savefig('fig/'+filename+'.png')
 
 if __name__ == '__main__':
 	for i in range(5):
-		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_')
+		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
 		robot,expert,begginer = get_data(data)
 		norm_cost()
 		# dtw_n(expert,begginer)
