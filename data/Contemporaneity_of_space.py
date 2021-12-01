@@ -43,17 +43,18 @@ def dtw_n(d1,d2):
 	return dtw_n
 
 def norm_cost(d1,d2):
+	print(d1)
 	norm = np.linalg.norm(d1-d2,axis=1)
 	# print(norm)
 
-def plot_3d(d1,d2):
+def plot_3d():
 	fig = plt.figure()
 	ax = plt.gca(projection='3d')
 	ax.set_xlabel("X-axis")
 	ax.set_ylabel("Y-axis")
 	ax.set_zlabel("Z-axis")
-	ax.plot(begginer[0][:],begginer[1],begginer[2],label='begginer')
-	ax.plot(expert[0],expert[1],expert[2],label='expert')
+	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
+	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
 	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
 	ax.set_box_aspect((1,1,1))
 	filename = os.path.splitext(os.path.basename(path))[0]
