@@ -50,14 +50,23 @@ def norm_cost():
 	sum_norm = np.sum(norm)
 	print(sum_norm)
 
-def path_norm():
-	dx1 = np.diff(begginer['x1'],axis=0)
-	dy1 = np.diff(begginer['y1'],axis=0)
-	dz1 = np.diff(begginer['z1'],axis=0)
-	pos_d1 = np.c_[dx1,dy1,dz1]
-	norm = np.linalg.norm(pos_d1,axis=1)
-	d = np.sum(norm)
-	print(d)
+def path_norm(participants):
+	if participants == 'begginer':
+		dx1 = np.diff(begginer['x2'],axis=0)
+		dy1 = np.diff(begginer['y2'],axis=0)
+		dz1 = np.diff(begginer['z2'],axis=0)
+		pos_d1 = np.c_[dx1,dy1,dz1]
+		norm = np.linalg.norm(pos_d1,axis=1)
+		d = np.sum(norm)
+		print(d)
+	elif participants == 'expert':
+		dx1 = np.diff(expert['x1'],axis=0)
+		dy1 = np.diff(expert['y1'],axis=0)
+		dz1 = np.diff(expert['z1'],axis=0)
+		pos_d1 = np.c_[dx1,dy1,dz1]
+		norm = np.linalg.norm(pos_d1,axis=1)
+		d = np.sum(norm)
+		print(d)
 
 def plot_3d():
 	fig = plt.figure()
@@ -77,9 +86,9 @@ def plot_3d():
 
 if __name__ == '__main__':
 	for i in range(5):
-		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_')
+		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
 		robot,expert,begginer = get_data(data)
 		# norm_cost()
 		# dtw_n(expert,begginer)
-		path_norm
+		path_norm(participants='expert')
 		# plot_3d()
