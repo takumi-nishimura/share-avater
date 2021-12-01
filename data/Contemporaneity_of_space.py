@@ -5,11 +5,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-def import_data(path):
-	data = pd.read_csv(path)
-	filename = os.path.splitext(os.path.basename(path))[0]
+def import_data(number,path):
+	n = number + 1
+	read_path = path + str(n) + '.csv'
+	data = pd.read_csv(read_path)
+	filename = os.path.splitext(os.path.basename(read_path))[0]
 	print(filename)
-	return data,path
+	return data,read_path
 
 def get_data(d):
 	x = d['x']
@@ -42,10 +44,11 @@ def dtw_n(d1,d2):
 	print(dtw_n)
 	return dtw_n
 
-def norm_cost(d1,d2):
-	print(d1)
-	norm = np.linalg.norm(d1-d2,axis=1)
-	# print(norm)
+def norm_cost():
+	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
+	norm = np.linalg.norm(diff_list,axis=1)
+	sum_norm = np.sum(norm)
+	print(sum_norm)
 
 def plot_3d():
 	fig = plt.figure()
@@ -62,8 +65,9 @@ def plot_3d():
 	plt.show()
 
 if __name__ == '__main__':
-	data,path = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_5.csv')
-	robot,expert,begginer = get_data(data)
-	norm_cost(expert,begginer)
-	# dtw_n(expert,begginer)
-	# plot_3d()
+	for i in range(5):
+		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner+robot_')
+		robot,expert,begginer = get_data(data)
+		norm_cost()
+		# dtw_n(expert,begginer)
+		plot_3d()
