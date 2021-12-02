@@ -56,11 +56,12 @@ def f_dtw(d1,d2):
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
 	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
-	ax.view_init(elev=20, azim=30)
+	ax.view_init(elev=30, azim=50)
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
-	plt.savefig('fig/f_dtw/'+filename+'.png')
+	# plt.savefig('fig/f_dtw/'+filename+'.png')
 	# plt.show()
+	print(dtw_c)
 
 def norm_cost():
 	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
@@ -103,7 +104,7 @@ def plot_3d():
 	plt.show()
 
 if __name__ == '__main__':
-	for i in range(1):
+	for i in range(5):
 		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
 		robot,expert,begginer = get_data(data)
 		# norm_cost()
