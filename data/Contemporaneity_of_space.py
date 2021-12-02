@@ -1,6 +1,6 @@
 from dtaidistance import dtw,dtw_ndim,dtw_visualisation as dtwvis
-from fastdtw import fastdtw
 from scipy.spatial.distance import euclidean
+from fastdtw import fastdtw
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -49,7 +49,18 @@ def f_dtw(d1,d2):
 	a1 = np.array(d1)
 	a2 = np.array(d2)
 	dtw_c,dtw_p = fastdtw(a1,a2,dist=euclidean)
-	print(dtw_c)
+	fig = plt.figure()
+	ax = plt.gca(projection='3d')
+	for i, j in dtw_p:
+		ax.plot([a1[i][0],a2[j][0]],[a1[i][1],a2[j][1]],[a1[i][2],a2[j][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
+	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
+	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
+	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
+	ax.view_init(elev=20, azim=30)
+	filename = os.path.splitext(os.path.basename(path))[0]
+	plt.title(filename)
+	plt.savefig('fig/f_dtw/'+filename+'.png')
+	# plt.show()
 
 def norm_cost():
 	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
