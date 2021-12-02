@@ -1,11 +1,10 @@
-from dtaidistance import dtw_ndim
-from dtaidistance import dtw_visualisation as dtwvis
+from dtaidistance import dtw,dtw_ndim,dtw_visualisation as dtwvis
+from fastdtw import fastdtw
+from scipy.spatial.distance import euclidean
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-import random
-import copy
 
 def import_data(number,path):
 	n = number + 1
@@ -45,6 +44,12 @@ def dtw_n(d1,d2):
 	dtw_c,dtw_p = dtw_ndim.warping_paths(a1,a2)
 	print(dtw_c)
 	return dtw_c
+
+def f_dtw(d1,d2):
+	a1 = np.array(d1)
+	a2 = np.array(d2)
+	dtw_c,dtw_p = fastdtw(a1,a2,dist=euclidean)
+	print(dtw_c)
 
 def norm_cost():
 	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
@@ -90,7 +95,8 @@ if __name__ == '__main__':
 	for i in range(1):
 		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
 		robot,expert,begginer = get_data(data)
-		norm_cost()
+		# norm_cost()
 		# dtw_n(expert,begginer)
+		f_dtw(expert,begginer)
 		# path_norm(participants='expert')
 		# plot_3d()
