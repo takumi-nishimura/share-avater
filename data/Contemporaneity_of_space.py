@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import random
 
 def import_data(number,path):
 	n = number + 1
@@ -40,9 +41,9 @@ def get_data(d):
 def dtw_n(d1,d2):
 	a1 = np.array(d1)
 	a2 = np.array(d2)
-	dtw_n = dtw_ndim.distance(a1,a2)
-	print(dtw_n)
-	return dtw_n
+	dtw_c,dtw_p = dtw_ndim.warping_paths(a1,a2)
+	print(dtw_c)
+	return dtw_c
 
 def norm_cost():
 	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
@@ -85,10 +86,18 @@ def plot_3d():
 	# plt.show()
 
 if __name__ == '__main__':
-	for i in range(5):
+	for i in range(1):
 		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
 		robot,expert,begginer = get_data(data)
+		a = [[0,0,0]]
+		for i in range(50):
+			a = np.append(a,[[0,i+1,0]],axis=0)
+		b = a
+		for j in range(len(a)):
+			b[j] = b[j] + random.randint(-30,30)
+		print(b)
 		# norm_cost()
 		# dtw_n(expert,begginer)
-		path_norm(participants='expert')
+		dtw_n(expert,begginer)
+		# path_norm(participants='expert')
 		# plot_3d()
