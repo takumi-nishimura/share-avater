@@ -1,5 +1,4 @@
 from dtaidistance import dtw,dtw_ndim,dtw_visualisation as dtwvis
-from numpy.lib import save
 from scipy.spatial.distance import euclidean
 from fastdtw import fastdtw
 import numpy as np
@@ -130,7 +129,7 @@ if __name__ == '__main__':
 	for i in range(1):
 		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner_')
 		robot,expert,begginer = get_data(data)
-		
+
 		# dtw_n(expert,begginer)
 		f_dtw(expert,begginer,show=True,save=False)
 		# norm_cost(expert,begginer,show=False,save=False)
