@@ -1,4 +1,5 @@
 from dtaidistance import dtw,dtw_ndim,dtw_visualisation as dtwvis
+from numpy.lib import save
 from scipy.spatial.distance import euclidean
 from fastdtw import fastdtw
 import numpy as np
@@ -45,42 +46,51 @@ def dtw_n(d1,d2):
 	print(dtw_c)
 	return dtw_c
 
-def f_dtw(d1,d2):
+def f_dtw(d1,d2,show:bool=False,save:bool=False):
 	a1 = np.array(d1)
 	a2 = np.array(d2)
 	dtw_c,dtw_p = fastdtw(a1,a2,dist=euclidean)
+	print(dtw_c)
+
 	fig = plt.figure()
 	ax = plt.gca(projection='3d')
 	for i, j in dtw_p:
 		ax.plot([a1[i][0],a2[j][0]],[a1[i][1],a2[j][1]],[a1[i][2],a2[j][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
-	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
-	ax.view_init(elev=30, azim=50)
+	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
+	ax.view_init(elev=50, azim=13)
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
-	plt.savefig('fig/f_dtw/'+filename+'.png')
-	# plt.show()
-	print(dtw_c)
 
-def norm_cost(d1,d2):
+	if save:
+		plt.savefig('fig/f_dtw/'+filename+'.png')
+	if show:
+		plt.show()
+
+def norm_cost(d1,d2,show:bool=False,save:bool=False):
 	a1 = np.array(d1)
 	a2 = np.array(d2)
 	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
 	norm = np.linalg.norm(diff_list,axis=1)
 	sum_norm = np.sum(norm)
+	print(sum_norm)
+
 	fig = plt.figure()
 	ax = plt.gca(projection='3d')
 	for i in range(len(norm)):
 		ax.plot([a1[i][0],a2[i][0]],[a1[i][1],a2[i][1]],[a1[i][2],a2[i][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
-	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
+	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
 	ax.view_init(elev=30, azim=50)
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
-	print(sum_norm)
-	# plt.show()
+
+	if save:
+		plt.savefig('fig/f_dtw/'+filename+'.png')
+	if show:
+		plt.show()
 
 def path_norm(participants):
 	if participants == 'begginner':
@@ -117,11 +127,13 @@ def plot_3d():
 	plt.show()
 
 if __name__ == '__main__':
-	for i in range(5):
-		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_')
+	for i in range(1):
+		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_partner_')
 		robot,expert,begginer = get_data(data)
-		# norm_cost(expert,begginer)
+		
 		# dtw_n(expert,begginer)
-		f_dtw(expert,begginer)
+		f_dtw(expert,begginer,show=True,save=False)
+		# norm_cost(expert,begginer,show=False,save=False)
 		# path_norm(participants='begginner')
+
 		# plot_3d()
