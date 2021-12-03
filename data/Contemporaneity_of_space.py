@@ -59,18 +59,31 @@ def f_dtw(d1,d2):
 	ax.view_init(elev=30, azim=50)
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
-	# plt.savefig('fig/f_dtw/'+filename+'.png')
+	plt.savefig('fig/f_dtw/'+filename+'.png')
 	# plt.show()
 	print(dtw_c)
 
-def norm_cost():
+def norm_cost(d1,d2):
+	a1 = np.array(d1)
+	a2 = np.array(d2)
 	diff_list = np.c_[expert['x1']-begginer['x2'],expert['y1']-begginer['y2'],expert['z1']-begginer['z2']]
 	norm = np.linalg.norm(diff_list,axis=1)
 	sum_norm = np.sum(norm)
+	fig = plt.figure()
+	ax = plt.gca(projection='3d')
+	for i in range(len(norm)):
+		ax.plot([a1[i][0],a2[i][0]],[a1[i][1],a2[i][1]],[a1[i][2],a2[i][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
+	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
+	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
+	ax.legend(loc="upper right",bbox_to_anchor=(1.1,1.1))
+	ax.view_init(elev=30, azim=50)
+	filename = os.path.splitext(os.path.basename(path))[0]
+	plt.title(filename)
 	print(sum_norm)
+	# plt.show()
 
 def path_norm(participants):
-	if participants == 'begginer':
+	if participants == 'begginner':
 		dx1 = np.diff(begginer['x2'],axis=0)
 		dy1 = np.diff(begginer['y2'],axis=0)
 		dz1 = np.diff(begginer['z2'],axis=0)
@@ -105,10 +118,10 @@ def plot_3d():
 
 if __name__ == '__main__':
 	for i in range(5):
-		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_')
+		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_robot_')
 		robot,expert,begginer = get_data(data)
-		# norm_cost()
+		# norm_cost(expert,begginer)
 		# dtw_n(expert,begginer)
 		f_dtw(expert,begginer)
-		# path_norm(participants='expert')
+		# path_norm(participants='begginner')
 		# plot_3d()
