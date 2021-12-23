@@ -34,4 +34,3 @@ if __name__ == '__main__':
 	except KeyboardInterrupt:
 		print('stop')
 		Graph2DManager.soloy_graph()
-		
