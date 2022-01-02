@@ -4,49 +4,51 @@ import csv
 import random
 from tkinter import *
 
-def main():
-	name,job = initial_data_set()
+class MINIMALSELF:
+	def __init__(self) -> None:
+		self.q = [0] * 8
 
-	qa = TLX()
-	
-	score = SCORE(qa)
+	def main(self):
+		self.qa = self.MS()
+		self.score = self.SCORE(self.qa)
+		self.r = {'MS_q':self.qa,'MS_score':self.score}
+		print(self.r)
+		return self.r
 
-	result(name,job,qa,score)
+	def initial_data_set(self):
+		self.name = input('名前を入力してください--> ')
+		self.job = input('FBを入力してください\nFB無し->A\n相手の速度->B\n相手との速度の差(小)->C\n相手との速度の差(大)->D\n相手の速度＋ロボット->E\n--> ')
+		print(self.name+'さん , FB: '+self.job)
+		return self.name,self.job
 
-def initial_data_set():
-	name = input('名前を入力してください--> ')
-	job = input('FBを入力してください\nFB無し->A\n相手の速度->B\n相手との速度の差(小)->C\n相手との速度の差(大)->D\n相手の速度＋ロボット->E\n--> ')
-	print(name+'さん , FB: '+job)
-	return name,job
+	def MS(self):
+		self.root = Tk()
+		self.root.title('Minimal Self')
+		self.root.columnconfigure(0, weight=1)
+		self.root.rowconfigure(0, weight=1)
 
-def TLX():
-	root = Tk()
-	root.title('Minimal Self')
-	root.columnconfigure(0, weight=1)
-	root.rowconfigure(0, weight=1)
+		self.q1 = IntVar()
+		self.q1.set(0)
+		self.q2 = IntVar()
+		self.q2.set(0)
+		self.q3 = IntVar()
+		self.q3.set(0)
+		self.q4 = IntVar()
+		self.q4.set(0)
+		self.q5 = IntVar()
+		self.q5.set(0)
+		self.q6 = IntVar()
+		self.q6.set(0)
+		self.q7 = IntVar()
+		self.q7.set(0)
+		self.q8 = IntVar()
+		self.q8.set(0)
+		self.q9 = IntVar()
+		self.q9.set(0)
+		self.q10 = IntVar()
+		self.q10.set(0)
 
-	q1 = IntVar()
-	q1.set(0)
-	q2 = IntVar()
-	q2.set(0)
-	q3 = IntVar()
-	q3.set(0)
-	q4 = IntVar()
-	q4.set(0)
-	q5 = IntVar()
-	q5.set(0)
-	q6 = IntVar()
-	q6.set(0)
-	q7 = IntVar()
-	q7.set(0)
-	q8 = IntVar()
-	q8.set(0)
-	q9 = IntVar()
-	q9.set(0)
-	q10 = IntVar()
-	q10.set(0)
-
-	question = [[1,'ロボットアームが自分の腕のように感じた．'],\
+		self.question = [[1,'ロボットアームが自分の腕のように感じた．'],\
 			[2,'ロボットアームが物を掴んでいるのを見たとき，物をつかんでいるのは自分の手だと感じた．'],\
 			[3,'本物の手がロボットになっているように感じた'],\
 			[4,'腕が複数あるように感じた．'],\
@@ -55,170 +57,146 @@ def TLX():
 			[7,'ロボットアームの動きが自分の動きを制御しているように感じた．'],\
 			[8,'ロボットアームには独自の意思があるように感じた．']]
 
-	def p(n):
-		global q
-		q = [q1.get(),q2.get(),q3.get(),q4.get(),q5.get(),q6.get(),q7.get(),q8.get()]
+		def p(n):
+			self.q = [self.q1.get(),self.q2.get(),self.q3.get(),self.q4.get(),self.q5.get(),self.q6.get(),self.q7.get(),self.q8.get()]
 
-	random.shuffle(question)
-	# print(question)
-	
-	l1 = Label(root,text=question[0][1])
-	l1l = Label(root,text='全くそう思わない')
-	l1r = Label(root,text='非常にそう思う')
-	s1 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q1,
-			command = p, showvalue=False)
-	l2 = Label(root,text=question[1][1])
-	l2l = Label(root,text='全くそう思わない')
-	l2r = Label(root,text='非常にそう思う')
-	s2 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q2,
-			command = p, showvalue=False)
-	l3 = Label(root,text=question[2][1])
-	l3l = Label(root,text='全くそう思わない')
-	l3r = Label(root,text='非常にそう思う')
-	s3 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q3,
-			command = p, showvalue=False)
-	l4 = Label(root,text=question[3][1])
-	l4l = Label(root,text='全くそう思わない')
-	l4r = Label(root,text='非常にそう思う')
-	s4 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q4,
-			command = p, showvalue=False)
-	l5 = Label(root,text=question[4][1])
-	l5l = Label(root,text='全くそう思わない')
-	l5r = Label(root,text='非常にそう思う')
-	s5 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q5,
-			command = p, showvalue=False)
-	l6 = Label(root,text=question[5][1])
-	l6l = Label(root,text='全くそう思わない')
-	l6r = Label(root,text='非常にそう思う')
-	s6 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q6,
-			command = p, showvalue=False)
-	l7 = Label(root,text=question[6][1])
-	l7l = Label(root,text='全くそう思わない')
-	l7r = Label(root,text='非常にそう思う')
-	s7 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q7,
-			command = p, showvalue=False)
-	l8 = Label(root,text=question[7][1])
-	l8l = Label(root,text='全くそう思わない')
-	l8r = Label(root,text='非常にそう思う')
-	s8 = Scale(root, orient = 'h',
-			from_ = 1, to = 100, variable = q8,
-			command = p, showvalue=False)
-	# l9 = Label(root,text=question[7])
-	# l9l = Label(root,text='全くそう思わない')
-	# l9r = Label(root,text='非常にそう思う')
-	# s9 = Scale(root, orient = 'h',
-	# 		from_ = 1, to = 100, variable = q9,
-	# 		command = p, showvalue=False)
-	# l10 = Label(root,text=question[8])
-	# l10l = Label(root,text='全くそう思わない')
-	# l10r = Label(root,text='非常にそう思う')
-	# s10 = Scale(root, orient = 'h',
-	# 		from_ = 1, to = 100, variable = q10,
-	# 		command = p, showvalue=False)
+		random.shuffle(self.question)
 
-	button_e = Button(
-			root,
+		self.l1 = Label(self.root,text=self.question[0][1])
+		self.l1l = Label(self.root,text='全くそう思わない')
+		self.l1r = Label(self.root,text='非常にそう思う')
+		self.s1 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q1,
+				command = p, showvalue=False)
+		self.l2 = Label(self.root,text=self.question[1][1])
+		self.l2l = Label(self.root,text='全くそう思わない')
+		self.l2r = Label(self.root,text='非常にそう思う')
+		self.s2 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q2,
+				command = p, showvalue=False)
+		self.l3 = Label(self.root,text=self.question[2][1])
+		self.l3l = Label(self.root,text='全くそう思わない')
+		self.l3r = Label(self.root,text='非常にそう思う')
+		self.s3 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q3,
+				command = p, showvalue=False)
+		self.l4 = Label(self.root,text=self.question[3][1])
+		self.l4l = Label(self.root,text='全くそう思わない')
+		self.l4r = Label(self.root,text='非常にそう思う')
+		self.s4 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q4,
+				command = p, showvalue=False)
+		self.l5 = Label(self.root,text=self.question[4][1])
+		self.l5l = Label(self.root,text='全くそう思わない')
+		self.l5r = Label(self.root,text='非常にそう思う')
+		self.s5 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q5,
+				command = p, showvalue=False)
+		self.l6 = Label(self.root,text=self.question[5][1])
+		self.l6l = Label(self.root,text='全くそう思わない')
+		self.l6r = Label(self.root,text='非常にそう思う')
+		self.s6 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q6,
+				command = p, showvalue=False)
+		self.l7 = Label(self.root,text=self.question[6][1])
+		self.l7l = Label(self.root,text='全くそう思わない')
+		self.l7r = Label(self.root,text='非常にそう思う')
+		self.s7 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q7,
+				command = p, showvalue=False)
+		self.l8 = Label(self.root,text=self.question[7][1])
+		self.l8l = Label(self.root,text='全くそう思わない')
+		self.l8r = Label(self.root,text='非常にそう思う')
+		self.s8 = Scale(self.root, orient = 'h',
+				from_ = 1, to = 100, variable = self.q8,
+				command = p, showvalue=False)
+
+		self.button_e = Button(
+			self.root,
 			text='終了')
-	def end():
-		time.sleep(0.5)
-		root.destroy()
-	button_e.config(command=end)
 
-	l1.grid(column=0,columnspan=2,row=0)
-	l1l.grid(column=0,row=1,sticky=W)
-	l1r.grid(column=1,row=1,sticky=E)
-	s1.grid(column=0,columnspan=2,row=3,sticky=NE+NW+S)
-	l2.grid(column=0,columnspan=2,row=4)
-	l2l.grid(column=0,row=5,sticky=W)
-	l2r.grid(column=1,row=5,sticky=E)
-	s2.grid(column=0,columnspan=2,row=6,sticky=NE+NW+S)
-	l3.grid(column=0,columnspan=2,row=7)
-	l3l.grid(column=0,row=8,sticky=W)
-	l3r.grid(column=1,row=8,sticky=E)
-	s3.grid(column=0,columnspan=2,row=9,sticky=NE+NW+S)
-	l4.grid(column=0,columnspan=2,row=10)
-	l4l.grid(column=0,row=11,sticky=W)
-	l4r.grid(column=1,row=11,sticky=E)
-	s4.grid(column=0,columnspan=2,row=12,sticky=NE+NW+S)
-	l5.grid(column=0,columnspan=2,row=13)
-	l5l.grid(column=0,row=14,sticky=W)
-	l5r.grid(column=1,row=14,sticky=E)
-	s5.grid(column=0,columnspan=2,row=15,sticky=NE+NW+S)
-	l6.grid(column=0,columnspan=2,row=16)
-	l6l.grid(column=0,row=17,sticky=W)
-	l6r.grid(column=1,row=17,sticky=E)
-	s6.grid(column=0,columnspan=2,row=18,sticky=NE+NW+S)
-	l7.grid(column=0,columnspan=2,row=19)
-	l7l.grid(column=0,row=20,sticky=W)
-	l7r.grid(column=1,row=20,sticky=E)
-	s7.grid(column=0,columnspan=2,row=21,sticky=NE+NW+S)
-	l8.grid(column=0,columnspan=2,row=22)
-	l8l.grid(column=0,row=23,sticky=W)
-	l8r.grid(column=1,row=23,sticky=E)
-	s8.grid(column=0,columnspan=2,row=24,sticky=NE+NW+S)
-	# l9.grid(column=0,columnspan=2,row=25)
-	# l9l.grid(column=0,row=26,sticky=W)
-	# l9r.grid(column=1,row=26,sticky=E)
-	# s9.grid(column=0,columnspan=2,row=27,sticky=NE+NW+S)
-	# l10.grid(column=0,columnspan=2,row=28)
-	# l10l.grid(column=0,row=29,sticky=W)
-	# l10r.grid(column=1,row=29,sticky=E)
-	# s10.grid(column=0,columnspan=2,row=30,sticky=NE+NW+S)
-	button_e.grid(column=0,columnspan=2,row=34,pady=10)
+		def end():
+			time.sleep(0.5)
+			self.root.destroy()
 
-	root.mainloop()
+		self.button_e.config(command=end)
 
-	q_n = [question[0][0],question[1][0],question[2][0],question[3][0],question[4][0],question[5][0],question[6][0],question[7][0]]
-	# print('q_n',q_n)
-	for i in range(len(q_n)):
-		if q_n[i] == 1:
-			q1a = q[i]
-		elif q_n[i] == 2:
-			q2a = q[i]
-		elif q_n[i] == 3:
-			q3a = q[i]
-		elif q_n[i] == 4:
-			q4a = q[i]
-		elif q_n[i] == 5:
-			q5a = q[i]
-		elif q_n[i] == 6:
-			q6a = q[i]
-		elif q_n[i] == 7:
-			q7a = q[i]
-		elif q_n[i] == 8:
-			q8a = q[i]
-	qa = [q1a,q2a,q3a,q4a,q5a,q6a,q7a,q8a]
+		self.l1.grid(column=0,columnspan=2,row=0)
+		self.l1l.grid(column=0,row=1,sticky=W)
+		self.l1r.grid(column=1,row=1,sticky=E)
+		self.s1.grid(column=0,columnspan=2,row=3,sticky=NE+NW+S)
+		self.l2.grid(column=0,columnspan=2,row=4)
+		self.l2l.grid(column=0,row=5,sticky=W)
+		self.l2r.grid(column=1,row=5,sticky=E)
+		self.s2.grid(column=0,columnspan=2,row=6,sticky=NE+NW+S)
+		self.l3.grid(column=0,columnspan=2,row=7)
+		self.l3l.grid(column=0,row=8,sticky=W)
+		self.l3r.grid(column=1,row=8,sticky=E)
+		self.s3.grid(column=0,columnspan=2,row=9,sticky=NE+NW+S)
+		self.l4.grid(column=0,columnspan=2,row=10)
+		self.l4l.grid(column=0,row=11,sticky=W)
+		self.l4r.grid(column=1,row=11,sticky=E)
+		self.s4.grid(column=0,columnspan=2,row=12,sticky=NE+NW+S)
+		self.l5.grid(column=0,columnspan=2,row=13)
+		self.l5l.grid(column=0,row=14,sticky=W)
+		self.l5r.grid(column=1,row=14,sticky=E)
+		self.s5.grid(column=0,columnspan=2,row=15,sticky=NE+NW+S)
+		self.l6.grid(column=0,columnspan=2,row=16)
+		self.l6l.grid(column=0,row=17,sticky=W)
+		self.l6r.grid(column=1,row=17,sticky=E)
+		self.s6.grid(column=0,columnspan=2,row=18,sticky=NE+NW+S)
+		self.l7.grid(column=0,columnspan=2,row=19)
+		self.l7l.grid(column=0,row=20,sticky=W)
+		self.l7r.grid(column=1,row=20,sticky=E)
+		self.s7.grid(column=0,columnspan=2,row=21,sticky=NE+NW+S)
+		self.l8.grid(column=0,columnspan=2,row=22)
+		self.l8l.grid(column=0,row=23,sticky=W)
+		self.l8r.grid(column=1,row=23,sticky=E)
+		self.s8.grid(column=0,columnspan=2,row=24,sticky=NE+NW+S)
 
-	return qa
+		self.button_e.grid(column=0,columnspan=2,row=34,pady=10)
 
-def SCORE(q):
-	ownership = (q[0]+q[1])/2
-	ownership_control = (q[2]+q[3])/2
-	agency = (q[4]+q[5])/2
-	agency_control = (q[6]+q[7])/2
-	score = [ownership,ownership_control,agency,agency_control]
-	return score
+		self.root.mainloop()
 
-def result(name,fb,q,score):
-	now = datetime.datetime.now()
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/'
-	filename = path + 'MS_' + name + '_' + fb + '_' + now.strftime('%Y%m%d') + '.csv'
-	f = open(filename,'w',newline='')
-	writer = csv.writer(f,lineterminator='\n')
-	writer.writerow(['w1','w2','w3','w4','w5','w6','w7','w8','ownership','ownership_control','agency','agency_control'])
-	data = [q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7],score[0],score[1],score[2],score[3]]
-	print(data)
-	writer.writerow(data)
-	f.close()
+		self.q_n = [self.question[0][0],self.question[1][0],self.question[2][0],self.question[3][0],self.question[4][0],self.question[5][0],self.question[6][0],self.question[7][0]]
 
-if __name__ == '__main__':
-	q = [0] * 8
+		for i in range(len(self.q_n)):
+			if self.q_n[i] == 1:
+				self.q1a = self.q[i]
+			elif self.q_n[i] == 2:
+				self.q2a = self.q[i]
+			elif self.q_n[i] == 3:
+				self.q3a = self.q[i]
+			elif self.q_n[i] == 4:
+				self.q4a = self.q[i]
+			elif self.q_n[i] == 5:
+				self.q5a = self.q[i]
+			elif self.q_n[i] == 6:
+				self.q6a = self.q[i]
+			elif self.q_n[i] == 7:
+				self.q7a = self.q[i]
+			elif self.q_n[i] == 8:
+				self.q8a = self.q[i]
+		self.qa = [self.q1a,self.q2a,self.q3a,self.q4a,self.q5a,self.q6a,self.q7a,self.q8a]
 
-	main()
+		return self.qa
+
+	def SCORE(self,q):
+		self.ownership = (q[0]+q[1])/2
+		self.ownership_control = (q[2]+q[3])/2
+		self.agency = (q[4]+q[5])/2
+		self.agency_control = (q[6]+q[7])/2
+		self.score = [self.ownership,self.ownership_control,self.agency,self.agency_control]
+		return self.score
+
+	def result(self,name,fb,q,score):
+		self.now = datetime.datetime.now()
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/CODE/questionnaire/'
+		self.filename = self.path + 'MS_' + name + '_' + fb + '_' + self.now.strftime('%Y%m%d') + '.csv'
+		self.f = open(self.filename,'w',newline='')
+		self.writer = csv.writer(self.f,lineterminator='\n')
+		self.writer.writerow(['w1','w2','w3','w4','w5','w6','w7','w8','ownership','ownership_control','agency','agency_control'])
+		self.data = [q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7],score[0],score[1],score[2],score[3]]
+		print(self.data)
+		self.writer.writerow(self.data)
+		self.f.close()

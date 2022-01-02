@@ -18,20 +18,21 @@ class TLX:
 		self.q = [0] * 6
 
 	def main(self):
-		self.name, self.job = self.initial_data_set()
 		self.question = self.q_list()
 		self.itertools_question = self.itertools_make_question(self.question)
 		self.PCT(self.itertools_question)
 		self.q = self.TLX()
-		print(self.q)
 		self.wwl = self.WWL(self.w1,self.w2,self.w3,self.w4,self.w5,self.w6,self.q)
-		self.result(self.name,self.job,self.w1,self.w2,self.w3,self.w4,self.w5,self.w6,self.q,self.wwl)
+		self.w_l = [self.w1,self.w2,self.w3,self.w4,self.w5,self.w6]
+		self.r = {'TLX_w':self.w_l,'TLX_q':self.q,'TLX_wwl':[self.wwl]}
+		print(self.r)
+		return self.r
 
 	def initial_data_set(self):
-		self.name = input('名前を入力してください-->  ')
+		self.name = input('名前を入力してください--> ')
 		self.job = input('FBを入力してください\nFB無し->A\n相手の速度->B\n相手との速度の差(小)->C\n相手との速度の差(大)->D\n相手の速度＋ロボット->E\n--> ')
-		print(self.name+'さん，FB:  '+self.job)
-		return self.name, self.job
+		print(self.name+'さん , FB: '+self.job)
+		return self.name,self.job
 
 	def q_list(self):
 		self.question = [[1,"知的・知覚的要求"],[2,"身体的要求"],[3,"タイムプレッシャー"],[4,"作業成績"],[5,"努力"],[6,"フラストレーション"]]
@@ -153,7 +154,6 @@ class TLX:
 
 		self.root.mainloop()
 
-		print(self.w1,self.w2,self.w3,self.w4,self.w5,self.w6)
 
 	def TLX(self):
 		self.root = Tk()
@@ -255,7 +255,6 @@ class TLX:
 
 	def WWL(self,w1,w2,w3,w4,w5,w6,q):
 		self.wwl = (w1*q[0]+w2*q[1]+w3*q[2]+w4*q[3]+w5*q[4]+w6*q[5])/15
-		print(self.wwl)
 		return self.wwl
 	
 	def result(self,name,job,w1,w2,w3,w4,w5,w6,q,wwl):
