@@ -17,7 +17,7 @@ class MENTAL_DISTANCE:
 		self.root.title('Mental Distance')
 		self.root.geometry('1200x550')
 
-		self.image = Image.open("questionnaire/we-mode.png")
+		self.image = Image.open("questionnaire//we-mode.png")
 		self.w_size = int(self.image.width/4)
 		self.h_size = int(self.image.height/4)
 
