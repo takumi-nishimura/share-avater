@@ -13,6 +13,8 @@
 列番号の検索
 ## questionnaire
 実験用アンケート
+### Q_Manager.py
+アンケートマネージャー
 ### mimimal_self.py
 身体認識アンケート
 ### NASA_TLX.py
