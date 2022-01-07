@@ -1,5 +1,6 @@
 import pandas as pd
 import datetime
+import os
 from NASA_TLX import TLX
 from minimal_self import MINIMALSELF
 from mental_distance import MENTAL_DISTANCE
@@ -27,4 +28,4 @@ if __name__ == '__main__':
 	r_MD = MENTALDISTANCE_manager.main()
 
 	r_Q = r_tlx|r_MS|r_MD
-	write('questionnaire//q_data//',r_Q)
+	write(os.path.join('questionnaire','q_data'),r_Q)
