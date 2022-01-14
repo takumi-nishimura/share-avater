@@ -15,7 +15,7 @@ def initial_data_set():
 
 def write(path,data):
 	df = pd.DataFrame(data.values(), index=data.keys()).T
-	exportPath = path + 'questionnaire_' + datetime.datetime.now().strftime('%Y%m%d%H%M') + '_' + name + '_' + job + '_' + number + '.csv'
+	exportPath = path + 'questionnaire_' + '_' + name + '_' + job + '_' + number + '_' + datetime.datetime.now().strftime('%Y%m%d%H%M') + '.csv'
 	df.to_csv(exportPath)
 				
 if __name__ == '__main__':
