@@ -6,7 +6,7 @@ from tkinter import *
 
 class MINIMALSELF:
 	def __init__(self) -> None:
-		self.q = [0] * 8
+		self.q = [50] * 8
 
 	def main(self):
 		self.qa = self.MS()
@@ -28,25 +28,25 @@ class MINIMALSELF:
 		self.root.rowconfigure(0, weight=1)
 
 		self.q1 = IntVar()
-		self.q1.set(0)
+		self.q1.set(50)
 		self.q2 = IntVar()
-		self.q2.set(0)
+		self.q2.set(50)
 		self.q3 = IntVar()
-		self.q3.set(0)
+		self.q3.set(50)
 		self.q4 = IntVar()
-		self.q4.set(0)
+		self.q4.set(50)
 		self.q5 = IntVar()
-		self.q5.set(0)
+		self.q5.set(50)
 		self.q6 = IntVar()
-		self.q6.set(0)
+		self.q6.set(50)
 		self.q7 = IntVar()
-		self.q7.set(0)
+		self.q7.set(50)
 		self.q8 = IntVar()
-		self.q8.set(0)
+		self.q8.set(50)
 		self.q9 = IntVar()
-		self.q9.set(0)
+		self.q9.set(50)
 		self.q10 = IntVar()
-		self.q10.set(0)
+		self.q10.set(50)
 
 		self.question = [[1,'ロボットアームが自分の腕のように感じた．'],\
 			[2,'ロボットアームが物を掴んでいるのを見たとき，物をつかんでいるのは自分の手だと感じた．'],\

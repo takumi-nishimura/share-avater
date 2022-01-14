@@ -18,13 +18,15 @@ class TLX:
 		self.q = [0] * 6
 
 	def main(self):
-		self.question = self.q_list()
-		self.itertools_question = self.itertools_make_question(self.question)
-		self.PCT(self.itertools_question)
+		# self.question = self.q_list()
+		# self.itertools_question = self.itertools_make_question(self.question)
+		# self.PCT(self.itertools_question)
 		self.q = self.TLX()
-		self.wwl = self.WWL(self.w1,self.w2,self.w3,self.w4,self.w5,self.w6,self.q)
+		# self.wwl = self.WWL(self.w1,self.w2,self.w3,self.w4,self.w5,self.w6,self.q)
+		self.awwl = self.AWWL(self.q)
 		self.w_l = [self.w1,self.w2,self.w3,self.w4,self.w5,self.w6]
-		self.r = {'TLX_w':self.w_l,'TLX_q':self.q,'TLX_wwl':[self.wwl]}
+		# self.r = {'TLX_w':self.w_l,'TLX_q':self.q,'TLX_wwl':[self.wwl]}
+		self.r = {'TLX_q':self.q,'TLX_awwl':[self.awwl]}
 		print(self.r)
 		return self.r
 
@@ -162,17 +164,17 @@ class TLX:
 		self.root.rowconfigure(0,weight=1)
 
 		self.q1 = IntVar()
-		self.q1.set(0)
+		self.q1.set(50)
 		self.q2 = IntVar()
-		self.q2.set(0)
+		self.q2.set(50)
 		self.q3 = IntVar()
-		self.q3.set(0)
+		self.q3.set(50)
 		self.q4 = IntVar()
-		self.q4.set(0)
+		self.q4.set(50)
 		self.q5 = IntVar()
-		self.q5.set(0)
+		self.q5.set(50)
 		self.q6 = IntVar()
-		self.q6.set(0)
+		self.q6.set(50)
 
 		def p(n):
 			self.q = [self.q1.get(),self.q2.get(),self.q3.get(),self.q4.get(),self.q5.get(),self.q6.get()]
@@ -256,6 +258,12 @@ class TLX:
 	def WWL(self,w1,w2,w3,w4,w5,w6,q):
 		self.wwl = (w1*q[0]+w2*q[1]+w3*q[2]+w4*q[3]+w5*q[4]+w6*q[5])/15
 		return self.wwl
+
+	def AWWL(self,q):
+		self.dict_q = {'q1':q[0],'q2':q[1],'q3':q[2],'q4':q[3],'q5':q[4],'q6':q[5]}
+		self.sort_q = sorted(self.dict_q.items(),key=lambda i: i[1])
+		self.awwl = self.sort_q[0][1]*1+self.sort_q[1][1]*2+self.sort_q[2][1]*3+self.sort_q[3][1]*4+self.sort_q[4][1]*5+self.sort_q[5][1]*6
+		return self.awwl
 	
 	def result(self,name,job,w1,w2,w3,w4,w5,w6,q,wwl):
 		self.now = datetime.datetime.now()

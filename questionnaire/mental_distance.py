@@ -5,7 +5,7 @@ import os
 
 class MENTAL_DISTANCE:
 	def __init__(self) -> None:
-		pass
+		self.value = 1
 	
 	def main(self):
 		self.md = self.MD()
