@@ -15,9 +15,12 @@
 実験用アンケート
 ### Q_Manager.py
 アンケートマネージャー
+これを実行する
 ### mimimal_self.py
 身体認識アンケート
 ### NASA_TLX.py
 心理的作業負荷アンケート
 ### mental_distance.py
 心理的距離アンケート
+### subjective_evaluation.py
+被験者主観アンケート
