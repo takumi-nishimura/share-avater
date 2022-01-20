@@ -12,9 +12,10 @@ class HOMOGENEOUS:
 	def main(self, data:list):
 		self.homogeneousPosition = []
 		self.homogeneousRotation = []
+		self.time = data['time']
 		self.position = np.c_[data['x'],data['y'],data['z']]
 		self.rotation = np.c_[data['qx'],data['qy'],data['qz'],data['qw']]
-		
+
 		self.originPosition = self.position[0]
 		self.originRotation = self.rotation[0]
 		self.inversedMatrixforPosition = self.SetInversedMatrixforPosition(self.originRotation)
@@ -25,7 +26,7 @@ class HOMOGENEOUS:
 			self.homogeneousRotation.append(self.GetRelativeRotation(self.rotation[i]))
 
 		return self.homogeneousPosition, self.homogeneousRotation
-		
+
 	def GetRelativePosition(self, position):
 		return np.dot(self.inversedMatrixforPosition, position - self.originPosition)
 
@@ -38,17 +39,20 @@ class HOMOGENEOUS:
 		ty=np.deg2rad(t[1])
 		tz=np.deg2rad(t[2])
 		
-		Rx = np.array([[1, 0, 0],
-			[0, np.cos(tx), -np.sin(tx)],
-			[0, np.sin(tx), np.cos(tx)]])
-		Ry = np.array([[np.cos(ty), 0, np.sin(ty)],
-			[0, 1, 0],
-			[-np.sin(ty), 0, np.cos(ty)]])
-		Rz = np.array([[np.cos(tz), -np.sin(tz), 0],
-			[np.sin(tz), np.cos(tz), 0],
-			[0, 0, 1]])
+		# Rx = np.array([[1, 0, 0],
+		# 	[0, np.cos(tx), -np.sin(tx)],
+		# 	[0, np.sin(tx), np.cos(tx)]])
+		# Ry = np.array([[np.cos(ty), 0, np.sin(ty)],
+		# 	[0, 1, 0],
+		# 	[-np.sin(ty), 0, np.cos(ty)]])
+		# Rz = np.array([[np.cos(tz), -np.sin(tz), 0],
+		# 	[np.sin(tz), np.cos(tz), 0],
+		# 	[0, 0, 1]])
+		# mat3x3 = np.dot(Rz, np.dot(Ry, Rx))
 
-		mat3x3 = np.dot(Rz, np.dot(Ry, Rx))
+		mat3x3 =np.array([[np.cos(ty)*np.cos(tz), -np.cos(ty)*np.sin(tz), np.sin(ty)],
+                [np.cos(tx)*np.sin(tz)+np.sin(tx)*np.sin(ty)*np.cos(tz), np.cos(tx)*np.cos(tz)-np.sin(tx)*np.sin(ty)*np.sin(tz), -np.sin(tx)*np.cos(ty)],
+                [np.sin(tx)*np.sin(tz)-np.cos(tx)*np.sin(ty)*np.cos(tz), np.sin(tx)*np.cos(tz)+np.cos(tx)*np.sin(ty)*np.sin(tz), np.cos(tx)*np.cos(ty)]])
 
 		return np.linalg.inv(mat3x3)
 
@@ -165,4 +169,3 @@ if __name__ == '__main__':
 	pos_r, rot_r = homogeneous.main(data=d_r)
 	pos_1, rot_1 = homogeneous.main(data=d_1)
 	pos_2, rot_2 = homogeneous.main(data=d_2)
-	homogeneous.Graph(pos_r,pos_1,pos_2)
