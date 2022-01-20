@@ -183,37 +183,37 @@ class TLX:
 		self.l1l = Label(self.root,text='低い')
 		self.l1r = Label(self.root,text='高い')
 		self.s1 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q1,
+				from_ = 0, to = 100, variable = self.q1,
 				command = p, showvalue=False)
 		self.l2 = Label(self.root,text='-身体的要求-\nどの程度の身体的活動(押す，引く，回す，制御する，動き回るなど)を必要としましたか．\n作業はラクでしたかキツかったですか，ゆっくりできましたかキビキビやらなければなりませんでしたか，休み休みできましたか働きづめでしたか．')
 		self.l2l = Label(self.root,text='低い')
 		self.l2r = Label(self.root,text='高い')
 		self.s2 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q2,
+				from_ = 0, to = 100, variable = self.q2,
 				command = p, showvalue=False)
 		self.l3 = Label(self.root,text='-タイムプレッシャー-\n仕事のペースや課題が発生する頻度のために感じる時間的切迫感はどの程度でしたか．\nペースはゆっくりとして余裕があるものでしたか，それとも速くて余裕のないものでしたか．')
 		self.l3l = Label(self.root,text='低い')
 		self.l3r = Label(self.root,text='高い')
 		self.s3 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q3,
+				from_ = 0, to = 100, variable = self.q3,
 				command = p, showvalue=False)
 		self.l4 = Label(self.root,text='-作業成績-\n作業指示者によって設定された課題の目標をどの程度達成できたと思いますか．目標の達成に関して自分の作業成績にどの程度満足していますか．')
 		self.l4l = Label(self.root,text='良い')
 		self.l4r = Label(self.root,text='悪い')
 		self.s4 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q4,
+				from_ = 0, to = 100, variable = self.q4,
 				command = p, showvalue=False)
 		self.l5 = Label(self.root,text='-努力-\n作業成績のレベルを達成・維持するために，精神的・身体的にどの程度一生懸命に作業しなければなりませんでしたか．')
 		self.l5l = Label(self.root,text='低い')
 		self.l5r = Label(self.root,text='高い')
 		self.s5 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q5,
+				from_ = 0, to = 100, variable = self.q5,
 				command = p, showvalue=False)
 		self.l6 = Label(self.root,text='-フラストレーション-\n作業中に，不安感，落胆，いらいら，ストレス，悩みをどの程度感じましたか．あるいは逆に，安心感，満足感，充足感，楽しさ，リラックスをどの程度感じましたか．')
 		self.l6l = Label(self.root,text='低い')
 		self.l6r = Label(self.root,text='高い')
 		self.s6 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q6,
+				from_ = 0, to = 100, variable = self.q6,
 				command = p, showvalue=False)
 
 		self.button_e = Button(

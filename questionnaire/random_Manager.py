@@ -1,7 +1,7 @@
 from datetime import datetime
 import random
 import pandas as pd
-import datetime
+import itertools
 
 class random_condition:
 	def __init__(self) -> None:
@@ -9,10 +9,9 @@ class random_condition:
 		self.condition = ['A','B','C']
 
 	def export(self):
-		for i in range(3):
-			self.r_list = random.sample(self.condition,len(self.condition))
-			self.condition_list.append(self.r_list)
-		print(self.condition_list)
+		self.p = list(itertools.permutations(self.condition))
+		self.r = random.sample(self.p, 6)
+		print(self.r)
 
 if __name__ == '__main__':
 	randomcondition = random_condition()

@@ -66,49 +66,49 @@ class MINIMALSELF:
 		self.l1l = Label(self.root,text='全くそう思わない')
 		self.l1r = Label(self.root,text='非常にそう思う')
 		self.s1 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q1,
+				from_ = 0, to = 100, variable = self.q1,
 				command = p, showvalue=False)
 		self.l2 = Label(self.root,text=self.question[1][1])
 		self.l2l = Label(self.root,text='全くそう思わない')
 		self.l2r = Label(self.root,text='非常にそう思う')
 		self.s2 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q2,
+				from_ = 0, to = 100, variable = self.q2,
 				command = p, showvalue=False)
 		self.l3 = Label(self.root,text=self.question[2][1])
 		self.l3l = Label(self.root,text='全くそう思わない')
 		self.l3r = Label(self.root,text='非常にそう思う')
 		self.s3 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q3,
+				from_ = 0, to = 100, variable = self.q3,
 				command = p, showvalue=False)
 		self.l4 = Label(self.root,text=self.question[3][1])
 		self.l4l = Label(self.root,text='全くそう思わない')
 		self.l4r = Label(self.root,text='非常にそう思う')
 		self.s4 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q4,
+				from_ = 0, to = 100, variable = self.q4,
 				command = p, showvalue=False)
 		self.l5 = Label(self.root,text=self.question[4][1])
 		self.l5l = Label(self.root,text='全くそう思わない')
 		self.l5r = Label(self.root,text='非常にそう思う')
 		self.s5 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q5,
+				from_ = 0, to = 100, variable = self.q5,
 				command = p, showvalue=False)
 		self.l6 = Label(self.root,text=self.question[5][1])
 		self.l6l = Label(self.root,text='全くそう思わない')
 		self.l6r = Label(self.root,text='非常にそう思う')
 		self.s6 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q6,
+				from_ = 0, to = 100, variable = self.q6,
 				command = p, showvalue=False)
 		self.l7 = Label(self.root,text=self.question[6][1])
 		self.l7l = Label(self.root,text='全くそう思わない')
 		self.l7r = Label(self.root,text='非常にそう思う')
 		self.s7 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q7,
+				from_ = 0, to = 100, variable = self.q7,
 				command = p, showvalue=False)
 		self.l8 = Label(self.root,text=self.question[7][1])
 		self.l8l = Label(self.root,text='全くそう思わない')
 		self.l8r = Label(self.root,text='非常にそう思う')
 		self.s8 = Scale(self.root, orient = 'h',
-				from_ = 1, to = 100, variable = self.q8,
+				from_ = 0, to = 100, variable = self.q8,
 				command = p, showvalue=False)
 
 		self.button_e = Button(
