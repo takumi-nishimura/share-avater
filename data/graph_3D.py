@@ -5,7 +5,7 @@ class GRAPH3D:
 	def __init__(self) -> None:
 		pass
 
-	def main(self, start:int=0, end:int=99999, time:list=[], position_r:list=[], position_1:list=[], position_2:list=[]):
+	def main(self, start:float=0, end:float=99999, time:list=[], position_r:list=[], position_1:list=[], position_2:list=[]):
 		self.start, self.end = self.search_time(time,start,end)
 		self.make_3dGraph(self.start,self.end,position_r,position_1,position_2)
 

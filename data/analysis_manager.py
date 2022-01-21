@@ -4,6 +4,7 @@ import glob
 from homogeneous_transformation import HOMOGENEOUS
 from graph_3D import GRAPH3D
 from graph_2D import GRAPH2D
+from time_calculate import TIME_CALCULATE
 
 class DATA_READ:
 	def __init__(self) -> None:
@@ -68,6 +69,8 @@ class DATA_READ:
 
 		print(participant,condition)
 
+		self.t_lsit, self.average_list = time_cal.time_c(participant=participant)
+
 		for i in range(3):
 			self.d_r, self.d_1, self.d_2 = data_reader.read(participant,condition,i+1)
 			self.dictPos[str(i+1)] = [self.d_r,self.d_1,self.d_2]
@@ -89,12 +92,12 @@ class DATA_READ:
 				self.dictMove_2 = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[2]))
 
 				self.start = input('start: ')
-				self.end = input('end: ')
+				# self.end = input('end: ')
+				print(self.t_lsit[i])
+				self.end = float(self.start) + self.t_lsit[i]
+				print('end: ', self.end)
 
-				if self.start > self.end:
-					print('!!! start > end !!!')
-
-				graph3d.main(start=int(self.start), end=int(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
+				graph3d.main(start=float(self.start), end=float(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
 
 				self.perfect = input('切り出しを行いますか？ : y/n   ')
 
@@ -116,8 +119,9 @@ if __name__ == '__main__':
 	homogeneous = HOMOGENEOUS()
 	graph3d = GRAPH3D()
 	graph2d = GRAPH2D()
+	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Nakamura',condition='A')
+	data_reader.Compile_Organiz(participant='Ebina',condition='A')
 
 	# count = 1
 
