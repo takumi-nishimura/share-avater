@@ -22,8 +22,10 @@ class HOMOGENEOUS:
 		self.inversedMatrixforRotation = self.SetInversedMatrixforRotation(self.originRotation)
 
 		for i in range(len(self.position)):
-			self.homogeneousPosition.append(self.GetRelativePosition(self.position[i]))
-			self.homogeneousRotation.append(self.GetRelativeRotation(self.rotation[i]))
+			self.pos_relative = self.GetRelativePosition(self.position[i])
+			self.homogeneousPosition.append([self.pos_relative[2],self.pos_relative[0],self.pos_relative[1]])
+			self.rot_q = self.Quaternion2Euler(self.GetRelativeRotation(self.rotation[i]))
+			self.homogeneousRotation.append([self.rot_q[2],self.rot_q[0],self.rot_q[1]])
 
 		return self.homogeneousPosition, self.homogeneousRotation
 
@@ -39,20 +41,17 @@ class HOMOGENEOUS:
 		ty=np.deg2rad(t[1])
 		tz=np.deg2rad(t[2])
 		
-		# Rx = np.array([[1, 0, 0],
-		# 	[0, np.cos(tx), -np.sin(tx)],
-		# 	[0, np.sin(tx), np.cos(tx)]])
-		# Ry = np.array([[np.cos(ty), 0, np.sin(ty)],
-		# 	[0, 1, 0],
-		# 	[-np.sin(ty), 0, np.cos(ty)]])
-		# Rz = np.array([[np.cos(tz), -np.sin(tz), 0],
-		# 	[np.sin(tz), np.cos(tz), 0],
-		# 	[0, 0, 1]])
-		# mat3x3 = np.dot(Rz, np.dot(Ry, Rx))
+		Rx = np.array([[1, 0, 0],
+			[0, np.cos(tx), -np.sin(tx)],
+			[0, np.sin(tx), np.cos(tx)]])
+		Ry = np.array([[np.cos(ty), 0, np.sin(ty)],
+			[0, 1, 0],
+			[-np.sin(ty), 0, np.cos(ty)]])
+		Rz = np.array([[np.cos(tz), -np.sin(tz), 0],
+			[np.sin(tz), np.cos(tz), 0],
+			[0, 0, 1]])
 
-		mat3x3 =np.array([[np.cos(ty)*np.cos(tz), -np.cos(ty)*np.sin(tz), np.sin(ty)],
-                [np.cos(tx)*np.sin(tz)+np.sin(tx)*np.sin(ty)*np.cos(tz), np.cos(tx)*np.cos(tz)-np.sin(tx)*np.sin(ty)*np.sin(tz), -np.sin(tx)*np.cos(ty)],
-                [np.sin(tx)*np.sin(tz)-np.cos(tx)*np.sin(ty)*np.cos(tz), np.sin(tx)*np.cos(tz)+np.cos(tx)*np.sin(ty)*np.sin(tz), np.cos(tx)*np.cos(ty)]])
+		mat3x3 = np.dot(Rx, np.dot(Ry, Rz))
 
 		return np.linalg.inv(mat3x3)
 

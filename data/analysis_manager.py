@@ -1,7 +1,4 @@
-from itertools import cycle
-import time
 import pandas as pd
-import numpy as np
 import os
 import glob
 from homogeneous_transformation import HOMOGENEOUS
@@ -14,7 +11,7 @@ class DATA_READ:
 
 	def read(self, participant:str, condition:str, cycle:int):
 		self.file_list = []
-		self.dir = os.path.join('data','ExportData','')
+		self.dir = os.path.join('data','ExportData','expt_data','')
 		self.files = sorted(glob.glob(os.path.join(self.dir, '*.csv')))
 		for self.data in self.files:
 			if participant in self.data:
@@ -69,6 +66,8 @@ class DATA_READ:
 		self.start_end_l = []
 		self.dictExport = {}
 
+		print(participant,condition)
+
 		for i in range(3):
 			self.d_r, self.d_1, self.d_2 = data_reader.read(participant,condition,i+1)
 			self.dictPos[str(i+1)] = [self.d_r,self.d_1,self.d_2]
@@ -108,19 +107,9 @@ class DATA_READ:
 					elif i == 2:
 						self.dictExport['participant'+str(i)] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[i],self.dictMove_2]
 					print(self.dictExport)
-					# graph2d.solox_graph(((self.dictPos[str(i+1)])[0])['time'],self.dictMove_r['vx'],'vx',self.dictMove_r['vy'],'vy',self.dictMove_r['vz'],'vz',self.dictMove_r['vz'],'vz')
 					self.r_flag = 1
 				else:
 					print('!!! もう一度 !!!')
-
-			
-		
-
-
-
-
-		# print(((self.dictHomogeneous['1'])[0])['x'])
-
 
 if __name__ == '__main__':
 	data_reader = DATA_READ()
@@ -128,19 +117,23 @@ if __name__ == '__main__':
 	graph3d = GRAPH3D()
 	graph2d = GRAPH2D()
 
-	data_reader.Compile_Organiz(participant='Katagiri',condition='A')
+	data_reader.Compile_Organiz(participant='Nakamura',condition='A')
 
-	count = 1
+	# count = 1
 
-	d_r, d_1, d_2 = data_reader.read('Katagiri','A',count)
+	# d_r, d_1, d_2 = data_reader.read('Katagiri','A',count)
 
-	pos_r, rot_r = homogeneous.main(d_r)
-	pos_1, rot_1 = homogeneous.main(d_1)
-	pos_2, rot_2 = homogeneous.main(d_2)
+	# pos_r, rot_r = homogeneous.main(d_r)
+	# pos_1, rot_1 = homogeneous.main(d_1)
+	# pos_2, rot_2 = homogeneous.main(d_2)
 
 	# graph2d.main(time=d_r['time'],pos=d_r)
 
 	# start = input('start: ')
 	# end = input('end: ')
 
-	# graph3d.main(start=int(start), end=int(end),time=d_r['time'], position_r=pos_r, position_1=pos_1, position_2=pos_2)
+	# dict_pos_r = data_reader.make_list(pos_r)
+	# dict_pos_1 = data_reader.make_list(pos_1)
+	# dict_pos_2 = data_reader.make_list(pos_2)
+
+	# graph3d.main(start=int(start), end=int(end),time=d_r['time'], position_r=dict_pos_r, position_1=dict_pos_1, position_2=dict_pos_2)
