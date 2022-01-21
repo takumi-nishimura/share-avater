@@ -93,7 +93,6 @@ class DATA_READ:
 
 				self.start = input('start: ')
 				# self.end = input('end: ')
-				print(self.t_lsit[i])
 				self.end = float(self.start) + self.t_lsit[i]
 				print('end: ', self.end)
 
