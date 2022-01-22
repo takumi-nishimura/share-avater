@@ -62,6 +62,8 @@ class DATA_READ:
 		return self.xyz
 
 	def Compile_Organiz(self, participant:str='',condition:str=''):
+		self.participant = participant
+		self.condition = condition
 		self.dictPos = {}
 		self.dictHomogeneous = {}
 		self.start_end_l = []
@@ -91,11 +93,18 @@ class DATA_READ:
 				self.dictMove_1 = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[1]))
 				self.dictMove_2 = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[2]))
 
-				self.start = input('start: ')
+				self.start = input('start : ')
 				# self.end = input('end: ')
-				print(self.t_lsit[i])
-				self.end = round(float(self.start) + self.t_lsit[i],1)
-				print('end: ', self.end)
+				if self.condition == 'A':
+					print('task time : ',self.t_lsit[i])
+					self.end = round(float(self.start) + self.t_lsit[i],1)
+				elif self.condition == 'B':
+					print('task time : ',self.t_lsit[i+3])
+					self.end = round(float(self.start) + self.t_lsit[i+3],1)
+				elif self.condition == 'C':
+					print('task time : ',self.t_lsit[i+6])
+					self.end = round(float(self.start) + self.t_lsit[i+6],1)
+				print('end : ', self.end)
 
 				graph3d.main(start=float(self.start), end=float(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
 
@@ -107,15 +116,34 @@ class DATA_READ:
 						if j == 0:
 							self.dictExport['endEffector'] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[i],self.dictMove_r]
 						elif j == 1:
-							print(((self.dictPos[str(j+1)])[0])['time'])
 							self.dictExport['participant'+str(j)] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[j],self.dictMove_1]
 						elif j == 2:
-							print('2')
 							self.dictExport['participant'+str(j)] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[j],self.dictMove_2]
-					print(self.dictExport)
+					self.key_l = self.dictExport.keys()
+					for k, key in enumerate(self.key_l):
+						if k == 0:
+							self.list_e = self.dictExport[key]
+							self.list_e_time = pd.DataFrame({'time':self.list_e[0]})
+							self.dict_e = self.list_e_time.join([self.list_e[1],self.list_e[2]])
+						elif k == 1:
+							self.list_1 = self.dictExport[key]
+							self.list_1_time = pd.DataFrame({'time':self.list_1[0]})
+							self.dict_1 = self.list_1_time.join([self.list_1[1],self.list_1[2]])
+						elif k == 2:
+							self.list_2 = self.dictExport[key]
+							self.list_2_time = pd.DataFrame({'time':self.list_2[0]})
+							self.dict_2 = self.list_2_time.join([self.list_2[1],self.list_2[2]])
+
+					self.filename_e = 'data/ExportData/expt_data/move_data/Cut_' + self.participant + '_' + self.condition + '_' + str(i+1) + '_endEffector.csv'
+					self.filename_1 = 'data/ExportData/expt_data/move_data/Cut_' + self.participant + '_' + self.condition + '_' + str(i+1) + '_Participant_1.csv'
+					self.filename_2 = 'data/ExportData/expt_data/move_data/Cut_' + self.participant + '_' + self.condition + '_' + str(i+1) + '_Participant_2.csv'
+					self.dict_e.to_csv(self.filename_e)
+					self.dict_1.to_csv(self.filename_1)
+					self.dict_2.to_csv(self.filename_2)
 					self.r_flag = 1
 				else:
 					print('!!! もう一度 !!!')
+		print('!!!finish!!!')
 
 if __name__ == '__main__':
 	data_reader = DATA_READ()
@@ -124,7 +152,7 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Ebina',condition='A')
+	data_reader.Compile_Organiz(participant='Nakamura',condition='B')
 
 	# count = 1
 
