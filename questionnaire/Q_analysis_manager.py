@@ -4,6 +4,7 @@ import os
 import glob
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib_style
 
 class Q_AVERAGE:
 	def __init__(self) -> None:
@@ -195,6 +196,9 @@ class Q_IMAGE:
 
 	def main(self):
 		self.fig_MS()
+		self.fig_SE()
+		self.fig_TLX()
+		self.fig_MD()
 
 	def fig_MS(self):
 		self.condition = []
@@ -216,18 +220,186 @@ class Q_IMAGE:
 						self.condition.append('companion speed')
 					elif key == 'C':
 						self.condition.append('robot speed')
-					self.item.append(index)
+					if index == 'ownership':
+						self.item.append('Ownership')
+					elif index == 'ownership_control':
+						self.item.append('Ownership Control')
+					elif index == 'agency':
+						self.item.append('Agency')
+					elif index == 'agency_control':
+						self.item.append('Agency Control')
 					self.value.append(self.i[name])
 		self.MS_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
 		sns.set_palette('Paired')
 		
 		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', hue='', data=self.MS_df)
-		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.9, 0.5, 0.5, .100), borderaxespad=0.,)
-		plt.savefig('MINIMALSELF.png', 
-            dpi=300, 
-            format='png', 
-            bbox_extra_artists=(self.lg,), 
-            bbox_inches='tight')
+		self.ax.legend([],['Ownership','Ownership Control','Agency','Agency Control'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.97, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('questionnaire/graph/MINIMAL_SELF.png', dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+
+	def fig_SE(self):
+		self.condition_1 = []
+		self.condition_2 = []
+		self.condition_3 = []
+		self.condition_4 = []
+		self.condition_5 = []
+		self.item_1 = []
+		self.item_2 = []
+		self.item_3 = []
+		self.item_4 = []
+		self.item_5 = []
+		self.value_1 = []
+		self.value_2 = []
+		self.value_3 = []
+		self.value_4 = []
+		self.value_5 = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/SUBJECTIVE_EVALUATION.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		self.index = self.data[self.keys[0]].index.values
+		for key in self.keys:
+			for index in self.index:
+				if index == 'Q1':
+					self.i_1 = self.data[key].loc[index]
+					for name in range(len(self.i)):
+						if key == 'A':
+							self.condition_1.append('without feedback')
+						elif key == 'B':
+							self.condition_1.append('companion speed')
+						elif key == 'C':
+							self.condition_1.append('robot speed')
+						self.item_1.append(index)
+						self.value_1.append(self.i_1[name])
+				elif index == 'Q2':
+					self.i_2 = self.data[key].loc[index]
+					for name in range(len(self.i)):
+						if key == 'A':
+							self.condition_2.append('without feedback')
+						elif key == 'B':
+							self.condition_2.append('companion speed')
+						elif key == 'C':
+							self.condition_2.append('robot speed')
+						self.item_2.append(index)
+						self.value_2.append(self.i_2[name])
+				elif index == 'Q3':
+					self.i_3 = self.data[key].loc[index]
+					for name in range(len(self.i)):
+						if key == 'A':
+							self.condition_3.append('without feedback')
+						elif key == 'B':
+							self.condition_3.append('companion speed')
+						elif key == 'C':
+							self.condition_3.append('robot speed')
+						self.item_3.append(index)
+						self.value_3.append(self.i_3[name])
+				elif index == 'Q4':
+					self.i_4 = self.data[key].loc[index]
+					for name in range(len(self.i)):
+						if key == 'A':
+							self.condition_4.append('without feedback')
+						elif key == 'B':
+							self.condition_4.append('companion speed')
+						elif key == 'C':
+							self.condition_4.append('robot speed')
+						self.item_4.append(index)
+						self.value_4.append(self.i_4[name])
+				elif index == 'Q5':
+					self.i_5 = self.data[key].loc[index]
+					for name in range(len(self.i)):
+						if key == 'A':
+							self.condition_5.append('without feedback')
+						elif key == 'B':
+							self.condition_5.append('companion speed')
+						elif key == 'C':
+							self.condition_5.append('robot speed')
+						self.item_5.append(index)
+						self.value_5.append(self.i_5[name])
+
+		self.SE_df_1 = pd.DataFrame({'condition':self.condition_1,'':self.item_1,'Questionnaire rating':self.value_1})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.SE_df_1)
+		plt.savefig('questionnaire/graph/SUBJECTIVE_EVALUATION_1.png', dpi=300, format='png')
+		plt.figure()
+		self.SE_df_2 = pd.DataFrame({'condition':self.condition_2,'':self.item_2,'Questionnaire rating':self.value_2})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.SE_df_2)
+		plt.savefig('questionnaire/graph/SUBJECTIVE_EVALUATION_2.png', dpi=300, format='png')
+		plt.figure()
+		self.SE_df_3 = pd.DataFrame({'condition':self.condition_3,'':self.item_3,'Questionnaire rating':self.value_3})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.SE_df_3)
+		plt.savefig('questionnaire/graph/SUBJECTIVE_EVALUATION_3.png', dpi=300, format='png')
+		plt.figure()
+		self.SE_df_4 = pd.DataFrame({'condition':self.condition_4,'':self.item_4,'Questionnaire rating':self.value_4})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.SE_df_4)
+		plt.savefig('questionnaire/graph/SUBJECTIVE_EVALUATION_4.png', dpi=300, format='png')
+		plt.figure()
+		self.SE_df_5 = pd.DataFrame({'condition':self.condition_5,'':self.item_5,'Questionnaire rating':self.value_5})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.SE_df_5)
+		plt.savefig('questionnaire/graph/SUBJECTIVE_EVALUATION_5.png', dpi=300, format='png')
+		plt.figure()
+
+	def fig_TLX(self):
+		self.condition = []
+		self.item = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/TLX_AWWL.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		self.index = self.data[self.keys[0]].index.values
+		for key in self.keys:
+			for index in self.index:
+				self.i = self.data[key].loc[index]
+				for name in range(len(self.i)):	
+					if index == 'A':
+						self.condition.append('without feedback')
+					elif index == 'B':
+						self.condition.append('companion speed')
+					elif index == 'C':
+						self.condition.append('robot speed')
+					self.item.append(index)
+					self.value.append(self.i[name])
+		self.TLX_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.TLX_df)
+		plt.savefig('questionnaire/graph/TLX_AWWL.png', dpi=300, format='png')
+		plt.figure()
+	
+	def fig_MD(self):
+		self.condition = []
+		self.item = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/MD_SCORE.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		self.index = self.data[self.keys[0]].index.values
+		for key in self.keys:
+			for index in self.index:
+				self.i = self.data[key].loc[index]
+				for name in range(len(self.i)):	
+					if index == 'A':
+						self.condition.append('without feedback')
+					elif index == 'B':
+						self.condition.append('companion speed')
+					elif index == 'C':
+						self.condition.append('robot speed')
+					self.item.append(index)
+					self.value.append(self.i[name])
+		self.MD_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.MD_df)
+		self.ax.set_ylim(0,8)
+		plt.savefig('questionnaire/graph/MD_SCORE.png', dpi=300, format='png')
+		plt.figure()
 
 if __name__ in '__main__':
 	q_read = Q_AVERAGE()
