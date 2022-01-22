@@ -8,7 +8,7 @@ from subjective_evaluation import SUBJECTIVE_EVALUATION
 
 def initial_data_set():
 	# name = input('名前を入力してください--> '
-	name = 'Ebina'
+	name = 'Kusaka'
 	job = input('FBを入力してください\nFB無し->A\n相手の速度->B\nロボットの速度->C\n--> ')
 	number = input('サイクル数を入力してください--> ')
 	print(name + 'さん , FB: ' + job + ', サイクル数: ' + number)
@@ -16,7 +16,7 @@ def initial_data_set():
 
 def write(path,data):
 	df = pd.DataFrame(data.values(), index=data.keys()).T
-	exportPath = path + 'questionnaire_' + '_' + name + '_' + job + '_' + number + '_' + datetime.datetime.now().strftime('%Y%m%d%H%M') + '.csv'
+	exportPath = path + 'questionnaire' + '_' + name + '_' + job + '_' + number + '_' + datetime.datetime.now().strftime('%Y%m%d%H%M') + '.csv'
 	df.to_csv(exportPath)
 				
 if __name__ == '__main__':
