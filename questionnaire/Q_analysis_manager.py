@@ -193,11 +193,44 @@ class Q_IMAGE:
 	def __init__(self) -> None:
 		pass
 
-	def fig_bar(self,path):
-		self.data = pd.read_excel(path, sheet_name=None)
+	def main(self):
+		self.fig_MS()
+
+	def fig_MS(self):
+		self.condition = []
+		self.item = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/MINIMAL_SELF.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		self.index = self.data[self.keys[0]].index.values
+		for key in self.keys:
+			for index in self.index:
+				self.i = self.data[key].loc[index]
+				for name in range(len(self.i)):	
+					if key == 'A':
+						self.condition.append('without feedback')
+					elif key == 'B':
+						self.condition.append('companion speed')
+					elif key == 'C':
+						self.condition.append('robot speed')
+					self.item.append(index)
+					self.value.append(self.i[name])
+		self.MS_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
+		sns.set_palette('Paired')
 		
+		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', hue='', data=self.MS_df)
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.9, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('MINIMALSELF.png', 
+            dpi=300, 
+            format='png', 
+            bbox_extra_artists=(self.lg,), 
+            bbox_inches='tight')
+
 if __name__ in '__main__':
 	q_read = Q_AVERAGE()
 	q_graph = Q_IMAGE()
 	q_read.main()
-	q_graph.fig_bar(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/MINIMAL_SELF.xlsx')
+	q_graph.main()
