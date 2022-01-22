@@ -85,7 +85,7 @@ class DATA_READ:
 		for i in range(3):
 			self.r_flag = 0
 			while self.r_flag == 0:
-				graph2d.main(time=((self.dictPos[str(i+1)])[0])['time'],pos=((self.dictHomogeneous[str(i+1)])[0]))
+				graph2d.main(time=((self.dictPos[str(i+1)])[0])['time'],pos=((self.dictHomogeneous[str(i+1)])[1]))
 
 				self.dictMove_r = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[0]))
 				self.dictMove_1 = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[1]))
@@ -93,7 +93,8 @@ class DATA_READ:
 
 				self.start = input('start: ')
 				# self.end = input('end: ')
-				self.end = float(self.start) + self.t_lsit[i]
+				print(self.t_lsit[i])
+				self.end = round(float(self.start) + self.t_lsit[i],1)
 				print('end: ', self.end)
 
 				graph3d.main(start=float(self.start), end=float(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
@@ -101,13 +102,16 @@ class DATA_READ:
 				self.perfect = input('切り出しを行いますか？ : y/n   ')
 
 				if self.perfect == 'y':
-					self.start_end_l.append([int(self.start),int(self.end)])
-					if i == 0:
-						self.dictExport['endEffector'] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[i],self.dictMove_r]
-					elif i == 1:
-						self.dictExport['participant'+str(i)] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[i],self.dictMove_1]
-					elif i == 2:
-						self.dictExport['participant'+str(i)] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[i],self.dictMove_2]
+					self.start_end_l.append([float(self.start),float(self.end)])
+					for j in range(3):
+						if j == 0:
+							self.dictExport['endEffector'] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[i],self.dictMove_r]
+						elif j == 1:
+							print(((self.dictPos[str(j+1)])[0])['time'])
+							self.dictExport['participant'+str(j)] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[j],self.dictMove_1]
+						elif j == 2:
+							print('2')
+							self.dictExport['participant'+str(j)] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[j],self.dictMove_2]
 					print(self.dictExport)
 					self.r_flag = 1
 				else:

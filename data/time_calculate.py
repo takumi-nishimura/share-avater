@@ -41,8 +41,16 @@ class TIME_CALCULATE:
 		self.average_B = np.average(self.time_B)
 		self.average_C = np.average(self.time_C)
 		self.average_time = [self.average_A,self.average_B,self.average_C]
+		self.t_l = []
+		for i in range(len(self.t_list)):
+			if i < 3:
+				self.t_l.append(self.time_A[i])
+			elif 3 <= i < 6:
+				self.t_l.append(self.time_B[i-3])
+			elif 6 <= i < 9:
+				self.t_l.append(self.time_C[i-6])
 
-		return self.t_list, self.average_time
+		return self.t_l, self.average_time
 
 if __name__ in '__main__':
 	read = TIME_CALCULATE()
