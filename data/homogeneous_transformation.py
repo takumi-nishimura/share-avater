@@ -12,7 +12,6 @@ class HOMOGENEOUS:
 	def main(self, data:list):
 		self.homogeneousPosition = []
 		self.homogeneousRotation = []
-		self.time = data['time']
 		self.position = np.c_[data['x'],data['y'],data['z']]
 		self.rotation = np.c_[data['qx'],data['qy'],data['qz'],data['qw']]
 

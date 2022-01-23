@@ -1,10 +1,12 @@
 import pandas as pd
+import numpy as np
 import os
 import glob
 from homogeneous_transformation import HOMOGENEOUS
 from graph_3D import GRAPH3D
 from graph_2D import GRAPH2D
 from time_calculate import TIME_CALCULATE
+import math
 
 class DATA_READ:
 	def __init__(self) -> None:
@@ -76,9 +78,9 @@ class DATA_READ:
 		for i in range(3):
 			self.d_r, self.d_1, self.d_2 = data_reader.read(participant,condition,i+1)
 			self.dictPos[str(i+1)] = [self.d_r,self.d_1,self.d_2]
-			self.pos_r, self.rot_r = homogeneous.main(self.d_r)
-			self.pos_1, self.rot_1 = homogeneous.main(self.d_1)
-			self.pos_2, self.rot_2 = homogeneous.main(self.d_2)
+			self.pos_r, self.rot_r = np.array(homogeneous.main(self.d_r))
+			self.pos_1, self.rot_1 = np.array(homogeneous.main(self.d_1))
+			self.pos_2, self.rot_2 = np.array(homogeneous.main(self.d_2))
 			self.pos_r_l = self.make_list(self.pos_r)
 			self.pos_1_l = self.make_list(self.pos_1)
 			self.pos_2_l = self.make_list(self.pos_2)
@@ -86,6 +88,7 @@ class DATA_READ:
 
 		for i in range(3):
 			self.r_flag = 0
+			print(i+1)
 			while self.r_flag == 0:
 				graph2d.main(time=((self.dictPos[str(i+1)])[0])['time'],pos=((self.dictHomogeneous[str(i+1)])[1]))
 
@@ -106,7 +109,7 @@ class DATA_READ:
 					self.end = round(float(self.start) + self.t_lsit[i+6],1)
 				print('end : ', self.end)
 
-				graph3d.main(start=float(self.start), end=float(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
+				self.start, self.end = graph3d.main(fig=True, start=float(self.start), end=float(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
 
 				self.perfect = input('切り出しを行いますか？ : y/n   ')
 
@@ -114,33 +117,42 @@ class DATA_READ:
 					self.start_end_l.append([float(self.start),float(self.end)])
 					for j in range(3):
 						if j == 0:
-							self.dictExport['endEffector'] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[i],self.dictMove_r]
+							self.dictExport['endEffector'] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[j],self.dictMove_r]
 						elif j == 1:
-							self.dictExport['participant'+str(j)] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[j],self.dictMove_1]
+							self.dictExport['participant'+str(j)] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[j],self.dictMove_1]
 						elif j == 2:
-							self.dictExport['participant'+str(j)] = [((self.dictPos['1'])[0])['time'],(self.dictHomogeneous[str(j+1)])[j],self.dictMove_2]
+							self.dictExport['participant'+str(j)] = [((self.dictPos[str(i+1)])[0])['time'],(self.dictHomogeneous[str(i+1)])[j],self.dictMove_2]
 					self.key_l = self.dictExport.keys()
 					for k, key in enumerate(self.key_l):
 						if k == 0:
 							self.list_e = self.dictExport[key]
-							self.list_e_time = pd.DataFrame({'time':self.list_e[0]})
-							self.dict_e = self.list_e_time.join([self.list_e[1],self.list_e[2]])
+							self.list_e_time = pd.DataFrame({'time':(self.list_e[0])[self.start:self.end]})
+							self.dict_e_m = pd.concat([self.list_e_time,(self.list_e[1])[self.start:self.end]],axis=1)
+							self.dict_e = pd.concat([self.dict_e_m,(self.list_e[2])[self.start:self.end]],axis=1)
 						elif k == 1:
 							self.list_1 = self.dictExport[key]
-							self.list_1_time = pd.DataFrame({'time':self.list_1[0]})
-							self.dict_1 = self.list_1_time.join([self.list_1[1],self.list_1[2]])
+							self.list_1_time = pd.DataFrame({'time':(self.list_1[0])[self.start:self.end]})
+							self.dict_1_m = pd.concat([self.list_1_time,(self.list_1[1])[self.start:self.end]],axis=1)
+							self.dict_1 = pd.concat([self.dict_1_m,(self.list_1[2])[self.start:self.end]],axis=1)
 						elif k == 2:
 							self.list_2 = self.dictExport[key]
-							self.list_2_time = pd.DataFrame({'time':self.list_2[0]})
-							self.dict_2 = self.list_2_time.join([self.list_2[1],self.list_2[2]])
-
+							self.list_2_time = pd.DataFrame({'time':(self.list_2[0])[self.start:self.end]})
+							self.dict_2_m = pd.concat([self.list_2_time,(self.list_2[1])[self.start:self.end]],axis=1)
+							self.dict_2 = pd.concat([self.dict_2_m,(self.list_2[2])[self.start:self.end]],axis=1)
 					self.filename_e = 'data/ExportData/expt_data/move_data/Cut_' + self.participant + '_' + self.condition + '_' + str(i+1) + '_endEffector.csv'
 					self.filename_1 = 'data/ExportData/expt_data/move_data/Cut_' + self.participant + '_' + self.condition + '_' + str(i+1) + '_Participant_1.csv'
 					self.filename_2 = 'data/ExportData/expt_data/move_data/Cut_' + self.participant + '_' + self.condition + '_' + str(i+1) + '_Participant_2.csv'
-					self.dict_e.to_csv(self.filename_e)
-					self.dict_1.to_csv(self.filename_1)
-					self.dict_2.to_csv(self.filename_2)
-					self.r_flag = 1
+					if self.dict_e.isnull().values.sum() != 0 or self.dict_1.isnull().values.sum() != 0 or self.dict_2.isnull().values.sum() != 0:
+						print('!!! もう一度 !!!')
+						print(self.dict_e[self.dict_e.isnull().any(1)])
+						print(self.dict_1[self.dict_1.isnull().any(1)])
+						print(self.dict_1[self.dict_1.isnull().any(1)])
+					else:
+						self.dict_e.to_csv(self.filename_e)
+						self.dict_1.to_csv(self.filename_1)
+						self.dict_2.to_csv(self.filename_2)
+						self.r_flag = 1
+						print('write')
 				else:
 					print('!!! もう一度 !!!')
 		print('!!!finish!!!')
@@ -152,7 +164,7 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Kusaka',condition='C')
+	data_reader.Compile_Organiz(participant='Kusaka',condition='A')
 
 	# count = 1
 
