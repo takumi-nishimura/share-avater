@@ -50,8 +50,43 @@ class TIME_CALCULATE:
 			elif 6 <= i < 9:
 				self.t_l.append(self.time_C[i-6])
 
+		self.time_list.clear()
+		self.time_A.clear()
+		self.time_B.clear()
+		self.time_C.clear()
+
 		return self.t_l, self.average_time
+
+	def save_time(self):
+		self.average_list_A = []
+		self.average_list_B = []
+		self.average_list_C = []
+		self.Export_df = pd.DataFrame(index=['A','B','C'])
+		self.participant_l()
+		for i in self.participant_list:
+			self.time_c(participant=i)
+			self.average_list_A.append(self.average_A)
+			self.average_list_B.append(self.average_B)
+			self.average_list_C.append(self.average_C)
+		for i, j in enumerate(self.participant_list):
+			self.Export_df[j] = [self.average_list_A[i],self.average_list_B[i],self.average_list_C[i]]
+		self.Export_df.to_excel('data/ExportData/time_data/TaskTime/TaskTime.xlsx')
+
+	def participant_l(self):
+		self.file_list = []
+		self.participant_list = []
+		self.dir = os.path.join('data','ExportData','time_data','')
+		self.files = sorted(glob.glob(os.path.join(self.dir, '*.xlsx')))
+
+		for self.filename_s in self.files:
+			self.filename_split = self.filename_s.split('_')
+			self.participant_name = self.filename_split[2]
+			if self.participant_name in self.participant_list:
+				pass
+			else:
+				self.participant_list.append(self.participant_name)
 
 if __name__ in '__main__':
 	read = TIME_CALCULATE()
 	read.time_c(participant='Nakamura')
+	read.save_time()

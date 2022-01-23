@@ -152,7 +152,7 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Nakamura',condition='B')
+	data_reader.Compile_Organiz(participant='Nakamura',condition='C')
 
 	# count = 1
 
