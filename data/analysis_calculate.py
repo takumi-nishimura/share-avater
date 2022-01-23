@@ -17,6 +17,9 @@ class DATACALCULATE:
 		self.df_C_r_dict = {}
 		self.df_C_1_dict = {}
 		self.df_C_2_dict = {}
+		self.dtw_A_l = []
+		self.dtw_B_l = []
+		self.dtw_C_l = []
 
 	def main(self):
 		self.dtw = DTW()
@@ -24,19 +27,19 @@ class DATACALCULATE:
 		for self.participant in self.participant_list:
 			print(self.participant)
 			self.read()
-			# for i, j in enumerate(['A','B','C']):
-			# 	if j == 'A':
-			# 		for k in range(3):
-			# 			print(self.df_A_1_dict[str(k+1)])
-			# 			# self.dtw.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)])
-			# 	elif j == 'B':
-			# 		for k in range(3):
-			# 			print(self.df_B_1_dict[str(k+1)])
-			# 			# self.dtw.main(self.df_B_r_dict[str(k+1)],self.df_B_1_dict[str(k+1)],self.df_B_2_dict[str(k+1)])
-			# 	elif j == 'C':
-			# 		for k in range(3):
-			# 			print(self.df_C_1_dict[str(k+1)])
-			# 			# self.dtw.main(self.df_C_r_dict[str(k+1)],self.df_C_1_dict[str(k+1)],self.df_C_2_dict[str(k+1)])
+			for i, j in enumerate(['A','B','C']):
+				if j == 'A':
+					for k in range(3):
+						self.dtw_A = self.dtw.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)])
+						self.dtw_A_l.append(self.dtw_A)
+				elif j == 'B':
+					for k in range(3):
+						self.dtw_B = self.dtw.main(self.df_B_r_dict[str(k+1)],self.df_B_1_dict[str(k+1)],self.df_B_2_dict[str(k+1)])
+						self.dtw_B_l.append(self.dtw_B)
+				elif j == 'C':
+					for k in range(3):
+						self.dtw_C = self.dtw.main(self.df_C_r_dict[str(k+1)],self.df_C_1_dict[str(k+1)],self.df_C_2_dict[str(k+1)])
+						self.dtw_C_l.append(self.dtw_C)
 
 	def participant_l(self):
 		self.file_list = []
@@ -84,15 +87,15 @@ class DATACALCULATE:
 			if 'endEffector' in i:
 				j += 1
 				self.df_B_r = pd.read_csv(i)
-				self.df_B_r_dict[str(j+1)] = self.df_B_r
+				self.df_B_r_dict[str(j)] = self.df_B_r
 			elif 'Participant_1' in i:
 				k += 1
 				self.df_B_1 = pd.read_csv(i)
-				self.df_B_1_dict[str(j+1)] = self.df_B_1
+				self.df_B_1_dict[str(k)] = self.df_B_1
 			elif 'Participant_2' in i:
 				l += 1
 				self.df_B_2 = pd.read_csv(i)
-				self.df_B_2_dict[str(j+1)] = self.df_B_2
+				self.df_B_2_dict[str(l)] = self.df_B_2
 		j = 0
 		k = 0
 		l = 0
@@ -100,21 +103,15 @@ class DATACALCULATE:
 			if 'endEffector' in i:
 				j += 1
 				self.df_C_r = pd.read_csv(i)
-				print(i)
-				print(self.df_C_r)
-				self.df_C_r_dict[str(j+1)] = self.df_C_r
+				self.df_C_r_dict[str(j)] = self.df_C_r
 			elif 'Participant_1' in i:
 				k += 1
 				self.df_C_1 = pd.read_csv(i)
-				print(i)
-				print(self.df_C_1)
-				self.df_C_1_dict[str(j+1)] = self.df_C_1
+				self.df_C_1_dict[str(k)] = self.df_C_1
 			elif 'Participant_2' in i:
 				l += 1
 				self.df_C_2 = pd.read_csv(i)
-				print(i)
-				print(self.df_C_2)
-				self.df_C_2_dict[str(j+1)] = self.df_C_2
+				self.df_C_2_dict[str(l)] = self.df_C_2
 		self.d_A_list.clear()
 		self.d_B_list.clear()
 		self.d_C_list.clear()

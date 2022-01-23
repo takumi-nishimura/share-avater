@@ -12,7 +12,8 @@ class DTW:
 
 	def main(self, robot, begginer, expert):
 		self.robot, self.begginer, self.expert = self.get_data(robot,begginer,expert)
-		self.f_dtw(self.begginer,self.expert,show=False)
+		self.result = self.f_dtw(self.begginer,self.expert,show=False)
+		return self.result
 
 	def get_data(self,d_r,d_1,d_2):
 		self.x = d_r['x']
@@ -41,8 +42,6 @@ class DTW:
 	def f_dtw(self,d1,d2,show:bool=False,save:bool=False):
 		self.a1 = np.array(d1)
 		self.a2 = np.array(d2)
-		print(self.a1)
-		print(self.a2)
 		dtw_c,dtw_p = fastdtw(self.a1,self.a2,dist=euclidean)
 		print(dtw_c)
 
@@ -61,3 +60,5 @@ class DTW:
 			plt.savefig('fig/f_dtw/'+filename+'.png')
 		if show:
 			plt.show()
+
+		return dtw_c
