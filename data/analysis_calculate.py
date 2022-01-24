@@ -53,7 +53,7 @@ class DATACALCULATE:
 				pass
 			else:
 				self.participant_list.append(self.participant_name)
-		self.participant_list = ['Kusaka','Ebina','Nakamura']
+		self.participant_list = ['Ebina','Ebina','Nakamura']
 
 	def read(self):
 		for self.data in self.files:
