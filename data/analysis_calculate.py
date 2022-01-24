@@ -99,7 +99,7 @@ class DATACALCULATE:
 		self.Export_jrk = pd.DataFrame(index=['A','B','C'])
 		for key in self.dict_jrk.keys():
 			self.Export_jrk[key] = [self.dict_jrk[key][0],self.dict_jrk[key][1],self.dict_jrk[key][2]]
-		self.toXlsx(evaluation='JRK_SCORE_1', df=self.Export_jrk)
+		self.toXlsx(evaluation='JRK_SCORE', df=self.Export_jrk)
 
 	def participant_l(self):
 		self.file_list = []
