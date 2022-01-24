@@ -111,7 +111,6 @@ class TIME_CALCULATE:
 				pass
 			else:
 				self.participant_list.append(self.participant_name)
-		print(self.participant_list)
 
 	def toXlsx_list(self, evaluation, df_l):
 		self.w_dir = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate'

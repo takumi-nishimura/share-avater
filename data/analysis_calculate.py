@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import glob
+from time_calculate import TIME_CALCULATE
 from analysis_DTW import DTW
 from analysis_Jerk import JERK
 
@@ -20,10 +21,13 @@ class DATACALCULATE:
 		self.df_C_1_dict = {}
 		self.df_C_2_dict = {}
 
-	def main(self, dtw:bool=False, jrk:bool=False):
+	def main(self, score:bool=True, dtw:bool=False, jrk:bool=False):
+		self.score = TIME_CALCULATE()
 		self.dtw = DTW()
 		self.jrk = JERK()
 		self.participant_l()
+		if score:
+			self.score.save_time()
 		if dtw:
 			self.dtw_c()
 		if jrk:
@@ -180,4 +184,4 @@ class DATACALCULATE:
 
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
-	calculate.main(dtw=True, jrk=True)
+	calculate.main(dtw=False, jrk=True)
