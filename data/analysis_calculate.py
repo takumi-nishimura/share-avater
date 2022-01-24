@@ -1,7 +1,9 @@
 import pandas as pd
+import numpy as np
 import os
 import glob
 from analysis_DTW import DTW
+from analysis_Jerk import JERK
 
 class DATACALCULATE:
 	def __init__(self) -> None:
@@ -17,29 +19,83 @@ class DATACALCULATE:
 		self.df_C_r_dict = {}
 		self.df_C_1_dict = {}
 		self.df_C_2_dict = {}
+
+	def main(self, dtw:bool=False, jrk:bool=False):
+		self.dtw = DTW()
+		self.jrk = JERK()
+		self.participant_l()
+		if dtw:
+			self.dtw_c()
+		if jrk:
+			self.jrk_c()
+			
+	def dtw_c(self):
 		self.dtw_A_l = []
 		self.dtw_B_l = []
 		self.dtw_C_l = []
-
-	def main(self):
-		self.dtw = DTW()
-		self.participant_l()
+		self.dict_dtw ={}
 		for self.participant in self.participant_list:
 			print(self.participant)
 			self.read()
 			for i, j in enumerate(['A','B','C']):
+				print(j)
 				if j == 'A':
 					for k in range(3):
-						self.dtw_A = self.dtw.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)])
+						self.dtw_A = self.dtw.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)],self.participant,j,str(k+1))
 						self.dtw_A_l.append(self.dtw_A)
+					self.dtw_A_average = np.average(self.dtw_A_l)
 				elif j == 'B':
 					for k in range(3):
-						self.dtw_B = self.dtw.main(self.df_B_r_dict[str(k+1)],self.df_B_1_dict[str(k+1)],self.df_B_2_dict[str(k+1)])
+						self.dtw_B = self.dtw.main(self.df_B_r_dict[str(k+1)],self.df_B_1_dict[str(k+1)],self.df_B_2_dict[str(k+1)],self.participant,j,str(k+1))
 						self.dtw_B_l.append(self.dtw_B)
+					self.dtw_B_average = np.average(self.dtw_B_l)
 				elif j == 'C':
 					for k in range(3):
-						self.dtw_C = self.dtw.main(self.df_C_r_dict[str(k+1)],self.df_C_1_dict[str(k+1)],self.df_C_2_dict[str(k+1)])
+						self.dtw_C = self.dtw.main(self.df_C_r_dict[str(k+1)],self.df_C_1_dict[str(k+1)],self.df_C_2_dict[str(k+1)],self.participant,j,str(k+1))
 						self.dtw_C_l.append(self.dtw_C)
+					self.dtw_C_average = np.average(self.dtw_C_l)
+			self.dict_dtw[self.participant] = [self.dtw_A_average,self.dtw_B_average,self.dtw_C_average]
+			self.dtw_A_l = []
+			self.dtw_B_l = []
+			self.dtw_C_l = []
+		self.Export_dtw = pd.DataFrame(index=['A','B','C'])
+		for key in self.dict_dtw.keys():
+			self.Export_dtw[key] = [self.dict_dtw[key][0],self.dict_dtw[key][1],self.dict_dtw[key][2]]
+		self.toXlsx(evaluation='DTW_SCORE', df=self.Export_dtw)
+
+	def jrk_c(self):
+		self.jrk_A_l = []
+		self.jrk_B_l = []
+		self.jrk_C_l = []
+		self.dict_jrk = {}
+		for self.participant in self.participant_list:
+			print(self.participant)
+			self.read()
+			for i, j in enumerate(['A','B','C']):
+				print(j)
+				if j == 'A':
+					for k in range(3):
+						self.jrk_A = self.jrk.main(self.df_A_r_dict[str(k+1)])
+						self.jrk_A_l.append(self.jrk_A)
+					self.jrk_A_average = np.average(self.jrk_A_l)
+				elif j == 'B':
+					for k in range(3):
+						self.jrk_B = self.jrk.main(self.df_B_r_dict[str(k+1)])
+						self.jrk_B_l.append(self.jrk_B)
+					self.jrk_B_average = np.average(self.jrk_B_l)
+				elif j == 'C':
+					for k in range(3):
+						self.jrk_C = self.jrk.main(self.df_C_r_dict[str(k+1)])
+						self.jrk_C_l.append(self.jrk_C)
+					self.jrk_C_average = np.average(self.jrk_C_l)
+			self.dict_jrk[self.participant] = [self.jrk_A_average,self.jrk_B_average,self.jrk_C_average]
+			self.jrk_A_l = []
+			self.jrk_B_l = []
+			self.jrk_C_l = []
+		self.Export_jrk = pd.DataFrame(index=['A','B','C'])
+		for key in self.dict_jrk.keys():
+			self.Export_jrk[key] = [self.dict_jrk[key][0],self.dict_jrk[key][1],self.dict_jrk[key][2]]
+		self.toXlsx(evaluation='JRK_SCORE_1', df=self.Export_jrk)
 
 	def participant_l(self):
 		self.file_list = []
@@ -53,7 +109,7 @@ class DATACALCULATE:
 				pass
 			else:
 				self.participant_list.append(self.participant_name)
-		self.participant_list = ['Ebina','Ebina','Nakamura']
+		print(self.participant_list)
 
 	def read(self):
 		for self.data in self.files:
@@ -116,6 +172,12 @@ class DATACALCULATE:
 		self.d_B_list.clear()
 		self.d_C_list.clear()
 
+	def toXlsx(self, evaluation, df):
+		self.w_dir = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate'
+		self.w_name = self.w_dir + '/' + evaluation + '.xlsx'
+		df.to_excel(self.w_name)
+		print(self.w_name)
+
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
-	calculate.main()
+	calculate.main(dtw=True, jrk=True)

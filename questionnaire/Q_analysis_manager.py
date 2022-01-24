@@ -173,7 +173,7 @@ class Q_AVERAGE:
 		self.toXlsx_list(evaluation='SUBJECTIVE_EVALUATION', df_l=self.SE_list)
 
 	def toXlsx(self, evaluation, df):
-		self.w_dir = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate'
+		self.w_dir = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate'
 		self.w_name = self.w_dir + '/' + evaluation + '.xlsx'
 		df.to_excel(self.w_name)
 		print(self.w_name)
@@ -204,7 +204,7 @@ class Q_IMAGE:
 		self.condition = []
 		self.item = []
 		self.value = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/MINIMAL_SELF.xlsx'
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/MINIMAL_SELF.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
 		self.keys = []
 		for i in self.data.keys():
@@ -254,7 +254,7 @@ class Q_IMAGE:
 		self.value_3 = []
 		self.value_4 = []
 		self.value_5 = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/SUBJECTIVE_EVALUATION.xlsx'
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/SUBJECTIVE_EVALUATION.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
 		self.keys = []
 		for i in self.data.keys():
@@ -348,7 +348,7 @@ class Q_IMAGE:
 		self.condition = []
 		self.item = []
 		self.value = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/TLX_AWWL.xlsx'
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/TLX_AWWL.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
 		self.keys = []
 		for i in self.data.keys():
@@ -376,7 +376,7 @@ class Q_IMAGE:
 		self.condition = []
 		self.item = []
 		self.value = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calcurate/MD_SCORE.xlsx'
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/MD_SCORE.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
 		self.keys = []
 		for i in self.data.keys():

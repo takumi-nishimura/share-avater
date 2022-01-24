@@ -10,9 +10,9 @@ class DTW:
 	def __init__(self) -> None:
 		pass
 
-	def main(self, robot, begginer, expert):
+	def main(self, robot, begginer, expert, participant, condition, cycle):
 		self.robot, self.begginer, self.expert = self.get_data(robot,begginer,expert)
-		self.result = self.f_dtw(self.begginer,self.expert,show=False)
+		self.result = self.f_dtw(self.begginer, self.expert, participant, condition, cycle, show=False, save=False)
 		return self.result
 
 	def get_data(self,d_r,d_1,d_2):
@@ -39,26 +39,44 @@ class DTW:
 		self.expert_lsit = pd.DataFrame(data=np.c_[self.x2,self.y2,self.z2],columns=['x2','y2','z2'])
 		return self.robot_lsit, self.begginner_list, self.expert_lsit
 
-	def f_dtw(self,d1,d2,show:bool=False,save:bool=False):
+	def f_dtw(self,d1,d2, participant, condition, cycle, show:bool=False, save:bool=False):
 		self.a1 = np.array(d1)
 		self.a2 = np.array(d2)
 		dtw_c,dtw_p = fastdtw(self.a1,self.a2,dist=euclidean)
 		print(dtw_c)
 
-		fig = plt.figure()
-		ax = plt.gca(projection='3d')
-		for i, j in dtw_p:
-			ax.plot([self.a1[i][0],self.a2[j][0]],[self.a1[i][1],self.a2[j][1]],[self.a1[i][2],self.a2[j][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
-		ax.plot(self.begginer['x1'],self.begginer['y1'],self.begginer['z1'],label='begginer')
-		ax.plot(self.expert['x2'],self.expert['y2'],self.expert['z2'],label='expert')
-		ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
-		ax.view_init(elev=50, azim=13)
-		filename = 'aaa'
-		plt.title(filename)
+		if show:
+			fig = plt.figure()
+			ax = plt.gca(projection='3d')
+			for i, j in dtw_p:
+				ax.plot([self.a1[i][0],self.a2[j][0]],[self.a1[i][1],self.a2[j][1]],[self.a1[i][2],self.a2[j][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
+			ax.plot(self.begginer['x1'],self.begginer['y1'],self.begginer['z1'],label='begginer')
+			ax.plot(self.expert['x2'],self.expert['y2'],self.expert['z2'],label='expert')
+			ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
+			ax.view_init(elev=50, azim=13)
+			filename = participant + '_' + condition + '_' + cycle
+			plt.title(filename)
+
+			if save:
+				plt.savefig('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/fig/dtw/'+filename+'.png')
+			if show:
+				plt.show()
+			
+			ax.close()
 
 		if save:
-			plt.savefig('fig/f_dtw/'+filename+'.png')
-		if show:
-			plt.show()
+			fig = plt.figure()
+			ax = plt.gca(projection='3d')
+			for i, j in dtw_p:
+				ax.plot([self.a1[i][0],self.a2[j][0]],[self.a1[i][1],self.a2[j][1]],[self.a1[i][2],self.a2[j][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
+			ax.plot(self.begginer['x1'],self.begginer['y1'],self.begginer['z1'],label='begginer')
+			ax.plot(self.expert['x2'],self.expert['y2'],self.expert['z2'],label='expert')
+			ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
+			ax.view_init(elev=50, azim=13)
+			filename = participant + '_' + condition + '_' + cycle
+			plt.title(filename)
+			plt.savefig('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/fig/dtw/'+filename+'.png')
+
+			ax.close
 
 		return dtw_c
