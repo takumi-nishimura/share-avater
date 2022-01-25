@@ -1,3 +1,4 @@
+from time import time
 import pandas as pd
 import numpy as np
 import os
@@ -252,9 +253,9 @@ class M_IMAGE:
 						self.condition.append('robot speed')
 					self.item.append(index)
 					self.value.append(self.i[name])
-		self.DTW_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
+		self.DTW_df = pd.DataFrame({'condition':self.condition,'':self.item,'DTW score':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.DTW_df)
+		self.ax = sns.stripplot(x='condition', y='DTW score', data=self.DTW_df)
 		plt.savefig('data/ExportData/graph/DTW_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
@@ -280,9 +281,9 @@ class M_IMAGE:
 						self.condition.append('robot speed')
 					self.item.append(index)
 					self.value.append(self.i[name])
-		self.JRK_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
+		self.JRK_df = pd.DataFrame({'condition':self.condition,'':self.item,'Jerk Index':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.JRK_df)
+		self.ax = sns.stripplot(x='condition', y='Jerk Index', data=self.JRK_df)
 		plt.savefig('data/ExportData/graph/JRK_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
@@ -306,7 +307,7 @@ class M_IMAGE:
 				self.value.append(self.i[name])
 		self.TIME_df = pd.DataFrame({'condition':self.condition,'':self.item,'Task Time [s]':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Task Time [s]', data=self.TIME_df)
+		self.ax = sns.stripplot(x='condition', y='Task Time [s]', data=self.TIME_df)
 		plt.savefig('data/ExportData/graph/TASK_TIME.png', dpi=300, format='png')
 		plt.figure()
 
@@ -315,39 +316,8 @@ class M_IMAGE:
 		self.item = []
 		self.value = []
 		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/TASK_TIME.xlsx'
-		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
-		self.keys = []
-		for i in self.data.keys():
-			self.keys.append(i)
-		self.columns = self.data.columns
-		print(self.data)
-		for column in self.columns:
-			self.i = self.data[self.keys[0]].loc[column]
-			print(self.i)
-			self.i_2 = self.data[self.keys[1]].loc[column]
-			print(self.i)
-			for name in range(len(self.i)):	
-				if index == 'A':
-					self.condition.append('without feedback')
-				elif index == 'B':
-					self.condition.append('companion speed')
-				elif index == 'C':
-					self.condition.append('robot speed')
-				self.item.append(index)
-				self.value.append(self.i[name])
-		self.POINTS_df = pd.DataFrame({'condition':self.condition,'':self.item,'Points':self.value})
-		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Points', data=self.POINTS_df)
-		plt.savefig('data/ExportData/graph/TASK_POINTS.png', dpi=300, format='png')
-		plt.figure()
-
-	def fig_POINTS_TIME(self):
-		self.condition = []
-		self.item = []
-		self.value = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/TASK_TIME.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name='Points', index_col=0)
-		self.index = self.data.index.values
+		self.keys = []
 		for index in self.index:
 			self.i = self.data.loc[index]
 			for name in range(len(self.i)):	
@@ -359,14 +329,42 @@ class M_IMAGE:
 					self.condition.append('robot speed')
 				self.item.append(index)
 				self.value.append(self.i[name])
-		self.POINTS_df = pd.DataFrame({'condition':self.condition,'':self.item,'Points':self.value})
+		self.POINT_df = pd.DataFrame({'condition':self.condition,'':self.item,'Points':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Points', data=self.POINTS_df)
+		self.ax = sns.stripplot(x='condition', y='Points', data=self.POINT_df)
 		plt.savefig('data/ExportData/graph/TASK_POINTS.png', dpi=300, format='png')
+		plt.figure()
+
+	def fig_POINTS_TIME(self):
+		self.condition = []
+		self.value = []
+		self.time = []
+		self.point = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/TASK_TIME.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		for key in self.data.keys():
+			self.data_df = self.data[key]
+			for index in self.data[key].index.values:
+				self.value = self.data_df.loc[index].values
+				for i in range(len(self.value)):
+					if key == 'Task Time':
+						if index == 'A':
+							self.condition.append('without feedback')
+						elif index == 'B':
+							self.condition.append('companion speed')
+						elif index == 'C':
+							self.condition.append('robot speed')
+						self.time.append(self.value[i])
+					elif key == 'Points':
+						self.point.append(self.value[i])
+		self.PT_df = pd.DataFrame({'Task Time [s]':self.time,'':self.condition,'Point':self.point})
+		sns.set_palette('Set2')
+		sns.scatterplot(data=self.PT_df, x='Task Time [s]', y='Point', hue='')
+		plt.savefig('data/ExportData/graph/TIME_POINTS.png', dpi=300, format='png')
 		plt.figure()
 
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
 	figure = M_IMAGE()
-	# calculate.main(dtw=False, jrk=False, cot=True)
+	# calculate.main(dtw=True, jrk=True, cot=False)
 	figure.main()
