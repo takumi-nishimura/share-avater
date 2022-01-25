@@ -164,23 +164,4 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Hijikata',condition='B')
-
-	# count = 1
-
-	# d_r, d_1, d_2 = data_reader.read('Katagiri','A',count)
-
-	# pos_r, rot_r = homogeneous.main(d_r)
-	# pos_1, rot_1 = homogeneous.main(d_1)
-	# pos_2, rot_2 = homogeneous.main(d_2)
-
-	# graph2d.main(time=d_r['time'],pos=d_r)
-
-	# start = input('start: ')
-	# end = input('end: ')
-
-	# dict_pos_r = data_reader.make_list(pos_r)
-	# dict_pos_1 = data_reader.make_list(pos_1)
-	# dict_pos_2 = data_reader.make_list(pos_2)
-
-	# graph3d.main(start=int(start), end=int(end),time=d_r['time'], position_r=dict_pos_r, position_1=dict_pos_1, position_2=dict_pos_2)
+	data_reader.Compile_Organiz(participant='Yamashita',condition='C')

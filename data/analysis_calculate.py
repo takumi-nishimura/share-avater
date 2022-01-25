@@ -22,7 +22,7 @@ class DATACALCULATE:
 		self.df_C_1_dict = {}
 		self.df_C_2_dict = {}
 
-	def main(self, score:bool=True, dtw:bool=False, jrk:bool=False, cot:bool=False):
+	def main(self, score:bool=True, dtw:bool=False, jrk:bool=False, cot=False):
 		self.score = TIME_CALCULATE()
 		self.dtw = DTW()
 		self.jrk = JERK()
@@ -34,7 +34,9 @@ class DATACALCULATE:
 			self.dtw_c()
 		if jrk:
 			self.jrk_c()
-		if CoT:
+		if cot:
+			self.CoT_s()
+			print('save_finish')
 			self.CoT_c()
 			
 	def dtw_c(self):
@@ -105,7 +107,7 @@ class DATACALCULATE:
 			self.Export_jrk[key] = [self.dict_jrk[key][0],self.dict_jrk[key][1],self.dict_jrk[key][2]]
 		self.toXlsx(evaluation='JRK_SCORE', df=self.Export_jrk)
 
-	def CoT_c(self):
+	def CoT_s(self):
 		self.cot_A_l = []
 		self.cot_B_l = []
 		self.cot_C_l = []
@@ -116,7 +118,20 @@ class DATACALCULATE:
 				print(j)
 				if j == 'A':
 					for k in range(3):
-						self.cot_A = self.CoT.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)])
+						self.cot_A = self.CoT.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)], self.participant, j, str(k+1),save=True)
+						self.cot_A_l.append(self.cot_A)
+					self.cot_A_average = np.average(self.cot_A_l)
+			self.cot_A_l = []
+
+	def CoT_c(self):
+		for self.participant in self.participant_list:
+			print(self.participant)
+			self.read()
+			for i, j in enumerate(['A','B','C']):
+				print(j)
+				if j == 'A':
+					for k in range(3):
+						self.cot_A = self.CoT.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)], self.participant, j, str(k+1),input=True)
 						self.cot_A_l.append(self.cot_A)
 					self.cot_A_average = np.average(self.cot_A_l)
 			self.cot_A_l = []

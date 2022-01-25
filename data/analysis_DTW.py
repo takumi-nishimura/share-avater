@@ -76,6 +76,6 @@ class DTW:
 			plt.title(filename)
 			plt.savefig('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/fig/dtw/'+filename+'.png')
 
-			ax.close
+			plt.close()
 
 		return dtw_c
