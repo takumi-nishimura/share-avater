@@ -164,4 +164,4 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Yamashita',condition='C')
+	data_reader.Compile_Organiz(participant='Kusaka',condition='A')
