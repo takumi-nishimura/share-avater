@@ -5,6 +5,7 @@ import glob
 from time_calculate import TIME_CALCULATE
 from analysis_DTW import DTW
 from analysis_Jerk import JERK
+from analisis_CoT import CoT
 
 class DATACALCULATE:
 	def __init__(self) -> None:
@@ -21,10 +22,11 @@ class DATACALCULATE:
 		self.df_C_1_dict = {}
 		self.df_C_2_dict = {}
 
-	def main(self, score:bool=True, dtw:bool=False, jrk:bool=False):
+	def main(self, score:bool=True, dtw:bool=False, jrk:bool=False, cot:bool=False):
 		self.score = TIME_CALCULATE()
 		self.dtw = DTW()
 		self.jrk = JERK()
+		self.CoT = CoT()
 		self.participant_l()
 		if score:
 			self.score.save_time()
@@ -32,6 +34,8 @@ class DATACALCULATE:
 			self.dtw_c()
 		if jrk:
 			self.jrk_c()
+		if CoT:
+			self.CoT_c()
 			
 	def dtw_c(self):
 		self.dtw_A_l = []
@@ -100,6 +104,22 @@ class DATACALCULATE:
 		for key in self.dict_jrk.keys():
 			self.Export_jrk[key] = [self.dict_jrk[key][0],self.dict_jrk[key][1],self.dict_jrk[key][2]]
 		self.toXlsx(evaluation='JRK_SCORE', df=self.Export_jrk)
+
+	def CoT_c(self):
+		self.cot_A_l = []
+		self.cot_B_l = []
+		self.cot_C_l = []
+		for self.participant in self.participant_list:
+			print(self.participant)
+			self.read()
+			for i, j in enumerate(['A','B','C']):
+				print(j)
+				if j == 'A':
+					for k in range(3):
+						self.cot_A = self.CoT.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)])
+						self.cot_A_l.append(self.cot_A)
+					self.cot_A_average = np.average(self.cot_A_l)
+			self.cot_A_l = []
 
 	def participant_l(self):
 		self.file_list = []
@@ -184,4 +204,4 @@ class DATACALCULATE:
 
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
-	calculate.main(dtw=False, jrk=True)
+	calculate.main(dtw=False, jrk=False, cot=True)

@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 
 class JERK:
@@ -29,8 +28,8 @@ class JERK:
 	def get_data(self,data):
 		self.tl = data['time']
 		self.v_x = data['vx']
-		self.v_y = data['vz']
+		self.v_y = data['vy']
 		self.v_z = data['vz']
 		self.j_x = data['jx']
-		self.j_y = data['jz']
+		self.j_y = data['jy']
 		self.j_z = data['jz']

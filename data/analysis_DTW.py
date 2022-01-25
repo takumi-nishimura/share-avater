@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import os
 from dtaidistance import dtw,dtw_ndim,dtw_visualisation as dtwvis
 from scipy.spatial.distance import euclidean
 from fastdtw import fastdtw
