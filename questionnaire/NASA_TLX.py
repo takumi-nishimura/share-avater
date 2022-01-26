@@ -262,6 +262,7 @@ class TLX:
 	def AWWL(self,q):
 		self.dict_q = {'q1':q[0],'q2':q[1],'q3':q[2],'q4':q[3],'q5':q[4],'q6':q[5]}
 		self.sort_q = sorted(self.dict_q.items(),key=lambda i: i[1])
+		print(self.sort_q)
 		self.awwl = self.sort_q[0][1]*1+self.sort_q[1][1]*2+self.sort_q[2][1]*3+self.sort_q[3][1]*4+self.sort_q[4][1]*5+self.sort_q[5][1]*6
 		return self.awwl
 	

@@ -6,7 +6,6 @@ from homogeneous_transformation import HOMOGENEOUS
 from graph_3D import GRAPH3D
 from graph_2D import GRAPH2D
 from time_calculate import TIME_CALCULATE
-import math
 
 class DATA_READ:
 	def __init__(self) -> None:
@@ -164,4 +163,4 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Kusaka',condition='A')
+	data_reader.Compile_Organiz(participant='Kato',condition='C')

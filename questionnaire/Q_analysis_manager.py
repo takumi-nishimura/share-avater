@@ -20,6 +20,7 @@ class Q_AVERAGE:
 		self.participant_l()
 
 		for self.participant in self.participant_list:
+			print(self.participant)
 			self.read()
 			self.TLX_c()
 			self.MS_c()

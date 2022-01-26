@@ -255,7 +255,7 @@ class M_IMAGE:
 					self.value.append(self.i[name])
 		self.DTW_df = pd.DataFrame({'condition':self.condition,'':self.item,'DTW score':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.stripplot(x='condition', y='DTW score', data=self.DTW_df)
+		self.ax = sns.swarmplot(x='condition', y='DTW score', data=self.DTW_df)
 		plt.savefig('data/ExportData/graph/DTW_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
@@ -283,7 +283,7 @@ class M_IMAGE:
 					self.value.append(self.i[name])
 		self.JRK_df = pd.DataFrame({'condition':self.condition,'':self.item,'Jerk Index':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.stripplot(x='condition', y='Jerk Index', data=self.JRK_df)
+		self.ax = sns.swarmplot(x='condition', y='Jerk Index', data=self.JRK_df)
 		plt.savefig('data/ExportData/graph/JRK_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
@@ -307,7 +307,7 @@ class M_IMAGE:
 				self.value.append(self.i[name])
 		self.TIME_df = pd.DataFrame({'condition':self.condition,'':self.item,'Task Time [s]':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.stripplot(x='condition', y='Task Time [s]', data=self.TIME_df)
+		self.ax = sns.swarmplot(x='condition', y='Task Time [s]', data=self.TIME_df)
 		plt.savefig('data/ExportData/graph/TASK_TIME.png', dpi=300, format='png')
 		plt.figure()
 
@@ -329,9 +329,9 @@ class M_IMAGE:
 					self.condition.append('robot speed')
 				self.item.append(index)
 				self.value.append(self.i[name])
-		self.POINT_df = pd.DataFrame({'condition':self.condition,'':self.item,'Points':self.value})
+		self.POINT_df = pd.DataFrame({'condition':self.condition,'':self.item,'Point':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.stripplot(x='condition', y='Points', data=self.POINT_df)
+		self.ax = sns.swarmplot(x='condition', y='Point', data=self.POINT_df)
 		plt.savefig('data/ExportData/graph/TASK_POINTS.png', dpi=300, format='png')
 		plt.figure()
 
@@ -340,7 +340,7 @@ class M_IMAGE:
 		self.value = []
 		self.time = []
 		self.point = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/TASK_TIME.xlsx'
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_TIME_POINT.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
 		for key in self.data.keys():
 			self.data_df = self.data[key]
@@ -366,5 +366,5 @@ class M_IMAGE:
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
 	figure = M_IMAGE()
-	# calculate.main(dtw=True, jrk=True, cot=False)
+	calculate.main(dtw=True, jrk=True, cot=False)
 	figure.main()
