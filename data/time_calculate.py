@@ -144,17 +144,21 @@ class TIME_CALCULATE:
 		self.averageP_list_A = []
 		self.averageP_list_B = []
 		self.averageP_list_C = []
+		self.Export_df_t = pd.DataFrame(index=['A','B','C'])
+		self.Export_df_p = pd.DataFrame(index=['A','B','C'])
 		self.participant_l()
 		for i in self.participant_list:
 			self.time_c(participant=i)
-			for j in range(len(self.time_A)):
-				self.average_list_A.append(self.time_A[j])
-				self.average_list_B.append(self.time_B[j])
-				self.average_list_C.append(self.time_C[j])
-				self.averageP_list_A.append(self.points_A[j])
-				self.averageP_list_B.append(self.points_B[j])
-				self.averageP_list_C.append(self.points_C[j])
-		self.Export_df = pd.DataFrame({''})
+			self.average_list_A.append(self.average_A)
+			self.average_list_B.append(self.average_B)
+			self.average_list_C.append(self.average_C)
+			self.averageP_list_A.append(self.averageP_A)
+			self.averageP_list_B.append(self.averageP_B)
+			self.averageP_list_C.append(self.averageP_C)
+		for i, j in enumerate(self.participant_list):
+			self.Export_df_t[j] = [self.average_list_A[i],self.average_list_B[i],self.average_list_C[i]]
+			self.Export_df_p[j] = [self.averageP_list_A[i],self.averageP_list_B[i],self.averageP_list_C[i]]
+		self.Export_df = [self.Export_df_t,self.Export_df_p]
 		self.toXlsx_list(evaluation='TASK_TIME', df_l=self.Export_df)
 
 	def ALL_save_time(self):
@@ -178,7 +182,7 @@ class TIME_CALCULATE:
 			self.condition.append('companion speed')
 		for l in range(len(self.time_C_l)):
 			self.condition.append('robot speed')
-		self.Export_df = pd.DataFrame({'time':self.time_ll,'':self.condition,'point':self.point_ll})
+		self.Export_df = pd.DataFrame({'time':self.time_ll,'condition':self.condition,'point':self.point_ll})
 		print(self.Export_df)
 		self.Export_df.to_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_TIME_POINT.xlsx')
 
@@ -209,6 +213,5 @@ class TIME_CALCULATE:
 
 if __name__ in '__main__':
 	read = TIME_CALCULATE()
-	# read.time_c(participant='Nakamura')
-	# read.save_time()
+	read.save_time()
 	read.ALL_save_time()

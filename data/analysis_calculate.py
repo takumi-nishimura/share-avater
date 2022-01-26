@@ -230,6 +230,7 @@ class M_IMAGE:
 		self.fig_TIME()
 		self.fig_POINTS()
 		self.fig_POINTS_TIME()
+		self.fig_POINTS_TIME_ALL()
 
 	def fig_dtw(self):
 		self.condition = []
@@ -255,7 +256,7 @@ class M_IMAGE:
 					self.value.append(self.i[name])
 		self.DTW_df = pd.DataFrame({'condition':self.condition,'':self.item,'DTW score':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.swarmplot(x='condition', y='DTW score', data=self.DTW_df)
+		self.ax = sns.boxplot(x='condition', y='DTW score', data=self.DTW_df)
 		plt.savefig('data/ExportData/graph/DTW_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
@@ -283,7 +284,7 @@ class M_IMAGE:
 					self.value.append(self.i[name])
 		self.JRK_df = pd.DataFrame({'condition':self.condition,'':self.item,'Jerk Index':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.swarmplot(x='condition', y='Jerk Index', data=self.JRK_df)
+		self.ax = sns.boxplot(x='condition', y='Jerk Index', data=self.JRK_df)
 		plt.savefig('data/ExportData/graph/JRK_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
@@ -307,7 +308,7 @@ class M_IMAGE:
 				self.value.append(self.i[name])
 		self.TIME_df = pd.DataFrame({'condition':self.condition,'':self.item,'Task Time [s]':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.swarmplot(x='condition', y='Task Time [s]', data=self.TIME_df)
+		self.ax = sns.boxplot(x='condition', y='Task Time [s]', data=self.TIME_df)
 		plt.savefig('data/ExportData/graph/TASK_TIME.png', dpi=300, format='png')
 		plt.figure()
 
@@ -331,7 +332,7 @@ class M_IMAGE:
 				self.value.append(self.i[name])
 		self.POINT_df = pd.DataFrame({'condition':self.condition,'':self.item,'Point':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.swarmplot(x='condition', y='Point', data=self.POINT_df)
+		self.ax = sns.boxplot(x='condition', y='Point', data=self.POINT_df)
 		plt.savefig('data/ExportData/graph/TASK_POINTS.png', dpi=300, format='png')
 		plt.figure()
 
@@ -340,7 +341,7 @@ class M_IMAGE:
 		self.value = []
 		self.time = []
 		self.point = []
-		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_TIME_POINT.xlsx'
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/TASK_TIME.xlsx'
 		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
 		for key in self.data.keys():
 			self.data_df = self.data[key]
@@ -361,6 +362,18 @@ class M_IMAGE:
 		sns.set_palette('Set2')
 		sns.scatterplot(data=self.PT_df, x='Task Time [s]', y='Point', hue='')
 		plt.savefig('data/ExportData/graph/TIME_POINTS.png', dpi=300, format='png')
+		plt.figure()
+
+	def fig_POINTS_TIME_ALL(self):
+		self.condition = []
+		self.value = []
+		self.time = []
+		self.point = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_TIME_POINT.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=0, index_col=0)
+		sns.set_palette('Set2')
+		sns.scatterplot(data=self.data, x='time', y='point', hue='condition')
+		plt.savefig('data/ExportData/graph/ALL_TIME_POINTS.png', dpi=300, format='png')
 		plt.figure()
 
 if __name__ in '__main__':
