@@ -1,7 +1,10 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
 import os
 import glob
 import pandas as pd
 import numpy as np
+import matplotlib_style
 
 class TIME_CALCULATE:
 	def __init__(self) -> None:
@@ -186,6 +189,24 @@ class TIME_CALCULATE:
 		print(self.Export_df)
 		self.Export_df.to_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_TIME_POINT.xlsx')
 
+	def ALL_POINT_TIME(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_TIME_POINT.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=0, index_col=0)
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='cycle',y='time',hue='condition',data=self.data)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.93, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('data/ExportData/graph/TIME_SERIES.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+		self.ax = sns.boxplot(x='cycle',y='point',hue='condition',data=self.data)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.93, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('data/ExportData/graph/POINT_SERIES.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+
 	def participant_l(self):
 		self.file_list = []
 		self.participant_list = []
@@ -213,5 +234,6 @@ class TIME_CALCULATE:
 
 if __name__ in '__main__':
 	read = TIME_CALCULATE()
-	read.save_time()
+	# read.save_time()
 	read.ALL_save_time()
+	read.ALL_POINT_TIME()

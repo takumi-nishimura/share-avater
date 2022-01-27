@@ -15,6 +15,42 @@ class Q_AVERAGE:
 		self.df_B_dict = {}
 		self.df_C_dict = {}
 		self.q_average_list = {}
+		self.tlx_A1_l = []
+		self.tlx_A2_l = []
+		self.tlx_A3_l = []
+		self.tlx_B1_l = []
+		self.tlx_B2_l = []
+		self.tlx_B3_l = []
+		self.tlx_C1_l = []
+		self.tlx_C2_l = []
+		self.tlx_C3_l = []
+		self.Q1_A1_l = []
+		self.Q1_A2_l = []
+		self.Q1_A3_l = []
+		self.Q1_B1_l = []
+		self.Q1_B2_l = []
+		self.Q1_B3_l = []
+		self.Q1_C1_l = []
+		self.Q1_C2_l = []
+		self.Q1_C3_l = []
+		self.Q2_A1_l = []
+		self.Q2_A2_l = []
+		self.Q2_A3_l = []
+		self.Q2_B1_l = []
+		self.Q2_B2_l = []
+		self.Q2_B3_l = []
+		self.Q2_C1_l = []
+		self.Q2_C2_l = []
+		self.Q2_C3_l = []
+		self.Q3_A1_l = []
+		self.Q3_A2_l = []
+		self.Q3_A3_l = []
+		self.Q3_B1_l = []
+		self.Q3_B2_l = []
+		self.Q3_B3_l = []
+		self.Q3_C1_l = []
+		self.Q3_C2_l = []
+		self.Q3_C3_l = []
 
 	def main(self):
 		self.participant_l()
@@ -26,6 +62,10 @@ class Q_AVERAGE:
 			self.MS_c()
 			self.MD_c()
 			self.SE_c()
+			self.ALL_TLX_c()
+			self.ALL_Q1_c()
+			self.ALL_Q2_c()
+			self.ALL_Q3_c()
 			self.make_l()
 		
 		self.write()
@@ -79,11 +119,11 @@ class Q_AVERAGE:
 		self.TLX_B = []
 		self.TLX_C = []
 		for i in range(len(self.df_A_dict)):
-			self.TLX_A.append(((self.df_A_dict[str(i+1)])['TLX_awwl'])[0])
+			self.TLX_A.append(((self.df_A_dict[str(i+1)])['TLX_awwl'])[0]/21)
 		for i in range(len(self.df_B_dict)):
-			self.TLX_B.append(((self.df_B_dict[str(i+1)])['TLX_awwl'])[0])
+			self.TLX_B.append(((self.df_B_dict[str(i+1)])['TLX_awwl'])[0]/21)
 		for i in range(len(self.df_C_dict)):
-			self.TLX_C.append(((self.df_C_dict[str(i+1)])['TLX_awwl'])[0])
+			self.TLX_C.append(((self.df_C_dict[str(i+1)])['TLX_awwl'])[0]/21)
 		self.TLX_average_A = pd.DataFrame({self.participant:np.average(self.TLX_A)}, index=['TLX_awwl'])
 		self.TLX_average_B = pd.DataFrame({self.participant:np.average(self.TLX_B)}, index=['TLX_awwl'])
 		self.TLX_average_C = pd.DataFrame({self.participant:np.average(self.TLX_C)}, index=['TLX_awwl'])
@@ -133,6 +173,114 @@ class Q_AVERAGE:
 		self.SE_average_B = pd.DataFrame({self.participant:np.average(self.SE_B, axis=0)}, index=['Q1','Q2','Q3','Q4','Q5'])
 		self.SE_average_C = pd.DataFrame({self.participant:np.average(self.SE_C, axis=0)}, index=['Q1','Q2','Q3','Q4','Q5'])
 		self.SE_average = {'A':self.SE_average_A,'B':self.SE_average_B,'C':self.SE_average_C}
+
+	def ALL_TLX_c(self):
+		self.TLX_A = []
+		self.TLX_B = []
+		self.TLX_C = []
+		for i in range(len(self.df_A_dict)):
+			self.TLX_A.append(((self.df_A_dict[str(i+1)])['TLX_awwl'])[0]/21)
+		for i in range(len(self.df_B_dict)):
+			self.TLX_B.append(((self.df_B_dict[str(i+1)])['TLX_awwl'])[0]/21)
+		for i in range(len(self.df_C_dict)):
+			self.TLX_C.append(((self.df_C_dict[str(i+1)])['TLX_awwl'])[0]/21)
+		self.tlx_A1_l.append(self.TLX_A[0])
+		self.tlx_A2_l.append(self.TLX_A[1])
+		self.tlx_A3_l.append(self.TLX_A[2])
+		self.tlx_B1_l.append(self.TLX_B[0])
+		self.tlx_B2_l.append(self.TLX_B[1])
+		self.tlx_B3_l.append(self.TLX_B[2])
+		self.tlx_C1_l.append(self.TLX_C[0])
+		self.tlx_C2_l.append(self.TLX_C[1])
+		self.tlx_C3_l.append(self.TLX_C[2])
+		self.tlx_1_df = pd.DataFrame({'A':self.tlx_A1_l,'B':self.tlx_B1_l,'C':self.tlx_C1_l})
+		self.tlx_2_df = pd.DataFrame({'A':self.tlx_A2_l,'B':self.tlx_B2_l,'C':self.tlx_C2_l})
+		self.tlx_3_df = pd.DataFrame({'A':self.tlx_A3_l,'B':self.tlx_B3_l,'C':self.tlx_C3_l})
+		with pd.ExcelWriter('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_TLX_COST.xlsx') as writer:
+			self.tlx_1_df.to_excel(writer, sheet_name='1')
+			self.tlx_2_df.to_excel(writer, sheet_name='2')
+			self.tlx_3_df.to_excel(writer, sheet_name='3')
+
+	def ALL_Q1_c(self):
+		self.Q1_A = []
+		self.Q1_B = []
+		self.Q1_C = []
+		for i in range(len(self.df_A_dict)):
+			self.Q1_A.append(((self.df_A_dict[str(i+1)])['SE_r'])[0])
+		for i in range(len(self.df_B_dict)):
+			self.Q1_B.append(((self.df_B_dict[str(i+1)])['SE_r'])[0])
+		for i in range(len(self.df_C_dict)):
+			self.Q1_C.append(((self.df_C_dict[str(i+1)])['SE_r'])[0])
+		self.Q1_A1_l.append(self.Q1_A[0])
+		self.Q1_A2_l.append(self.Q1_A[1])
+		self.Q1_A3_l.append(self.Q1_A[2])
+		self.Q1_B1_l.append(self.Q1_B[0])
+		self.Q1_B2_l.append(self.Q1_B[1])
+		self.Q1_B3_l.append(self.Q1_B[2])
+		self.Q1_C1_l.append(self.Q1_C[0])
+		self.Q1_C2_l.append(self.Q1_C[1])
+		self.Q1_C3_l.append(self.Q1_C[2])
+		self.Q1_1_df = pd.DataFrame({'A':self.Q1_A1_l,'B':self.Q1_B1_l,'C':self.Q1_C1_l})
+		self.Q1_2_df = pd.DataFrame({'A':self.Q1_A2_l,'B':self.Q1_B2_l,'C':self.Q1_C2_l})
+		self.Q1_3_df = pd.DataFrame({'A':self.Q1_A3_l,'B':self.Q1_B3_l,'C':self.Q1_C3_l})
+		with pd.ExcelWriter('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_Q1.xlsx') as writer:
+			self.Q1_1_df.to_excel(writer, sheet_name='1')
+			self.Q1_2_df.to_excel(writer, sheet_name='2')
+			self.Q1_3_df.to_excel(writer, sheet_name='3')
+
+	def ALL_Q2_c(self):
+		self.Q2_A = []
+		self.Q2_B = []
+		self.Q2_C = []
+		for i in range(len(self.df_A_dict)):
+			self.Q2_A.append(((self.df_A_dict[str(i+1)])['SE_r'])[1])
+		for i in range(len(self.df_B_dict)):
+			self.Q2_B.append(((self.df_B_dict[str(i+1)])['SE_r'])[1])
+		for i in range(len(self.df_C_dict)):
+			self.Q2_C.append(((self.df_C_dict[str(i+1)])['SE_r'])[1])
+		self.Q2_A1_l.append(self.Q2_A[0])
+		self.Q2_A2_l.append(self.Q2_A[1])
+		self.Q2_A3_l.append(self.Q2_A[2])
+		self.Q2_B1_l.append(self.Q2_B[0])
+		self.Q2_B2_l.append(self.Q2_B[1])
+		self.Q2_B3_l.append(self.Q2_B[2])
+		self.Q2_C1_l.append(self.Q2_C[0])
+		self.Q2_C2_l.append(self.Q2_C[1])
+		self.Q2_C3_l.append(self.Q2_C[2])
+		self.Q2_1_df = pd.DataFrame({'A':self.Q2_A1_l,'B':self.Q2_B1_l,'C':self.Q2_C1_l})
+		self.Q2_2_df = pd.DataFrame({'A':self.Q2_A2_l,'B':self.Q2_B2_l,'C':self.Q2_C2_l})
+		self.Q2_3_df = pd.DataFrame({'A':self.Q2_A3_l,'B':self.Q2_B3_l,'C':self.Q2_C3_l})
+		with pd.ExcelWriter('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_Q2.xlsx') as writer:
+			self.Q2_1_df.to_excel(writer, sheet_name='1')
+			self.Q2_2_df.to_excel(writer, sheet_name='2')
+			self.Q2_3_df.to_excel(writer, sheet_name='3')
+
+	def ALL_Q3_c(self):
+		self.Q3_A = []
+		self.Q3_B = []
+		self.Q3_C = []
+		for i in range(len(self.df_A_dict)):
+			self.Q3_A.append(((self.df_A_dict[str(i+1)])['SE_r'])[2])
+		for i in range(len(self.df_B_dict)):
+			self.Q3_B.append(((self.df_B_dict[str(i+1)])['SE_r'])[2])
+		for i in range(len(self.df_C_dict)):
+			self.Q3_C.append(((self.df_C_dict[str(i+1)])['SE_r'])[2])
+		self.Q3_A1_l.append(self.Q3_A[0])
+		self.Q3_A2_l.append(self.Q3_A[1])
+		self.Q3_A3_l.append(self.Q3_A[2])
+		self.Q3_B1_l.append(self.Q3_B[0])
+		self.Q3_B2_l.append(self.Q3_B[1])
+		self.Q3_B3_l.append(self.Q3_B[2])
+		self.Q3_C1_l.append(self.Q3_C[0])
+		self.Q3_C2_l.append(self.Q3_C[1])
+		self.Q3_C3_l.append(self.Q3_C[2])
+		self.Q3_1_df = pd.DataFrame({'A':self.Q3_A1_l,'B':self.Q3_B1_l,'C':self.Q3_C1_l})
+		self.Q3_2_df = pd.DataFrame({'A':self.Q3_A2_l,'B':self.Q3_B2_l,'C':self.Q3_C2_l})
+		self.Q3_3_df = pd.DataFrame({'A':self.Q3_A3_l,'B':self.Q3_B3_l,'C':self.Q3_C3_l})
+		with pd.ExcelWriter('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_Q3.xlsx') as writer:
+			self.Q3_1_df.to_excel(writer, sheet_name='1')
+			self.Q3_2_df.to_excel(writer, sheet_name='2')
+			self.Q3_3_df.to_excel(writer, sheet_name='3')
 
 	def make_l(self):
 		self.q_average = pd.DataFrame(data={'TLX_awwl':self.TLX_average,'MS_score':self.MS_average,'MD':self.MD_average,'SE':self.SE_average})
@@ -200,6 +348,10 @@ class Q_IMAGE:
 		self.fig_SE()
 		self.fig_TLX()
 		self.fig_MD()
+		self.fig_ALL_TLX()
+		self.fig_ALL_Q1()
+		self.fig_ALL_Q2()
+		self.fig_ALL_Q3()
 
 	def fig_MS(self):
 		self.condition = []
@@ -367,9 +519,9 @@ class Q_IMAGE:
 						self.condition.append('robot speed')
 					self.item.append(index)
 					self.value.append(self.i[name])
-		self.TLX_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
+		self.TLX_df = pd.DataFrame({'condition':self.condition,'':self.item,'AWWL':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.TLX_df)
+		self.ax = sns.boxplot(x='condition', y='AWWL', data=self.TLX_df)
 		plt.savefig('questionnaire/graph/TLX_AWWL.png', dpi=300, format='png')
 		plt.figure()
 	
@@ -400,6 +552,122 @@ class Q_IMAGE:
 		self.ax = sns.boxplot(x='condition', y='Questionnaire rating', data=self.MD_df)
 		self.ax.set_ylim(0,8)
 		plt.savefig('questionnaire/graph/MD_SCORE.png', dpi=300, format='png')
+		plt.figure()
+
+	def fig_ALL_TLX(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_TLX_COST.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		self.condition = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		for key in self.keys:
+			for k, l in enumerate(self.data[self.keys[0]].columns.values):
+				for j in range(len(self.data[key][l].values)):
+					self.value.append(self.data[key][l].values[j])
+					self.cycle.append(key)
+					if l == 'A':
+						self.condition.append('without feedback')
+					elif l == 'B':
+						self.condition.append('companion speed')
+					elif l == 'C':
+						self.condition.append('robot speed')
+		self.ALLDTW_df = pd.DataFrame({'condition':self.condition,'AWWL':self.value,'Cycle':self.cycle})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='Cycle',y='AWWL',hue='condition',data=self.ALLDTW_df)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('questionnaire/graph/ALL_TLX_SCORE.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+
+	def fig_ALL_Q1(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_Q1.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		self.condition = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		for key in self.keys:
+			for k, l in enumerate(self.data[self.keys[0]].columns.values):
+				for j in range(len(self.data[key][l].values)):
+					self.value.append(self.data[key][l].values[j])
+					self.cycle.append(key)
+					if l == 'A':
+						self.condition.append('without feedback')
+					elif l == 'B':
+						self.condition.append('companion speed')
+					elif l == 'C':
+						self.condition.append('robot speed')
+		self.ALLQ1_df = pd.DataFrame({'condition':self.condition,'Questionnaire rating':self.value,'Cycle':self.cycle})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='Cycle',y='Questionnaire rating',hue='condition',data=self.ALLQ1_df)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('questionnaire/graph/ALL_Q1.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+
+	def fig_ALL_Q2(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_Q2.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		self.condition = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		for key in self.keys:
+			for k, l in enumerate(self.data[self.keys[0]].columns.values):
+				for j in range(len(self.data[key][l].values)):
+					self.value.append(self.data[key][l].values[j])
+					self.cycle.append(key)
+					if l == 'A':
+						self.condition.append('without feedback')
+					elif l == 'B':
+						self.condition.append('companion speed')
+					elif l == 'C':
+						self.condition.append('robot speed')
+		self.ALLQ2_df = pd.DataFrame({'condition':self.condition,'Questionnaire rating':self.value,'Cycle':self.cycle})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='Cycle',y='Questionnaire rating',hue='condition',data=self.ALLQ2_df)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('questionnaire/graph/ALL_Q2.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+
+	def fig_ALL_Q3(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/q_calculate/ALL_Q3.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		self.condition = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		for key in self.keys:
+			for k, l in enumerate(self.data[self.keys[0]].columns.values):
+				for j in range(len(self.data[key][l].values)):
+					self.value.append(self.data[key][l].values[j])
+					self.cycle.append(key)
+					if l == 'A':
+						self.condition.append('without feedback')
+					elif l == 'B':
+						self.condition.append('companion speed')
+					elif l == 'C':
+						self.condition.append('robot speed')
+		self.ALLQ3_df = pd.DataFrame({'condition':self.condition,'Questionnaire rating':self.value,'Cycle':self.cycle})
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='Cycle',y='Questionnaire rating',hue='condition',data=self.ALLQ3_df)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('questionnaire/graph/ALL_Q3.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()
 
 if __name__ in '__main__':

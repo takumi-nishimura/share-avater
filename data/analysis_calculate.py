@@ -1,3 +1,4 @@
+from curses import flash
 from time import time
 import pandas as pd
 import numpy as np
@@ -5,6 +6,7 @@ import os
 import glob
 import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib_style
 from time_calculate import TIME_CALCULATE
 from analysis_DTW import DTW
 from analysis_Jerk import JERK
@@ -34,9 +36,11 @@ class DATACALCULATE:
 		if score:
 			self.score.save_time()
 		if dtw:
-			self.dtw_c()
+			# self.dtw_c()
+			self.ALL_dtw_c()
 		if jrk:
-			self.jrk_c()
+			# self.jrk_c()
+			self.ALL_jrk_c()
 		if cot:
 			self.CoT_s()
 			print('save_finish')
@@ -76,6 +80,56 @@ class DATACALCULATE:
 			self.Export_dtw[key] = [self.dict_dtw[key][0],self.dict_dtw[key][1],self.dict_dtw[key][2]]
 		self.toXlsx(evaluation='DTW_SCORE', df=self.Export_dtw)
 
+	def ALL_dtw_c(self):
+		self.dtw_A_l = []
+		self.dtw_B_l = []
+		self.dtw_C_l = []
+		self.dtw_A1_l = []
+		self.dtw_A2_l = []
+		self.dtw_A3_l = []
+		self.dtw_B1_l = []
+		self.dtw_B2_l = []
+		self.dtw_B3_l = []
+		self.dtw_C1_l = []
+		self.dtw_C2_l = []
+		self.dtw_C3_l = []
+		for self.participant in self.participant_list:
+			print(self.participant)
+			self.read()
+			for i, j in enumerate(['A','B','C']):
+				print(j)
+				if j == 'A':
+					for k in range(3):
+						self.dtw_A = self.dtw.main(self.df_A_r_dict[str(k+1)],self.df_A_1_dict[str(k+1)],self.df_A_2_dict[str(k+1)],self.participant,j,str(k+1))
+						self.dtw_A_l.append(self.dtw_A)
+				elif j == 'B':
+					for k in range(3):
+						self.dtw_B = self.dtw.main(self.df_B_r_dict[str(k+1)],self.df_B_1_dict[str(k+1)],self.df_B_2_dict[str(k+1)],self.participant,j,str(k+1))
+						self.dtw_B_l.append(self.dtw_B)
+				elif j == 'C':
+					for k in range(3):
+						self.dtw_C = self.dtw.main(self.df_C_r_dict[str(k+1)],self.df_C_1_dict[str(k+1)],self.df_C_2_dict[str(k+1)],self.participant,j,str(k+1))
+						self.dtw_C_l.append(self.dtw_C)
+			self.dtw_A1_l.append(self.dtw_A_l[0])
+			self.dtw_A2_l.append(self.dtw_A_l[1])
+			self.dtw_A3_l.append(self.dtw_A_l[2])
+			self.dtw_B1_l.append(self.dtw_B_l[0])
+			self.dtw_B2_l.append(self.dtw_B_l[1])
+			self.dtw_B3_l.append(self.dtw_B_l[2])
+			self.dtw_C1_l.append(self.dtw_C_l[0])
+			self.dtw_C2_l.append(self.dtw_C_l[1])
+			self.dtw_C3_l.append(self.dtw_C_l[2])
+			self.dtw_A_l = []
+			self.dtw_B_l = []
+			self.dtw_C_l = []
+		self.dtw_1_df = pd.DataFrame({'A':self.dtw_A1_l,'B':self.dtw_B1_l,'C':self.dtw_C1_l})
+		self.dtw_2_df = pd.DataFrame({'A':self.dtw_A2_l,'B':self.dtw_B2_l,'C':self.dtw_C2_l})
+		self.dtw_3_df = pd.DataFrame({'A':self.dtw_A3_l,'B':self.dtw_B3_l,'C':self.dtw_C3_l})
+		with pd.ExcelWriter('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_DTW_COST.xlsx') as writer:
+			self.dtw_1_df.to_excel(writer, sheet_name='1')
+			self.dtw_2_df.to_excel(writer, sheet_name='2')
+			self.dtw_3_df.to_excel(writer, sheet_name='3')
+
 	def jrk_c(self):
 		self.jrk_A_l = []
 		self.jrk_B_l = []
@@ -109,6 +163,56 @@ class DATACALCULATE:
 		for key in self.dict_jrk.keys():
 			self.Export_jrk[key] = [self.dict_jrk[key][0],self.dict_jrk[key][1],self.dict_jrk[key][2]]
 		self.toXlsx(evaluation='JRK_SCORE', df=self.Export_jrk)
+
+	def ALL_jrk_c(self):
+		self.jrk_A_l = []
+		self.jrk_B_l = []
+		self.jrk_C_l = []
+		self.jrk_A1_l = []
+		self.jrk_A2_l = []
+		self.jrk_A3_l = []
+		self.jrk_B1_l = []
+		self.jrk_B2_l = []
+		self.jrk_B3_l = []
+		self.jrk_C1_l = []
+		self.jrk_C2_l = []
+		self.jrk_C3_l = []
+		for self.participant in self.participant_list:
+			print(self.participant)
+			self.read()
+			for i, j in enumerate(['A','B','C']):
+				print(j)
+				if j == 'A':
+					for k in range(3):
+						self.jrk_A = self.jrk.main(self.df_A_r_dict[str(k+1)])
+						self.jrk_A_l.append(self.jrk_A)
+				elif j == 'B':
+					for k in range(3):
+						self.jrk_B = self.jrk.main(self.df_B_r_dict[str(k+1)])
+						self.jrk_B_l.append(self.jrk_B)
+				elif j == 'C':
+					for k in range(3):
+						self.jrk_C = self.jrk.main(self.df_C_r_dict[str(k+1)])
+						self.jrk_C_l.append(self.jrk_C)
+			self.jrk_A1_l.append(self.jrk_A_l[0])
+			self.jrk_A2_l.append(self.jrk_A_l[1])
+			self.jrk_A3_l.append(self.jrk_A_l[2])
+			self.jrk_B1_l.append(self.jrk_B_l[0])
+			self.jrk_B2_l.append(self.jrk_B_l[1])
+			self.jrk_B3_l.append(self.jrk_B_l[2])
+			self.jrk_C1_l.append(self.jrk_C_l[0])
+			self.jrk_C2_l.append(self.jrk_C_l[1])
+			self.jrk_C3_l.append(self.jrk_C_l[2])
+			self.jrk_A_l = []
+			self.jrk_B_l = []
+			self.jrk_C_l = []
+		self.jrk_1_df = pd.DataFrame({'A':self.jrk_A1_l,'B':self.jrk_B1_l,'C':self.jrk_C1_l})
+		self.jrk_2_df = pd.DataFrame({'A':self.jrk_A2_l,'B':self.jrk_B2_l,'C':self.jrk_C2_l})
+		self.jrk_3_df = pd.DataFrame({'A':self.jrk_A3_l,'B':self.jrk_B3_l,'C':self.jrk_C3_l})
+		with pd.ExcelWriter('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_JRK_COST.xlsx') as writer:
+			self.jrk_1_df.to_excel(writer, sheet_name='1')
+			self.jrk_2_df.to_excel(writer, sheet_name='2')
+			self.jrk_3_df.to_excel(writer, sheet_name='3')
 
 	def CoT_s(self):
 		self.cot_A_l = []
@@ -226,7 +330,9 @@ class M_IMAGE:
 
 	def main(self):
 		self.fig_dtw()
+		self.fig_ALL_dtw()
 		self.fig_jrk()
+		self.fig_ALL_jrk()
 		self.fig_TIME()
 		self.fig_POINTS()
 		self.fig_POINTS_TIME()
@@ -260,6 +366,35 @@ class M_IMAGE:
 		plt.savefig('data/ExportData/graph/DTW_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
+	def fig_ALL_dtw(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_DTW_COST.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		self.condition = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		for key in self.keys:
+			for k, l in enumerate(self.data[self.keys[0]].columns.values):
+				for j in range(len(self.data[key][l].values)):
+					self.value.append(self.data[key][l].values[j])
+					self.cycle.append(key)
+					if l == 'A':
+						self.condition.append('without feedback')
+					elif l == 'B':
+						self.condition.append('companion speed')
+					elif l == 'C':
+						self.condition.append('robot speed')
+		self.ALLDTW_df = pd.DataFrame({'condition':self.condition,'DTW Score':self.value,'Cycle':self.cycle})
+		sns.set_palette('Set2')
+		self.ax = sns.violinplot(x='Cycle',y='DTW Score',hue='condition',data=self.ALLDTW_df)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.87, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('data/ExportData/graph/ALL_DTW.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+
 	def fig_jrk(self):
 		self.condition = []
 		self.item = []
@@ -284,10 +419,39 @@ class M_IMAGE:
 					self.value.append(self.i[name])
 		self.JRK_df = pd.DataFrame({'condition':self.condition,'':self.item,'Jerk Index':self.value})
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='Jerk Index', data=self.JRK_df)
+		self.ax = sns.boxplot(x='condition', y='Jerk Index', data=self.JRK_df, showfliers = True)
 		plt.savefig('data/ExportData/graph/JRK_SCORE.png', dpi=300, format='png')
 		plt.figure()
 
+	def fig_ALL_jrk(self):
+		self.condition = []
+		self.cycle = []
+		self.value = []
+		self.path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/卒論実験/m_calculate/ALL_JRK_COST.xlsx'
+		self.data = pd.read_excel(self.path, sheet_name=None, index_col=0)
+		self.keys = []
+		self.condition = []
+		for i in self.data.keys():
+			self.keys.append(i)
+		for key in self.keys:
+			for k, l in enumerate(self.data[self.keys[0]].columns.values):
+				for j in range(len(self.data[key][l].values)):
+					self.value.append(self.data[key][l].values[j])
+					self.cycle.append(key)
+					if l == 'A':
+						self.condition.append('without feedback')
+					elif l == 'B':
+						self.condition.append('companion speed')
+					elif l == 'C':
+						self.condition.append('robot speed')
+		self.ALLJRK_df = pd.DataFrame({'condition':self.condition,'Jerk Index':self.value,'Cycle':self.cycle})
+		sns.set_palette('Set2')
+		self.ax = sns.violinplot(x='Cycle',y='Jerk Index',hue='condition',data=self.ALLJRK_df,showfliers=False,cut=0)
+		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.87, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('data/ExportData/graph/ALL_JRK.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.figure()
+	
 	def fig_TIME(self):
 		self.condition = []
 		self.item = []
@@ -379,5 +543,5 @@ class M_IMAGE:
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
 	figure = M_IMAGE()
-	calculate.main(dtw=True, jrk=True, cot=False)
+	# calculate.main(dtw=False, jrk=False, cot=True)
 	figure.main()
