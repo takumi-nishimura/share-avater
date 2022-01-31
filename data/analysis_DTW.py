@@ -11,7 +11,7 @@ class DTW:
 
 	def main(self, robot, begginer, expert, participant, condition, cycle):
 		self.robot, self.begginer, self.expert = self.get_data(robot,begginer,expert)
-		self.result = self.f_dtw(self.begginer, self.expert, participant, condition, cycle, show=False, save=False)
+		self.result = self.f_dtw(self.begginer, self.expert, participant, condition, cycle, show=False, save=True)
 		return self.result
 
 	def get_data(self,d_r,d_1,d_2):
@@ -41,7 +41,7 @@ class DTW:
 	def f_dtw(self,d1,d2, participant, condition, cycle, show:bool=False, save:bool=False):
 		self.a1 = np.array(d1)
 		self.a2 = np.array(d2)
-		dtw_c,dtw_p = fastdtw(self.a1,self.a2,dist=euclidean)
+		dtw_c,dtw_p = fastdtw(self.a1,self.a2,radius=2,dist=euclidean)
 		print(dtw_c)
 
 		if show:

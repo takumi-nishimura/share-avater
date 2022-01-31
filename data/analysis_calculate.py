@@ -355,9 +355,9 @@ class M_IMAGE:
 					if index == 'A':
 						self.condition.append('without feedback')
 					elif index == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif index == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 					self.item.append(index)
 					self.value.append(self.i[name])
 		self.DTW_df = pd.DataFrame({'condition':self.condition,'':self.item,'DTW score':self.value})
@@ -384,14 +384,14 @@ class M_IMAGE:
 					if l == 'A':
 						self.condition.append('without feedback')
 					elif l == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif l == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 		self.ALLDTW_df = pd.DataFrame({'condition':self.condition,'DTW Score':self.value,'Cycle':self.cycle})
 		sns.set_palette('Set2')
-		self.ax = sns.violinplot(x='Cycle',y='DTW Score',hue='condition',data=self.ALLDTW_df)
-		self.ax.legend([],['without feedback','companion speed','robot speed'])
-		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.87, 0.5, 0.5, .100), borderaxespad=0.,)
+		self.ax = sns.boxplot(x='Cycle',y='DTW Score',hue='condition',data=self.ALLDTW_df)
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
 		plt.savefig('data/ExportData/graph/ALL_DTW.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()
 
@@ -412,9 +412,9 @@ class M_IMAGE:
 					if index == 'A':
 						self.condition.append('without feedback')
 					elif index == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif index == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 					self.item.append(index)
 					self.value.append(self.i[name])
 		self.JRK_df = pd.DataFrame({'condition':self.condition,'':self.item,'Jerk Index':self.value})
@@ -441,13 +441,13 @@ class M_IMAGE:
 					if l == 'A':
 						self.condition.append('without feedback')
 					elif l == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif l == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 		self.ALLJRK_df = pd.DataFrame({'condition':self.condition,'Jerk Index':self.value,'Cycle':self.cycle})
 		sns.set_palette('Set2')
 		self.ax = sns.violinplot(x='Cycle',y='Jerk Index',hue='condition',data=self.ALLJRK_df,showfliers=False,cut=0)
-		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
 		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.87, 0.5, 0.5, .100), borderaxespad=0.,)
 		plt.savefig('data/ExportData/graph/ALL_JRK.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()
@@ -465,9 +465,9 @@ class M_IMAGE:
 				if index == 'A':
 					self.condition.append('without feedback')
 				elif index == 'B':
-					self.condition.append('companion speed')
+					self.condition.append('partner velocity')
 				elif index == 'C':
-					self.condition.append('robot speed')
+					self.condition.append('robot velocity')
 				self.item.append(index)
 				self.value.append(self.i[name])
 		self.TIME_df = pd.DataFrame({'condition':self.condition,'':self.item,'Task Time [s]':self.value})
@@ -489,9 +489,9 @@ class M_IMAGE:
 				if index == 'A':
 					self.condition.append('without feedback')
 				elif index == 'B':
-					self.condition.append('companion speed')
+					self.condition.append('partner velocity')
 				elif index == 'C':
-					self.condition.append('robot speed')
+					self.condition.append('robot velocity')
 				self.item.append(index)
 				self.value.append(self.i[name])
 		self.POINT_df = pd.DataFrame({'condition':self.condition,'':self.item,'Point':self.value})
@@ -516,9 +516,9 @@ class M_IMAGE:
 						if index == 'A':
 							self.condition.append('without feedback')
 						elif index == 'B':
-							self.condition.append('companion speed')
+							self.condition.append('partner velocity')
 						elif index == 'C':
-							self.condition.append('robot speed')
+							self.condition.append('robot velocity')
 						self.time.append(self.value[i])
 					elif key == 'Points':
 						self.point.append(self.value[i])
@@ -543,5 +543,5 @@ class M_IMAGE:
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
 	figure = M_IMAGE()
-	# calculate.main(dtw=False, jrk=False, cot=True)
+	# calculate.main(dtw=True, jrk=False, cot=False)
 	figure.main()

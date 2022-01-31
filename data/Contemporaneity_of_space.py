@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import matplotlib_style
 
 def import_data(number,path):
 	n = number + 1
@@ -48,7 +49,7 @@ def dtw_n(d1,d2):
 def f_dtw(d1,d2,show:bool=False,save:bool=False):
 	a1 = np.array(d1)
 	a2 = np.array(d2)
-	dtw_c,dtw_p = fastdtw(a1,a2,dist=euclidean)
+	dtw_c,dtw_p = fastdtw(a1,a2,radius=5,dist=euclidean)
 	print(dtw_c)
 
 	fig = plt.figure()
@@ -57,7 +58,7 @@ def f_dtw(d1,d2,show:bool=False,save:bool=False):
 		ax.plot([a1[i][0],a2[j][0]],[a1[i][1],a2[j][1]],[a1[i][2],a2[j][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
-	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
+	ax.legend(bbox_to_anchor=(0.95, 0.8), loc='upper left', borderaxespad=0, fontsize=12)
 	ax.view_init(elev=50, azim=13)
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
@@ -81,8 +82,8 @@ def norm_cost(d1,d2,show:bool=False,save:bool=False):
 		ax.plot([a1[i][0],a2[i][0]],[a1[i][1],a2[i][1]],[a1[i][2],a2[i][2]],color='gray', linestyle='dashdot',linewidth = 0.3)
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
-	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
-	ax.view_init(elev=30, azim=50)
+	ax.legend(bbox_to_anchor=(0.95, 0.8), loc='upper left', borderaxespad=0, fontsize=12)
+	ax.view_init(elev=50, azim=13)
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
 
@@ -118,7 +119,7 @@ def plot_3d():
 	ax.plot(begginer['x2'],begginer['y2'],begginer['z2'],label='begginer')
 	ax.plot(expert['x1'],expert['y1'],expert['z1'],label='expert')
 	ax.view_init(elev=13, azim=13)
-	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=9)
+	ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=12)
 	ax.set_box_aspect((1,1,1))
 	filename = os.path.splitext(os.path.basename(path))[0]
 	plt.title(filename)
@@ -127,12 +128,12 @@ def plot_3d():
 
 if __name__ == '__main__':
 	for i in range(1):
-		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/20211108/fusion/20211112_tsuruoka_tanada_partner_')
+		data,path = import_data(number=i,path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/20211108/fusion/20211112_tsuruoka_tanada_woFB_')
 		robot,expert,begginer = get_data(data)
 
 		# dtw_n(expert,begginer)
 		f_dtw(expert,begginer,show=True,save=False)
-		# norm_cost(expert,begginer,show=False,save=False)
+		norm_cost(expert,begginer,show=True,save=False)
 		# path_norm(participants='begginner')
 
 		# plot_3d()

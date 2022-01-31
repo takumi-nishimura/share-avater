@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from scipy import signal
 import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib_style
 import os
 from statistics import mean
 
@@ -26,6 +28,8 @@ class GRAPH2D:
 			self.x.append(p[i][0])
 			self.y.append(p[i][1])
 			self.z.append(p[i][2])
+		self.pos = pd.DataFrame({'x':self.x,'y':self.y,'z':self.z})
+		return self.pos
 
 	def getSpeed(self,t,g1):
 		self.mean_dt = mean(np.diff(t))
@@ -116,3 +120,34 @@ class GRAPH2D:
 		self.df_r = self.df_c.reset_index(drop=True)
 		self.df_r.to_csv(self.filename)
 		print('write csv')
+
+	def fig_3x(self,df):
+		self.fig, self.ax1 = plt.subplots()
+		self.fig.subplots_adjust(bottom=0.2)
+		self.fig.subplots_adjust(right=0.75)
+		self.fig.subplots_adjust(left=0.1)
+		sns.set_palette('Set2')
+		self.ax1.sns.lineplot(data=df,x='Time [s]',y='z [mm]')
+		self.ax2 = self.ax1.twinx()
+		self.ax2.sns.lineplot(data=df,x='Time [s]',y='Beginner [mm/s]')
+		self.ax3 = self.ax1.twinx()
+		self.ax3.sns.lineplot(data=df,x='Time [s]',y='Expert [mm/s]')
+		plt.tight_layout()
+		plt.show()
+
+if __name__ in '__main__':
+	g_r = GRAPH2D()
+	g_1 = GRAPH2D()
+	g_2 = GRAPH2D()
+	data = pd.read_csv('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/20211108/fusion/20211112_tsuruoka_tanada_woFB_5.csv')
+	pos_r = pd.DataFrame({'x':data['x'],'y':data['y'],'z':data['z']})
+	pos_1 = pd.DataFrame({'x':data['x1'],'y':data['y1'],'z':data['z1']})
+	pos_2 = pd.DataFrame({'x':data['x2'],'y':data['y2'],'z':data['z2']})
+	g_r.get_speed_list(time=data['time'],pos=pos_r)
+	g_1.get_speed_list(time=data['time'],pos=pos_1)
+	g_2.get_speed_list(time=data['time'],pos=pos_2)
+	vel_r_norm = g_r.get_norm(g_r.vy1_filt,g_r.vy2_filt,g_r.vy3_filt)
+	vel_1_norm = g_1.get_norm(g_1.vy1_filt,g_1.vy2_filt,g_1.vy3_filt)
+	vel_2_norm = g_2.get_norm(g_2.vy1_filt,g_2.vy2_filt,g_2.vy3_filt)
+	vel_df = pd.DataFrame({'Time [s]':data['time'],'z [mm]':data['y'],'Robot velocity [mm/s]':vel_r_norm,'Beginner [mm/s]':vel_2_norm,'Expert [mm/s]':vel_1_norm})
+	g_r.fig_3x(df=vel_df)	

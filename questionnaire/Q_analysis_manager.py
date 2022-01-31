@@ -370,9 +370,9 @@ class Q_IMAGE:
 					if key == 'A':
 						self.condition.append('without feedback')
 					elif key == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif key == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 					if index == 'ownership':
 						self.item.append('Ownership')
 					elif index == 'ownership_control':
@@ -421,9 +421,9 @@ class Q_IMAGE:
 						if key == 'A':
 							self.condition_1.append('without feedback')
 						elif key == 'B':
-							self.condition_1.append('companion speed')
+							self.condition_1.append('partner velocity')
 						elif key == 'C':
-							self.condition_1.append('robot speed')
+							self.condition_1.append('robot velocity')
 						self.item_1.append(index)
 						self.value_1.append(self.i_1[name])
 				elif index == 'Q2':
@@ -432,9 +432,9 @@ class Q_IMAGE:
 						if key == 'A':
 							self.condition_2.append('without feedback')
 						elif key == 'B':
-							self.condition_2.append('companion speed')
+							self.condition_2.append('partner velocity')
 						elif key == 'C':
-							self.condition_2.append('robot speed')
+							self.condition_2.append('robot velocity')
 						self.item_2.append(index)
 						self.value_2.append(self.i_2[name])
 				elif index == 'Q3':
@@ -443,9 +443,9 @@ class Q_IMAGE:
 						if key == 'A':
 							self.condition_3.append('without feedback')
 						elif key == 'B':
-							self.condition_3.append('companion speed')
+							self.condition_3.append('partner velocity')
 						elif key == 'C':
-							self.condition_3.append('robot speed')
+							self.condition_3.append('robot velocity')
 						self.item_3.append(index)
 						self.value_3.append(self.i_3[name])
 				elif index == 'Q4':
@@ -454,9 +454,9 @@ class Q_IMAGE:
 						if key == 'A':
 							self.condition_4.append('without feedback')
 						elif key == 'B':
-							self.condition_4.append('companion speed')
+							self.condition_4.append('partner velocity')
 						elif key == 'C':
-							self.condition_4.append('robot speed')
+							self.condition_4.append('robot velocity')
 						self.item_4.append(index)
 						self.value_4.append(self.i_4[name])
 				elif index == 'Q5':
@@ -465,9 +465,9 @@ class Q_IMAGE:
 						if key == 'A':
 							self.condition_5.append('without feedback')
 						elif key == 'B':
-							self.condition_5.append('companion speed')
+							self.condition_5.append('partner velocity')
 						elif key == 'C':
-							self.condition_5.append('robot speed')
+							self.condition_5.append('robot velocity')
 						self.item_5.append(index)
 						self.value_5.append(self.i_5[name])
 
@@ -514,9 +514,9 @@ class Q_IMAGE:
 					if index == 'A':
 						self.condition.append('without feedback')
 					elif index == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif index == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 					self.item.append(index)
 					self.value.append(self.i[name])
 		self.TLX_df = pd.DataFrame({'condition':self.condition,'':self.item,'AWWL':self.value})
@@ -542,9 +542,9 @@ class Q_IMAGE:
 					if index == 'A':
 						self.condition.append('without feedback')
 					elif index == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif index == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 					self.item.append(index)
 					self.value.append(self.i[name])
 		self.MD_df = pd.DataFrame({'condition':self.condition,'':self.item,'Questionnaire rating':self.value})
@@ -572,13 +572,13 @@ class Q_IMAGE:
 					if l == 'A':
 						self.condition.append('without feedback')
 					elif l == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif l == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 		self.ALLDTW_df = pd.DataFrame({'condition':self.condition,'AWWL':self.value,'Cycle':self.cycle})
 		sns.set_palette('Set2')
 		self.ax = sns.boxplot(x='Cycle',y='AWWL',hue='condition',data=self.ALLDTW_df)
-		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
 		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
 		plt.savefig('questionnaire/graph/ALL_TLX_SCORE.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()
@@ -601,13 +601,13 @@ class Q_IMAGE:
 					if l == 'A':
 						self.condition.append('without feedback')
 					elif l == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif l == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 		self.ALLQ1_df = pd.DataFrame({'condition':self.condition,'Questionnaire rating':self.value,'Cycle':self.cycle})
 		sns.set_palette('Set2')
 		self.ax = sns.boxplot(x='Cycle',y='Questionnaire rating',hue='condition',data=self.ALLQ1_df)
-		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
 		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
 		plt.savefig('questionnaire/graph/ALL_Q1.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()
@@ -630,13 +630,13 @@ class Q_IMAGE:
 					if l == 'A':
 						self.condition.append('without feedback')
 					elif l == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif l == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 		self.ALLQ2_df = pd.DataFrame({'condition':self.condition,'Questionnaire rating':self.value,'Cycle':self.cycle})
 		sns.set_palette('Set2')
 		self.ax = sns.boxplot(x='Cycle',y='Questionnaire rating',hue='condition',data=self.ALLQ2_df)
-		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
 		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
 		plt.savefig('questionnaire/graph/ALL_Q2.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()
@@ -659,13 +659,13 @@ class Q_IMAGE:
 					if l == 'A':
 						self.condition.append('without feedback')
 					elif l == 'B':
-						self.condition.append('companion speed')
+						self.condition.append('partner velocity')
 					elif l == 'C':
-						self.condition.append('robot speed')
+						self.condition.append('robot velocity')
 		self.ALLQ3_df = pd.DataFrame({'condition':self.condition,'Questionnaire rating':self.value,'Cycle':self.cycle})
 		sns.set_palette('Set2')
 		self.ax = sns.boxplot(x='Cycle',y='Questionnaire rating',hue='condition',data=self.ALLQ3_df)
-		self.ax.legend([],['without feedback','companion speed','robot speed'])
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
 		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
 		plt.savefig('questionnaire/graph/ALL_Q3.png',dpi=300, format='png', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.figure()

@@ -1,5 +1,8 @@
+from cProfile import label
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib_style
+import seaborn as sns
 import numpy as np
 from scipy import signal
 import os
@@ -92,9 +95,9 @@ def main():
 	v_norm = get_norm(vy_1,vy_2,vy_3)
 	v_norm_1 = get_norm(vy_1_1,vy_2_1,vy_3_1)
 	v_norm_2 = get_norm(vy_1_2,vy_2_2,vy_3_2)
-	solox_graph(x,y3,'z',v_norm,'v_r',v_norm_1,'v_1',v_norm_2,'v_2')
+	# solox_graph(x,y3,'z',v_norm,'v_r',v_norm_1,'v_1',v_norm_2,'v_2')
 	# solox_graph(x,y3,'data_out_1',y4,'data_out_2',y5,'data_out_3',y6,'data_out_4')
-	# twinx_graph(x,vy1,'v1',ay1,'a1',y1,'j1',y1,'x')
+	twinx_graph(x,y3,'Robot Z-Position',v_norm_2,'Beginner Velocity',v_norm_1,'Expert Velocity')
 
 def read(data,columns,s,e):
 	search_start = s
@@ -211,28 +214,35 @@ def solox_log_graph(y11,y12,y21,y22):
 	# plt.loglog(y41, 10 * np.log(y42))
 	plt.show()
 
-def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3,y4,lb4):
+def twinx_graph(x,y1,lb1,y2,lb2,y3,lb3):
+	# sns.set()
+	# sns.set('talk', 'whitegrid', 'Set2', font_scale=1,
+	# 		rc={"lines.linewidth": 2})
 	fig,ax1 = plt.subplots()
 	fig.subplots_adjust(bottom=0.2)
 	fig.subplots_adjust(right=0.75)
 	fig.subplots_adjust(left=0.1)
-	ax1.plot(x,y1,label=lb1,color='r')
+	ax1.plot(x,y1,label=lb1,color='forestgreen')
 	ax2 = ax1.twinx()
-	ax2.plot(x,y2,label=lb2,color='c')
-	ax3 = ax1.twinx()
-	ax3.plot(x,y3,label=lb3,color='b')
-	rspine = ax3.spines['right']
-	rspine.set_position(('axes', 1.1))
+	ax2.plot(x,y2,label=lb2,color='tab:orange')
+	# ax3 = ax1.twinx()
+	ax2.plot(x,y3,label=lb3,color='dodgerblue')
+	# rspine = ax2.spines['right']
+	# rspine.set_position(('axes', 1.1))
+	ax1.set_ylabel('Z-Position [mm]')
+	ax1.set_xlabel('Time [s]')
+	ax2.set_ylabel('Velocity [mm/s]')
 	h1, l1 = ax1.get_legend_handles_labels()
 	h2, l2 = ax2.get_legend_handles_labels()
-	h3, l3 = ax3.get_legend_handles_labels()
-	ax1.legend(h1+h2+h3,l1+l2+l3,loc='upper right')
-	ax1.grid(True)
+	# h3, l3 = ax2.get_legend_handles_labels()
+	ax1.legend(h1+h2,l1+l2,loc='upper right', bbox_to_anchor=(1, 0.5, 0.5, .100), borderaxespad=0.)
+	# ax1.grid(True)
 	filename = os.path.splitext(os.path.basename(path))[0]
-	plt.title(filename)
+	plt.tight_layout()
+	# plt.title(filename)
 	plt.show()
 
 if __name__ == "__main__":
-	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/第4回ゼミ用/fusion/20211112_tsuruoka_tanada_woFB_5.csv'
+	path = '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/20211108/fusion/20211112_tsuruoka_tanada_woFB_5.csv'
 	data = pd.read_csv(path)
 	main()

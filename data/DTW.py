@@ -2,6 +2,7 @@ from dtaidistance import dtw_ndim
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib_style
 import os
 
 def import_data(path):
@@ -52,7 +53,7 @@ def plot_3d():
 	plt.show()
 
 if __name__ == '__main__':
-	data,path = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/20211108/fusion/20211112_tsuruoka_tanada_partner+robot_2.csv')
+	data,path = import_data(path='/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/実験/予備実験/20211108/fusion/20211112_tsuruoka_tanada_woFB_1.csv')
 	robot,expert,begginer = get_data(data)
 	dtw = dtw_n(expert,begginer)
 	print(dtw)
