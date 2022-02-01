@@ -18,12 +18,6 @@ def fig_CoT():
 	for i in range(len(woFB)):
 		d.append(woFB[i])
 		condition.append('without feedback')
-	for i in range(5):
-		d.append(partner[i])
-		d.append(robot[i])
-		d.append(p_r[i])
-	for i in range(len(woFB)*3):
-		condition.append('with feedback')
 	for i in range(len(partner)):
 		d.append(partner[i])
 		condition.append('partner velocity')
@@ -34,12 +28,12 @@ def fig_CoT():
 		d.append(p_r[i])
 		condition.append('partner + robot velocity')
 	
-	CoT_df = pd.DataFrame({'condition':condition,'Diff Time [s]':d})
+	CoT_df = pd.DataFrame({'Condition':condition,'Diff Time [s]':d})
 	figx = 12
 	figy = 7
-	sns.set_palette('Set3')
+	sns.set_palette('Set2')
 	plt.figure(figsize=(figx, figy))
-	sns.barplot(x='condition',y='Diff Time [s]',data=CoT_df)
+	sns.barplot(x='Condition',y='Diff Time [s]',data=CoT_df)
 	plt.xticks(rotation=45)
 	plt.savefig('questionnaire/graph/Preliminary experiment/' + 'CoT.jpg',dpi=300, format='jpg', bbox_inches='tight')
 
@@ -67,12 +61,6 @@ def fig_JRK():
 	for i in range(len(woFB)):
 		d.append(woFB[i])
 		condition.append('without feedback')
-	for i in range(5):
-		d.append(partner[i])
-		d.append(robot[i])
-		d.append(p_r[i])
-	for i in range(len(woFB)*3):
-		condition.append('with feedback')
 	for i in range(len(partner)):
 		d.append(partner[i])
 		condition.append('partner velocity')
@@ -83,13 +71,13 @@ def fig_JRK():
 		d.append(p_r[i])
 		condition.append('partner + robot velocity')
 
-	JRK_df = pd.DataFrame({'condition':condition,'Jerk Index':d})
+	JRK_df = pd.DataFrame({'Condition':condition,'Jerk Index':d})
 
 	figx = 12
 	figy = 7
-	sns.set_palette('Set3')
+	sns.set_palette('Set2')
 	plt.figure(figsize=(figx, figy))
-	sns.boxplot(x='condition',y='Jerk Index',data=JRK_df)
+	sns.barplot(x='Condition',y='Jerk Index',data=JRK_df)
 	plt.xticks(rotation=45)
 	plt.savefig('questionnaire/graph/Preliminary experiment/' + 'JRK.jpg',dpi=300, format='jpg', bbox_inches='tight')
 
@@ -109,12 +97,6 @@ def fig_DTW():
 	for i in range(len(woFB)):
 		d.append(woFB[i])
 		condition.append('without feedback')
-	for i in range(5):
-		d.append(partner[i])
-		d.append(robot[i])
-		d.append(p_r[i])
-	for i in range(len(woFB)*3):
-		condition.append('with feedback')
 	for i in range(len(partner)):
 		d.append(partner[i])
 		condition.append('partner velocity')
@@ -125,13 +107,13 @@ def fig_DTW():
 		d.append(p_r[i])
 		condition.append('partner + robot velocity')
 
-	DTW_df = pd.DataFrame({'condition':condition,'DTW Score':d})
+	DTW_df = pd.DataFrame({'Condition':condition,'DTW Score':d})
 
 	figx = 12
 	figy = 7
-	sns.set_palette('Set3')
+	sns.set_palette('Set2')
 	plt.figure(figsize=(figx, figy))
-	sns.boxplot(x='condition',y='DTW Score',data=DTW_df)
+	sns.barplot(x='Condition',y='DTW Score',data=DTW_df)
 	plt.xticks(rotation=45)
 	plt.savefig('questionnaire/graph/Preliminary experiment/' + 'DTW.jpg',dpi=300, format='jpg', bbox_inches='tight')
 
@@ -160,13 +142,6 @@ def fig_NORM():
 				d.append(j)
 				condition.append('without feedback')
 				level.append(i)
-			for j in range(len(partner_b)):
-				d.append(partner_b[j])
-				d.append(robot_b[j])
-				d.append(p_r_b[j])
-			for j in range(len(partner_b)*3):
-				condition.append('with feedback')
-				level.append(i)
 			for j in partner_b:
 				d.append(j)
 				condition.append('partner velocity')
@@ -184,13 +159,6 @@ def fig_NORM():
 				d.append(j)
 				condition.append('without feedback')
 				level.append(i)
-			for j in range(len(partner_e)):
-				d.append(partner_e[j])
-				d.append(robot_e[j])
-				d.append(p_r_e[j])
-			for j in range(len(partner_e)*3):
-				condition.append('with feedback')
-				level.append(i)
 			for j in partner_e:
 				d.append(j)
 				condition.append('partner velocity')
@@ -203,14 +171,13 @@ def fig_NORM():
 				d.append(j)
 				condition.append('partner + robot velocity')
 				level.append(i)
-	NORM_df = pd.DataFrame({'condition':condition,'Norm Path Cost':d,'':level})
-	print(NORM_df)
+	NORM_df = pd.DataFrame({'Condition':condition,'Total Distance of Operation Path [mm]':d,'':level})
 
 	figx = 12
 	figy = 7
 	sns.set_palette('Paired')
 	plt.figure(figsize=(figx, figy))
-	sns.barplot(x='condition',y='Norm Path Cost', hue='',data=NORM_df)
+	sns.barplot(x='Condition',y='Total Distance of Operation Path [mm]', hue='',data=NORM_df)
 	plt.xticks(rotation=45)
 	lg = plt.legend(loc='upper right', bbox_to_anchor=(0.68, 0.5, 0.5, .100), borderaxespad=0.,)
 	plt.savefig('questionnaire/graph/Preliminary experiment/' + 'NORM.jpg',dpi=300, format='jpg', bbox_extra_artists=(lg,), bbox_inches='tight')
@@ -273,8 +240,7 @@ def fig_NORM_CYCLE():
 		cycle.append(i+1)
 	for i in range(20):
 		cycle.append(i+1)
-	NORM_df = pd.DataFrame({'condition':condition,'Norm Path Cost':d,'':level,'cycle':cycle})
-	print(NORM_df)
+	NORM_df = pd.DataFrame({'Condition':condition,'Norm Path Cost':d,'':level,'cycle':cycle})
 
 	figx = 12
 	figy = 7
@@ -286,7 +252,7 @@ def fig_NORM_CYCLE():
 	plt.savefig('questionnaire/graph/Preliminary experiment/' + 'NORM_CYCLE.jpg',dpi=300, format='jpg', bbox_extra_artists=(lg,), bbox_inches='tight')
 
 	print('finish   :   NORM_CYCLE')
-	
+
 fig_CoT()
 fig_JRK()
 fig_DTW()

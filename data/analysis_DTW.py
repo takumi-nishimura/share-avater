@@ -11,7 +11,7 @@ class DTW:
 
 	def main(self, robot, begginer, expert, participant, condition, cycle):
 		self.robot, self.begginer, self.expert = self.get_data(robot,begginer,expert)
-		self.result = self.f_dtw(self.begginer, self.expert, participant, condition, cycle, show=False, save=True)
+		self.result = self.f_dtw(self.begginer, self.expert, participant, condition, cycle, show=True, save=True)
 		return self.result
 
 	def get_data(self,d_r,d_1,d_2):

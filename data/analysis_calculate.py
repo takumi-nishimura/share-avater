@@ -543,5 +543,5 @@ class M_IMAGE:
 if __name__ in '__main__':
 	calculate = DATACALCULATE()
 	figure = M_IMAGE()
-	# calculate.main(dtw=True, jrk=False, cot=False)
+	calculate.main(dtw=True, jrk=False, cot=False)
 	figure.main()

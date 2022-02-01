@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from scipy import signal
 import os
 import glob
 from homogeneous_transformation import HOMOGENEOUS
@@ -89,23 +91,26 @@ class DATA_READ:
 			self.r_flag = 0
 			print(i+1)
 			while self.r_flag == 0:
-				graph2d.main(time=((self.dictPos[str(i+1)])[0])['time'],pos=((self.dictHomogeneous[str(i+1)])[1]))
+				graph2d.main(time=((self.dictPos[str(i+1)])[0])['time'],pos=((self.dictHomogeneous[str(i+1)])[0]))
 
 				self.dictMove_r = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[0]))
 				self.dictMove_1 = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[1]))
 				self.dictMove_2 = graph2d.get_speed_list(((self.dictPos[str(i+1)])[0])['time'],((self.dictHomogeneous[str(i+1)])[2]))
 
-				self.start = input('start : ')
+				self.start_0 = input('start : ')
 				# self.end = input('end: ')
+
+				self.start = self.per_vel(float(self.start_0),((self.dictPos[str(i+1)])[0])['time'],self.dictMove_r)
+
 				if self.condition == 'A':
 					print('task time : ',self.t_lsit[i])
-					self.end = round(float(self.start) + self.t_lsit[i],1)
+					self.end = round(self.start + self.t_lsit[i],1)
 				elif self.condition == 'B':
 					print('task time : ',self.t_lsit[i+3])
-					self.end = round(float(self.start) + self.t_lsit[i+3],1)
+					self.end = round(self.start + self.t_lsit[i+3],1)
 				elif self.condition == 'C':
 					print('task time : ',self.t_lsit[i+6])
-					self.end = round(float(self.start) + self.t_lsit[i+6],1)
+					self.end = round(self.start + self.t_lsit[i+6],1)
 				print('end : ', self.end)
 
 				self.start, self.end = graph3d.main(fig=True, start=float(self.start), end=float(self.end),time=((self.dictPos[str(i+1)])[0])['time'], position_r=((self.dictHomogeneous[str(i+1)])[0]), position_1=((self.dictHomogeneous[str(i+1)])[1]), position_2=((self.dictHomogeneous[str(i+1)])[2]))
@@ -156,9 +161,43 @@ class DATA_READ:
 					print('!!! もう一度 !!!')
 		print('!!!finish!!!')
 
-	def per_vel(self, start, vel):
-		print(vel)
-		robot_vel_norm = vel
+	def per_vel(self, start, time, vel):
+		self.start_index = self.search_index(time, start,1)
+		self.vel_norm = np.linalg.norm(np.c_[vel['vx'],vel['vy'],vel['vz']],axis=1)
+		self.maxid = signal.argrelmax(self.vel_norm[self.start_index:],order=100)
+		for i in range(len(self.maxid[0])):
+			self.maxid[0][i] = self.maxid[0][i] + self.start_index
+		
+		self.start_vel_max = self.vel_norm[self.maxid[0][0]]
+		self.start_vel = self.start_vel_max * 0.05
+
+		self.start_vel_index = self.search_index(pd.DataFrame({'time':self.vel_norm[self.start_index:]}),round(self.start_vel,3),3)
+		print(self.start_vel_index+self.start_index)
+
+		plt.plot(time,self.vel_norm)
+		plt.plot(time[self.maxid[0]],self.vel_norm[self.maxid[0]],'bo')
+		plt.plot(time[self.start_vel_index+self.start_index],self.vel_norm[self.start_vel_index+self.start_index],'x')
+		plt.show()
+
+		return round(time[self.start_vel_index+self.start_index],1)
+
+	def search_index(self, d, s, r):
+		self.search_start = s
+		self.df_time = pd.DataFrame(data=d)
+		self.s_flag = 0
+		for self.s_row_counter in range(len(self.df_time)):
+			if self.s_flag == 0:
+				if self.search_start == round(self.df_time.at[self.df_time.index[self.s_row_counter], 'time'],r):
+					self.start = self.s_row_counter
+					print('start',self.start)
+					print('start time',self.df_time.iloc[self.start,0])
+					self.s_flag = 1
+				elif self.s_row_counter == len(self.df_time)-1:
+					print('Start not matched!!!')
+					self.start = 0
+					print('start time',self.df_time.iloc[self.start,0])
+		return self.start
+		
 
 
 if __name__ == '__main__':
@@ -168,4 +207,4 @@ if __name__ == '__main__':
 	graph2d = GRAPH2D()
 	time_cal = TIME_CALCULATE()
 
-	data_reader.Compile_Organiz(participant='Kato',condition='C')
+	data_reader.Compile_Organiz(participant='Ebina',condition='C')

@@ -3,7 +3,6 @@ import pandas as pd
 from scipy import signal
 import matplotlib.pyplot as plt
 import seaborn as sns
-import matplotlib_style
 import os
 from statistics import mean
 
