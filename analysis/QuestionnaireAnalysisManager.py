@@ -8,6 +8,8 @@ import os
 import glob
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 from Figure import figure_3mean
 
 class QUESTIONNAIRE_Export:
@@ -106,7 +108,23 @@ class QUESTIONNAIRE_Analysis:
 		self.awwl_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_TLX.xlsx')
 
 		# --- figure --- #
-		# print(self.awwl_df)
+		self.awwl_mean_l = []
+		self.awwl_mean_df = pd.DataFrame(columns=['participant','condition','AWWL'])
+		for i in self.partisipant_list:
+			for j in self.condition_list:
+				for k in self.cycle_list:
+					self.d_awwl = self.awwl_df[(self.awwl_df['participant']==i) & (self.awwl_df['condition']==j) & (self.awwl_df['cycle']==k)]['awwl'].values[0]
+					self.awwl_mean_l.append(self.d_awwl)
+					if len(self.awwl_mean_l) == self.cycle_list[-1]:
+						self.awwl_mean = np.average(self.awwl_mean_l)
+						self.awwl_mean_df = self.awwl_mean_df.append({'participant':i,'condition':j,'AWWL':self.awwl_mean},ignore_index=True)
+						self.awwl_mean_l = []
+		self.awwl_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_TLX.xlsx')
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='condition', y='AWWL', data=self.awwl_mean_df)
+		self.ax.set_xticklabels(['without feedback','partner velocity','robot velocity'])
+		self.ax.set_xlabel('Condition')
+		plt.savefig('Analysis/Figure/Questionnaire/TLX_AWWL_MEAN.jpg', dpi=300, format='jpg')		
 
 if __name__ in '__main__':
 	figure = figure_3mean.FIG_MEAN()
