@@ -61,6 +61,12 @@ class QUESTIONNAIRE_Export:
 	def make_list(self,name,condition,cycle):
 		for i in self.read_df.columns.values:
 				for j,k in enumerate(self.read_df[i].values[~np.isnan(self.read_df[i])]):
+					if condition == 'A':
+						condition = 'without feedback'
+					elif condition == 'B':
+						condition = 'partner velocity'
+					elif condition == 'C':
+						condition = 'robot velocity'
 					self.participant.append(name)
 					self.condition.append(condition)
 					self.cycle.append(cycle)
@@ -96,7 +102,7 @@ class QUESTIONNAIRE_Analysis:
 	def A_TLX(self):
 		# --- exportExcel --- #
 		self.awwl_l = []
-		self.awwl_df = pd.DataFrame(columns=['participant','condition','cycle','awwl'])
+		self.awwl_df = pd.DataFrame(columns=['participant','condition','Cycle','awwl'])
 		self.d_l = self.data[self.data['evaluation'] == 'TLX_q']
 		for i in self.partisipant_list:
 			for j in self.condition_list:
@@ -104,27 +110,33 @@ class QUESTIONNAIRE_Analysis:
 					self.d_c = self.d_l[(self.d_l['evaluation']=='TLX_q') & (self.d_l['participant']==i) & (self.d_l['condition']==j) & (self.d_l['cycle']==k)]['score'].values
 					self.d_c.sort()
 					self.awwl = (self.d_c[0]*1+self.d_c[1]*2+self.d_c[2]*3+self.d_c[3]*4+self.d_c[4]*5+self.d_c[5]*6)/21
-					self.awwl_df = self.awwl_df.append({'participant':i,'condition':j,'cycle':k,'awwl':self.awwl},ignore_index=True)
+					self.awwl_df = self.awwl_df.append({'participant':i,'condition':j,'Cycle':k,'AWWL':self.awwl},ignore_index=True)
 		self.awwl_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_TLX.xlsx')
 
 		# --- figure --- #
 		self.awwl_mean_l = []
-		self.awwl_mean_df = pd.DataFrame(columns=['participant','condition','AWWL'])
+		self.awwl_mean_df = pd.DataFrame(columns=['participant','Condition','AWWL'])
 		for i in self.partisipant_list:
 			for j in self.condition_list:
 				for k in self.cycle_list:
-					self.d_awwl = self.awwl_df[(self.awwl_df['participant']==i) & (self.awwl_df['condition']==j) & (self.awwl_df['cycle']==k)]['awwl'].values[0]
+					self.d_awwl = self.awwl_df[(self.awwl_df['participant']==i) & (self.awwl_df['condition']==j) & (self.awwl_df['Cycle']==k)]['AWWL'].values[0]
 					self.awwl_mean_l.append(self.d_awwl)
 					if len(self.awwl_mean_l) == self.cycle_list[-1]:
 						self.awwl_mean = np.average(self.awwl_mean_l)
-						self.awwl_mean_df = self.awwl_mean_df.append({'participant':i,'condition':j,'AWWL':self.awwl_mean},ignore_index=True)
+						self.awwl_mean_df = self.awwl_mean_df.append({'participant':i,'Condition':j,'AWWL':self.awwl_mean},ignore_index=True)
 						self.awwl_mean_l = []
 		self.awwl_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_TLX.xlsx')
+
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='condition', y='AWWL', data=self.awwl_mean_df)
-		self.ax.set_xticklabels(['without feedback','partner velocity','robot velocity'])
-		self.ax.set_xlabel('Condition')
-		plt.savefig('Analysis/Figure/Questionnaire/TLX_AWWL_MEAN.jpg', dpi=300, format='jpg')		
+		self.ax = sns.boxplot(x='Condition', y='AWWL', data=self.awwl_mean_df)
+		plt.savefig('Analysis/Figure/Questionnaire/TLX_AWWL_MEAN.jpg', dpi=300, format='jpg')
+		plt.close()
+
+		sns.set_palette('Set2')
+		self.ax = sns.boxplot(x='Cycle', y='AWWL', hue='condition', data=self.awwl_df)
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.savefig('Analysis/Figure/Questionnaire/TLX_AWWL_CYCLE.jpg', dpi=300, format='jpg', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.close()
 
 if __name__ in '__main__':
 	figure = figure_3mean.FIG_MEAN()
