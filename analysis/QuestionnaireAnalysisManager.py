@@ -6,9 +6,9 @@
 
 import os
 import glob
-from aem import con
 import pandas as pd
 import numpy as np
+from Figure import figure_3mean
 
 class QUESTIONNAIRE_Export:
 	def __init__(self,exportname):
@@ -81,13 +81,34 @@ class QUESTIONNAIRE_Analysis:
 	def main(self,readname):
 		print('--- start --- : Questionnaire Analysis')
 
-		data = pd.read_excel(readname, index_col=0)
+		self.data = pd.read_excel(readname, index_col=0)
 
-		tlx_d = data[data['evaluation'] == 'TLX_q']
-		print(tlx_d[tlx_d['number']==1])
+		self.partisipant_list = list(dict.fromkeys(self.data['participant'].values))
+		self.condition_list = list(dict.fromkeys(self.data['condition'].values))
+		self.cycle_list = list(dict.fromkeys(self.data['cycle'].values))
+
+		self.A_TLX()
 
 		print('--- finish --- : Questionnaire Analysis')
 
+	def A_TLX(self):
+		# --- exportExcel --- #
+		self.awwl_l = []
+		self.awwl_df = pd.DataFrame(columns=['participant','condition','cycle','awwl'])
+		self.d_l = self.data[self.data['evaluation'] == 'TLX_q']
+		for i in self.partisipant_list:
+			for j in self.condition_list:
+				for k in self.cycle_list:
+					self.d_c = self.d_l[(self.d_l['evaluation']=='TLX_q') & (self.d_l['participant']==i) & (self.d_l['condition']==j) & (self.d_l['cycle']==k)]['score'].values
+					self.d_c.sort()
+					self.awwl = (self.d_c[0]*1+self.d_c[1]*2+self.d_c[2]*3+self.d_c[3]*4+self.d_c[4]*5+self.d_c[5]*6)/21
+					self.awwl_df = self.awwl_df.append({'participant':i,'condition':j,'cycle':k,'awwl':self.awwl},ignore_index=True)
+		self.awwl_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_TLX.xlsx')
+
+		# --- figure --- #
+		# print(self.awwl_df)
+
 if __name__ in '__main__':
+	figure = figure_3mean.FIG_MEAN()
 	questionnaireAnalysisExport = QUESTIONNAIRE_Export('AllQuestionnaireData_20220202.xlsx')
-	questionnaireAnalysis = QUESTIONNAIRE_Analysis('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/AllQuestionnaireData_20220202.xlsx')
+	questionnaireAnalysis = QUESTIONNAIRE_Analysis('Analysis/ExData/Questionnaire/CutData/AllQuestionnaireData_20220202.xlsx')
