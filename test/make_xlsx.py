@@ -1,10 +1,11 @@
 import pandas as pd
 
 def make(path,filename,sheetname:int=0):
+	condition_list = ['A','B','C']
 	d = []
 	condition = []
 	data = pd.read_excel(path,sheet_name =sheetname)
-	for i,j in enumerate(['A','B','C']):
+	for i,j in enumerate(condition_list):
 		for k in range(len(data.iloc[i,1:].values)):
 			d.append(data.iloc[i,1:].values[k])
 			condition.append(j)
