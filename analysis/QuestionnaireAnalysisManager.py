@@ -103,6 +103,7 @@ class QUESTIONNAIRE_Analysis:
 	def make_df(self,df,key:str):
 		self.e_flag = 0
 		self.mean_l = []
+		self.diff_l = []
 		self.export_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Score'])
 		for i in self.partisipant_list:
 			for j in self.condition_list:
@@ -118,12 +119,22 @@ class QUESTIONNAIRE_Analysis:
 					elif key == 'agency':
 						self.score = self.d_c[2]-self.d_c[3]
 						self.e_flag = 1
+					elif key == 'md':
+						self.score = self.d_c[0]
+						self.e_flag = 1
 					elif key == 'mean':
 						self.mean_l.append(self.d_c)
 						if len(self.mean_l) == self.cycle_list[-1]:
 							self.score = np.average(self.mean_l)
 							self.e_flag = 1
 							self.mean_l = []
+					elif key == '3-1':
+						self.diff_l.append(self.d_c)
+						if len(self.diff_l) == 3:
+							self.score = (self.diff_l[2] - self.diff_l[0])[0]
+							k = '3-1'
+							self.e_flag = 1
+							self.diff_l = []
 					if self.e_flag == 1:
 						self.export_df = self.export_df.append({'Participant':i,'Condition':j,'Cycle':k,'Score':self.score},ignore_index=True)
 					self.e_flag = 0
@@ -166,7 +177,25 @@ class QUESTIONNAIRE_Analysis:
 		self.figure.CycleBoxPlot(self.agency_df,ylabel='Agency - Agency Control',filename='AGENCY_CYCLE')
 
 	def A_MD(self):
+		self.d_l = self.data[self.data['Evaluation'] == 'MD_r']
 
+		# --- exportExcel --- #
+		self.md_df = self.make_df(self.d_l,key='md')
+		self.md_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_MD.xlsx')
+
+		self.md_mean_df = self.make_df(self.md_df,key='mean')
+		self.md_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_MD.xlsx')
+
+		self.md_31_df = self.make_df(self.md_df,key='3-1')
+		self.md_31_df.to_excel('Analysis/ExData/Questionnaire/CutData/31_MD.xlsx')
+		print(self.md_31_df)
+
+		# --- figure --- #
+		self.figure.MeanBoxPlot(self.md_mean_df,ylabel='Mental Distance',filename='MD_MEAN',min=0,max=7.5)
+
+		self.figure.CycleBoxPlot(self.md_df,ylabel='Mendal Distance',filename='MD_CYCLE',min=0,max=7.5)
+
+		self.figure.MeanBoxPlot(self.md_31_df,ylabel='Difference in mental distance\nbetween the third and the first time',filename='MD_31')
 
 if __name__ in '__main__':
 	questionnaireAnalysisExport = QUESTIONNAIRE_Export('AllQuestionnaireData_20220202.xlsx')
