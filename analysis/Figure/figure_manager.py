@@ -10,8 +10,9 @@ class FIG:
 	def MeanBoxPlot(self,df,ylabel:str='Questionnaire rating',filename:str='',min:float=999,max:float=999):
 		sns.set_palette('Set2')
 		self.ax = sns.boxplot(x='Condition', y='Score', data=df)
-		plt.ylabel(ylabel,labelpad=5)
-		plt.xlabel('Condition',labelpad=8)
+		plt.ylabel(ylabel,labelpad=8)
+		plt.xlabel('Condition',labelpad=10)
+		plt.subplots_adjust(left=0.15,bottom=0.15)
 		if not min == 999 and not max == 999:
 			plt.ylim(min,max)
 		self.filename = 'Analysis/Figure/Questionnaire/' + filename + '.jpg'

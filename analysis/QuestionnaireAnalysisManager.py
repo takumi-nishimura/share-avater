@@ -97,6 +97,7 @@ class QUESTIONNAIRE_Analysis:
 		self.A_TLX()
 		self.A_MS()
 		self.A_MD()
+		self.A_SE()
 
 		print('--- finish --- : Questionnaire Analysis')
 
@@ -122,10 +123,26 @@ class QUESTIONNAIRE_Analysis:
 					elif key == 'md':
 						self.score = self.d_c[0]
 						self.e_flag = 1
+					elif key == 'Q1':
+						self.score = self.d_c[0]
+						self.e_flag = 1
+					elif key == 'Q2':
+						self.score = self.d_c[1]
+						self.e_flag = 1
+					elif key == 'Q3':
+						self.score = self.d_c[2]
+						self.e_flag = 1
+					elif key == 'Q4':
+						self.score = self.d_c[3]
+						self.e_flag = 1
+					elif key == 'Q5':
+						self.score = self.d_c[4]
+						self.e_flag = 1
 					elif key == 'mean':
 						self.mean_l.append(self.d_c)
 						if len(self.mean_l) == self.cycle_list[-1]:
 							self.score = np.average(self.mean_l)
+							k = 'mean'
 							self.e_flag = 1
 							self.mean_l = []
 					elif key == '3-1':
@@ -172,7 +189,7 @@ class QUESTIONNAIRE_Analysis:
 
 		self.figure.MeanBoxPlot(df=self.agency_mean_df,ylabel='Agency - Agency Control',filename='AGENCY_MEAN')
 
-		self.figure.CycleBoxPlot(self.ownership_df,ylabel='Ownership - Ownership Control',filename='OWNERSHIP_CYCLE2')
+		self.figure.CycleBoxPlot(self.ownership_df,ylabel='Ownership - Ownership Control',filename='OWNERSHIP_CYCLE')
 
 		self.figure.CycleBoxPlot(self.agency_df,ylabel='Agency - Agency Control',filename='AGENCY_CYCLE')
 
@@ -188,7 +205,6 @@ class QUESTIONNAIRE_Analysis:
 
 		self.md_31_df = self.make_df(self.md_df,key='3-1')
 		self.md_31_df.to_excel('Analysis/ExData/Questionnaire/CutData/31_MD.xlsx')
-		print(self.md_31_df)
 
 		# --- figure --- #
 		self.figure.MeanBoxPlot(self.md_mean_df,ylabel='Mental Distance',filename='MD_MEAN',min=0,max=7.5)
@@ -196,6 +212,48 @@ class QUESTIONNAIRE_Analysis:
 		self.figure.CycleBoxPlot(self.md_df,ylabel='Mendal Distance',filename='MD_CYCLE',min=0,max=7.5)
 
 		self.figure.MeanBoxPlot(self.md_31_df,ylabel='Difference in mental distance\nbetween the third and the first time',filename='MD_31')
+
+	def A_SE(self):
+		self.d_l = self.data[self.data['Evaluation'] == 'SE_r']
+		# --- exportExcel --- #
+		self.SE_Q1_df = self.make_df(self.d_l,key='Q1')
+		self.SE_Q1_mean_df = self.make_df(self.SE_Q1_df,key='mean')
+		self.SE_Q2_df = self.make_df(self.d_l,key='Q2')
+		self.SE_Q2_mean_df = self.make_df(self.SE_Q2_df,key='mean')
+		self.SE_Q3_df = self.make_df(self.d_l,key='Q3')
+		self.SE_Q3_mean_df = self.make_df(self.SE_Q3_df,key='mean')
+		self.SE_Q4_df = self.make_df(self.d_l,key='Q4')
+		self.SE_Q4_mean_df = self.make_df(self.SE_Q4_df,key='mean')
+		self.SE_Q5_df = self.make_df(self.d_l,key='Q5')
+		self.SE_Q5_mean_df = self.make_df(self.SE_Q5_df,key='mean')
+
+		self.SE_Q3_31_df = self.make_df(self.SE_Q3_df,key='3-1')
+
+		self.SE_Q1_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q1.xlsx')
+		self.SE_Q4_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q4.xlsx')
+		self.SE_Q5_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q5.xlsx')
+
+		self.SE_Q1_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Q1.xlsx')
+		self.SE_Q2_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Q2.xlsx')
+		self.SE_Q3_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Q3.xlsx')
+		self.SE_Q4_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Q4.xlsx')
+		self.SE_Q5_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Q5.xlsx')
+
+		self.SE_Q3_31_df.to_excel('Analysis/ExData/Questionnaire/CutData/31_Q3.xlsx')
+
+		# --- figure --- #
+		self.figure.MeanBoxPlot(df=self.SE_Q1_mean_df,ylabel='Questionnaire rating',filename='Q1_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q2_mean_df,ylabel='Questionnaire rating',filename='Q2_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q3_mean_df,ylabel='Questionnaire rating',filename='Q3_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q4_mean_df,ylabel='Questionnaire rating',filename='Q4_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q5_mean_df,ylabel='Questionnaire rating',filename='Q5_MEAN')
+
+		self.figure.CycleBoxPlot(df=self.SE_Q1_df,ylabel='Questionnaire rating',filename='Q1_CYCLE')
+		self.figure.CycleBoxPlot(df=self.SE_Q3_df,ylabel='Questionnaire rating',filename='Q3_CYCLE')
+		self.figure.CycleBoxPlot(df=self.SE_Q4_df,ylabel='Questionnaire rating',filename='Q4_CYCLE')
+		self.figure.CycleBoxPlot(df=self.SE_Q5_df,ylabel='Questionnaire rating',filename='Q5_CYCLE')
+
+		self.figure.MeanBoxPlot(df=self.SE_Q3_31_df,ylabel='Difference in questionnaire rating\nbetween the third and the first time',filename='Q3_31')
 
 if __name__ in '__main__':
 	questionnaireAnalysisExport = QUESTIONNAIRE_Export('AllQuestionnaireData_20220202.xlsx')
