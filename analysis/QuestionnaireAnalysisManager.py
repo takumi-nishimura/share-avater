@@ -101,7 +101,7 @@ class QUESTIONNAIRE_Analysis:
 
 		print('--- finish --- : Questionnaire Analysis')
 
-	def make_df(self,df,key:str):
+	def make_df(self,df,key:str=''):
 		self.e_flag = 0
 		self.mean_l = []
 		self.diff_l = []

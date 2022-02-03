@@ -1,3 +1,9 @@
+# -----------------------------------------------------------------------
+# Author:   Takumi Nishimura (Haptics Lab)
+# Created:  2022/02/02
+# Summary:  figure manager
+# -----------------------------------------------------------------------
+
 from cProfile import label
 import matplotlib.pyplot as plt
 import seaborn as sns
