@@ -4,8 +4,8 @@
 # Summary:  Analysis manager
 # -----------------------------------------------------------------------
 
-from MotionAnalysis import MotionAnalysisManager
-from QuestionnaireAnalysis import QuestionnaireAnalysisManager
+import MotionAnalysisManager
+import QuestionnaireAnalysisManager
 
 if __name__ in '__main__':
 

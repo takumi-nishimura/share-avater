@@ -8,9 +8,7 @@ import os
 import glob
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from Figure import figure_3mean
+from Figure.figure_manager import FIG
 
 class QUESTIONNAIRE_Export:
 	def __init__(self,exportname):
@@ -75,7 +73,7 @@ class QUESTIONNAIRE_Export:
 					self.data.append(k)
 
 	def export(self, name):
-		self.export_df = pd.DataFrame({'participant':self.participant,'condition':self.condition,'cycle':self.cycle,'evaluation':self.evaluation,'number':self.number,'score':self.data})
+		self.export_df = pd.DataFrame({'Participant':self.participant,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':self.evaluation,'Number':self.number,'Score':self.data})
 		self.exportPath = 'Analysis/ExData/Questionnaire/CutData/'
 		self.exportName = self.exportPath + name
 		self.export_df.to_excel(self.exportName)
@@ -84,6 +82,7 @@ class QUESTIONNAIRE_Analysis:
 	def __init__(self,readname) -> None:
 		print('--- import --- : Questionnaire Analysis')
 
+		self.figure = FIG()
 		self.main(readname)
 
 	def main(self,readname):
@@ -91,54 +90,84 @@ class QUESTIONNAIRE_Analysis:
 
 		self.data = pd.read_excel(readname, index_col=0)
 
-		self.partisipant_list = list(dict.fromkeys(self.data['participant'].values))
-		self.condition_list = list(dict.fromkeys(self.data['condition'].values))
-		self.cycle_list = list(dict.fromkeys(self.data['cycle'].values))
+		self.partisipant_list = list(dict.fromkeys(self.data['Participant'].values))
+		self.condition_list = list(dict.fromkeys(self.data['Condition'].values))
+		self.cycle_list = list(dict.fromkeys(self.data['Cycle'].values))
 
 		self.A_TLX()
+		self.A_MS()
+		self.A_MD()
 
 		print('--- finish --- : Questionnaire Analysis')
 
-	def A_TLX(self):
-		# --- exportExcel --- #
-		self.awwl_l = []
-		self.awwl_df = pd.DataFrame(columns=['participant','condition','Cycle','awwl'])
-		self.d_l = self.data[self.data['evaluation'] == 'TLX_q']
+	def make_df(self,df,key:str):
+		self.e_flag = 0
+		self.mean_l = []
+		self.export_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Score'])
 		for i in self.partisipant_list:
 			for j in self.condition_list:
 				for k in self.cycle_list:
-					self.d_c = self.d_l[(self.d_l['evaluation']=='TLX_q') & (self.d_l['participant']==i) & (self.d_l['condition']==j) & (self.d_l['cycle']==k)]['score'].values
-					self.d_c.sort()
-					self.awwl = (self.d_c[0]*1+self.d_c[1]*2+self.d_c[2]*3+self.d_c[3]*4+self.d_c[4]*5+self.d_c[5]*6)/21
-					self.awwl_df = self.awwl_df.append({'participant':i,'condition':j,'Cycle':k,'AWWL':self.awwl},ignore_index=True)
+					self.d_c = df[(df['Participant']==i) & (df['Condition']==j) & (df['Cycle']==k)]['Score'].values
+					if key == 'tlx':
+						self.d_c.sort()
+						self.score = (self.d_c[0]*1+self.d_c[1]*2+self.d_c[2]*3+self.d_c[3]*4+self.d_c[4]*5+self.d_c[5]*6)/21
+						self.e_flag = 1
+					elif key == 'ownership':
+						self.score = self.d_c[0]-self.d_c[1]
+						self.e_flag = 1
+					elif key == 'agency':
+						self.score = self.d_c[2]-self.d_c[3]
+						self.e_flag = 1
+					elif key == 'mean':
+						self.mean_l.append(self.d_c)
+						if len(self.mean_l) == self.cycle_list[-1]:
+							self.score = np.average(self.mean_l)
+							self.e_flag = 1
+							self.mean_l = []
+					if self.e_flag == 1:
+						self.export_df = self.export_df.append({'Participant':i,'Condition':j,'Cycle':k,'Score':self.score},ignore_index=True)
+					self.e_flag = 0
+		return self.export_df
+
+	def A_TLX(self):
+		self.d_l = self.data[self.data['Evaluation'] == 'TLX_q']
+		# --- exportExcel --- #
+		self.awwl_df = self.make_df(self.d_l,key='tlx')
 		self.awwl_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_TLX.xlsx')
 
-		# --- figure --- #
-		self.awwl_mean_l = []
-		self.awwl_mean_df = pd.DataFrame(columns=['participant','Condition','AWWL'])
-		for i in self.partisipant_list:
-			for j in self.condition_list:
-				for k in self.cycle_list:
-					self.d_awwl = self.awwl_df[(self.awwl_df['participant']==i) & (self.awwl_df['condition']==j) & (self.awwl_df['Cycle']==k)]['AWWL'].values[0]
-					self.awwl_mean_l.append(self.d_awwl)
-					if len(self.awwl_mean_l) == self.cycle_list[-1]:
-						self.awwl_mean = np.average(self.awwl_mean_l)
-						self.awwl_mean_df = self.awwl_mean_df.append({'participant':i,'Condition':j,'AWWL':self.awwl_mean},ignore_index=True)
-						self.awwl_mean_l = []
+		self.awwl_mean_df = self.make_df(self.awwl_df,key='mean')
 		self.awwl_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_TLX.xlsx')
+		
+		# --- figure --- #
+		self.figure.MeanBoxPlot(self.awwl_mean_df,ylabel='AWWL',filename='TLX_AWWL_MEAN')
 
-		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='Condition', y='AWWL', data=self.awwl_mean_df)
-		plt.savefig('Analysis/Figure/Questionnaire/TLX_AWWL_MEAN.jpg', dpi=300, format='jpg')
-		plt.close()
+		self.figure.CycleBoxPlot(self.awwl_df,ylabel='AWWL',filename='TLX_AWWL_CYCLE')
 
-		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='Cycle', y='AWWL', hue='condition', data=self.awwl_df)
-		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
-		plt.savefig('Analysis/Figure/Questionnaire/TLX_AWWL_CYCLE.jpg', dpi=300, format='jpg', bbox_extra_artists=(self.lg,), bbox_inches='tight')
-		plt.close()
+	def A_MS(self):
+		self.d_l = self.data[self.data['Evaluation'] == 'MS_score']
+		# --- exportExcel --- #
+		self.ownership_df = self.make_df(self.d_l,key='ownership')
+		self.agency_df = self.make_df(self.d_l,key='agency')
+		self.ownership_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Ownership.xlsx')
+		self.agency_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Agency.xlsx')
+
+		self.ownership_mean_df = self.make_df(self.ownership_df,key='mean')
+		self.agency_mean_df = self.make_df(self.agency_df,key='mean')
+		self.ownership_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Ownership.xlsx')
+		self.agency_mean_df.to_excel('Analysis/ExData/Questionnaire/CutData/Mean_Agency.xlsx')
+
+		# --- figure --- #
+		self.figure.MeanBoxPlot(df=self.ownership_mean_df,ylabel='Ownership - Ownership Control',filename='OWNERSHIP_MEAN')
+
+		self.figure.MeanBoxPlot(df=self.agency_mean_df,ylabel='Agency - Agency Control',filename='AGENCY_MEAN')
+
+		self.figure.CycleBoxPlot(self.ownership_df,ylabel='Ownership - Ownership Control',filename='OWNERSHIP_CYCLE2')
+
+		self.figure.CycleBoxPlot(self.agency_df,ylabel='Agency - Agency Control',filename='AGENCY_CYCLE')
+
+	def A_MD(self):
+
 
 if __name__ in '__main__':
-	figure = figure_3mean.FIG_MEAN()
 	questionnaireAnalysisExport = QUESTIONNAIRE_Export('AllQuestionnaireData_20220202.xlsx')
 	questionnaireAnalysis = QUESTIONNAIRE_Analysis('Analysis/ExData/Questionnaire/CutData/AllQuestionnaireData_20220202.xlsx')
