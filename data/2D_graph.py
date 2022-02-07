@@ -89,7 +89,7 @@ def main():
 	freqList = np.fft.rfftfreq(len(vy1), 1.0 / fs_mean)
 	fft_data_filt = np.abs(np.fft.rfft(vy1_filt))
 	freqList_filt = np.fft.rfftfreq(len(vy1_filt), 1.0 / fs_mean)
-	# solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
+	solox_log_graph(freqList,fft_data,freqList_filt,fft_data_filt)
 
 	mean_jrk(jy1,jy2,jy3)
 	v_norm = get_norm(vy_1,vy_2,vy_3)
