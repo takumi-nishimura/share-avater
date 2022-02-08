@@ -168,7 +168,7 @@ class MOTION_PROCESSING:
 
 	def get_start_time(self,start,time):
 		self.start_index = self.search_index(time,start,'0.01')
-		self.maxid = signal.argrelmax(self.v_n['v'].values[self.start_index:],order=400)
+		self.maxid = signal.argrelmax(self.v_n['v'].values[self.start_index:],order=200)
 		self.minid = signal.argrelmin(self.v_n['v'].values[self.start_index:],order=10)
 		for i in range(len(self.maxid[0])):
 			self.maxid[0][i] = self.maxid[0][i] + self.start_index
@@ -231,4 +231,4 @@ class PERFORMANCE_PROCESSING:
 		return self.d_T	
 
 if __name__ in '__main__':
-	dataProcessing = MOTION_PROCESSING(participant='Kitamichi')
+	dataProcessing = MOTION_PROCESSING(participant='Yamashita')
