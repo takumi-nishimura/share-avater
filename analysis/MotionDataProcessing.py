@@ -40,6 +40,7 @@ class MOTION_PROCESSING:
 
 		self.get_metadata()
 		self.pf_df = self.performance_p.time_l(self.name)
+		print(self.pf_df)
 
 		for self.cut_condition in self.condition:
 			for self.cut_cycle in self.cycle:
@@ -168,17 +169,25 @@ class MOTION_PROCESSING:
 	def get_start_time(self,start,time):
 		self.start_index = self.search_index(time,start,'0.01')
 		self.maxid = signal.argrelmax(self.v_n['v'].values[self.start_index:],order=400)
+		self.minid = signal.argrelmin(self.v_n['v'].values[self.start_index:],order=10)
 		for i in range(len(self.maxid[0])):
 			self.maxid[0][i] = self.maxid[0][i] + self.start_index
+		for j in range(len(self.minid[0])):
+			self.minid[0][j] = self.minid[0][j] + self.start_index
 		self.start_vel_max = self.v_n['v'].values[self.maxid[0][0]]
 		self.start_vel = self.start_vel_max * 0.1
 		self.v_n_r = []
-		for j in reversed(self.v_n['v'].values[:self.maxid[0][0]]):
-			self.v_n_r.append(j)
+		for k in reversed(self.v_n['v'].values[:self.maxid[0][0]]):
+			self.v_n_r.append(k)
 		self.start_per_i =self.search_index(pd.DataFrame({'time':self.v_n_r}),Decimal(str(self.start_vel)).quantize(Decimal('0.001')),'0.001')
 		self.start_vel_index = self.maxid[0][0]-self.start_per_i
+		if self.start_vel_index < self.minid[0][0]:
+			self.start_vel_index = self.minid[0][0]
+		if self.start_vel_index == self.maxid[0][0]:
+			self.start_vel_index = self.minid[0][0]
 		plt.plot(time,self.v_n['v'].values)
 		plt.plot(time[self.maxid[0]],self.v_n['v'].values[self.maxid[0]],'bo')
+		plt.plot(time[self.minid[0]],self.v_n['v'].values[self.minid[0]],'bo')
 		plt.plot(time[self.start_vel_index],self.v_n['v'].values[self.start_vel_index],'x')
 		plt.show()
 		return round(time[self.start_vel_index],2), self.start_index
@@ -207,7 +216,7 @@ class PERFORMANCE_PROCESSING:
 
 	def time_l(self,name):
 		self.file_list = []
-		self.dir = os.path.join('analysis','ExData','Performance','')
+		self.dir = os.path.join('analysis','ExData','Performance','RawData','')
 		self.files = sorted(glob.glob(os.path.join(self.dir,'*.xlsx')))
 		for self.data in self.files:
 			if name in self.data:
@@ -222,4 +231,4 @@ class PERFORMANCE_PROCESSING:
 		return self.d_T	
 
 if __name__ in '__main__':
-	dataProcessing = MOTION_PROCESSING(participant='Hijikata')
+	dataProcessing = MOTION_PROCESSING(participant='Kitamichi')
