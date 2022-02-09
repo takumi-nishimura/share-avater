@@ -231,4 +231,4 @@ class PERFORMANCE_PROCESSING:
 		return self.d_T	
 
 if __name__ in '__main__':
-	dataProcessing = MOTION_PROCESSING(participant='Yamashita')
+	dataProcessing = MOTION_PROCESSING(participant='Kawai')

@@ -29,6 +29,7 @@ class QUESTIONNAIRE_Export:
 		self.participant_l()
 
 		for self.name in self.participant_list:
+			print(self.name)
 			self.read()
 
 		self.export(name=exportname)

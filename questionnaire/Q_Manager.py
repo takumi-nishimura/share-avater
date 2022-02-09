@@ -8,7 +8,7 @@ from subjective_evaluation import SUBJECTIVE_EVALUATION
 
 def initial_data_set():
 	# name = input('名前を入力してください--> '
-	name = 'Kitamichi'
+	name = 'Kawai'
 	job = input('FBを入力してください\nFB無し->A\n相手の速度->B\nロボットの速度->C\n--> ')
 	number = input('サイクル数を入力してください-->t ')
 	print(name + 'さん , FB: ' + job + ', サイクル数: ' + number)
