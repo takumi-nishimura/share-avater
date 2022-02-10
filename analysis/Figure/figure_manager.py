@@ -28,12 +28,26 @@ class FIG:
 
 	def CycleBoxPlot(self,df,dir:str='Questionnaire',ylabel:str='Questionnaire rating',filename:str='',min:float=999,max:float=999):
 		sns.set_palette('Set2')
-		self.ax = sns.boxplot(x='Cycle', y='Score', hue='Condition',data=df)
+		self.ax = sns.swarmplot(x='Cycle', y='Score', hue='Condition',data=df, dodge=True)
 		plt.ylabel(ylabel,labelpad=5)
 		plt.xlabel('Cycle',labelpad=10)
 		if not min == 999 and not max == 999:
 			plt.ylim(min,max)
 		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.95, 0.5, 0.5, .100), borderaxespad=0.,)
+		self.filename = 'Analysis/Figure/' + dir + '/' + filename + '.jpg'
+		plt.savefig(self.filename, dpi=600, format='jpg', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.close()
+
+	def ScatterPlot(self,df,dir:str='Questionnaire',ylabel:str='Questionnaire rating',filename:str='',min:float=999,max:float=999):
+		sns.set_palette('Set2')
+		self.ax = sns.scatterplot(x='Time', y='Points',hue='Condition', data=df)
+		plt.ylabel('Task points',labelpad=8)
+		plt.xlabel('Task time [s]',labelpad=10)
+		self.ax.legend([],['without feedback','partner velocity','robot velocity'])
+		self.lg = plt.legend(loc='upper right', bbox_to_anchor=(0.93, 0.5, 0.5, .100), borderaxespad=0.,)
+		plt.subplots_adjust(left=0.15,bottom=0.15)
+		if not min == 999 and not max == 999:
+			plt.ylim(min,max)
 		self.filename = 'Analysis/Figure/' + dir + '/' + filename + '.jpg'
 		plt.savefig(self.filename, dpi=600, format='jpg', bbox_extra_artists=(self.lg,), bbox_inches='tight')
 		plt.close()

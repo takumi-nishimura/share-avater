@@ -9,13 +9,7 @@ import QuestionnaireAnalysisManager
 
 if __name__ in '__main__':
 
-	# Questionnaire
-	# # Export
-	questionnaireAnalysisExport = QuestionnaireAnalysisManager.QUESTIONNAIRE_Export('AllQuestionnaireData_20220202.xlsx')
-	# # Analysis
-	questionnaireAnalysis = QuestionnaireAnalysisManager.QUESTIONNAIRE_Analysis('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/AllQuestionnaireData_20220202.xlsx')
-
-	motionAnalysis = MotionAnalysisManager.MOTIONAN_ALYSIS()
-	motionAnalysis.main()
+	motion_fig = MotionAnalysisManager.MOTION_FIG()
+	questionnaire_fig = QuestionnaireAnalysisManager.QUESTIONNAIRE_Analysis()
 
 	print('--- finish --- : AnalysisManager')

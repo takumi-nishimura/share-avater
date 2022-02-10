@@ -8,6 +8,7 @@ import os
 import glob
 import pandas as pd
 import numpy as np
+import re
 from Figure.figure_manager import FIG
 from MotionAnalysisDTW import DTW
 from MotionAnalysisJRK import JRK
@@ -30,7 +31,6 @@ class MOTIONAN_ALYSIS:
 
 		self.export_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Evaluation','Score'])
 
-		self.participant_list = ['Ebina','Hijikata']
 		for self.name in self.participant_list:
 			for self.condition in self.condition_list:
 				for self.cycle in self.cycle_list:
@@ -84,15 +84,40 @@ class MOTION_FIG:
 
 		self.figure = FIG()
 
+		self.read_performance()
+
 		self.data = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Motion/CutData/Analysis_Result.xlsx',index_col=0)
 
 		self.partisipant_list = list(dict.fromkeys(self.data['Participant'].values))
 		self.condition_list = list(dict.fromkeys(self.data['Condition'].values))
 		self.cycle_list = list(dict.fromkeys(self.data['Cycle'].values))
 
+		self.A_performance()
+		self.A_time()
+		self.A_points()
 		self.A_dtw()
 		self.A_jrk()
 		self.A_cot()
+
+	def read_performance(self):
+		self.performance_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Evaluation','Score'])
+		self.A_performance_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Time','Points'])
+		self.read_list_pf = []
+		self.dir_pf = os.path.join('analysis','ExData','Performance','RawData','')
+		self.files_pf = sorted(glob.glob(os.path.join(self.dir_pf,'*.xlsx')))
+		for file in self.files_pf:
+			self.file_sp = re.split('_',file)
+			self.participant = self.file_sp[1]
+			self.read_df_pf = pd.read_excel(file,index_col=0)
+			for i in range(3):
+				for j in range(3):
+					self.A_performance_df = self.A_performance_df.append({'Participant':self.participant,'Condition':self.read_df_pf[i*3+j+1][0],'Cycle':i+1,'Time':self.read_df_pf[i*3+j+1][1],'Points':self.read_df_pf[i*3+j+1][2]},ignore_index=True)
+					for k in range(2):
+						if k == 0:
+							self.performance_df = self.performance_df.append({'Participant':self.participant,'Condition':self.read_df_pf[i*3+j+1][0],'Cycle':i+1,'Evaluation':'time','Score':self.read_df_pf[i*3+j+1][1]},ignore_index=True)
+						elif k == 1:
+							self.performance_df = self.performance_df.append({'Participant':self.participant,'Condition':self.read_df_pf[i*3+j+1][0],'Cycle':i+1,'Evaluation':'points','Score':self.read_df_pf[i*3+j+1][2]},ignore_index=True)
+		self.performance_df.to_excel('Analysis/ExData/Performance/CutData/Analysis_Performance.xlsx')
 
 	def make_df(self,df,key:str=''):
 		self.ex_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Score'])
@@ -120,11 +145,62 @@ class MOTION_FIG:
 							k = '3-1'
 							self.e_flag = 1
 							self.diff_l = []
+					elif key == '3':
+						if k == 3:
+							self.score = self.d_c[0]
+							self.e_flag = 1
 					if self.e_flag == 1:
 						self.ex_df = self.ex_df.append({'Participant':i,'Condition':j,'Cycle':k,'Score':self.score},ignore_index=True)
 					self.e_flag = 0
 		self.ex_df.replace({'A':'without feedback','B':'partner velocity','C':'robot velocity'},inplace=True)
 		return self.ex_df
+
+	def A_performance(self):
+		self.figure.ScatterPlot(self.A_performance_df,dir='Motion',filename='Performance_Plot')
+	
+	def A_time(self):
+		self.time = self.performance_df[self.performance_df['Evaluation']=='time']
+
+		# --- exportExcel --- #
+		self.time_df = self.make_df(self.time,key='all')
+		self.time_mean_df = self.make_df(self.time,key='mean')
+		self.time_31_df = self.make_df(self.time,key='3-1')
+		self.time_3_df = self.make_df(self.time,key='3')
+		self.time_df.to_excel('Analysis/ExData/Performance/CutData/All_TIME.xlsx')
+		self.time_mean_df.to_excel('Analysis/ExData/Performance/CutData/Mean_TIME.xlsx')
+		self.time_31_df.to_excel('Analysis/ExData/Performance/CutData/31_TIME.xlsx')
+		self.time_3_df.to_excel('Analysis/ExData/Performance/CutData/3_TIME.xlsx')
+
+		# --- figure --- #
+		self.figure.MeanBoxPlot(self.time_mean_df,dir='Motion',ylabel='Task time [s]',filename='TIME_MEAN')
+
+		self.figure.CycleBoxPlot(self.time_df,dir='Motion',ylabel='Task time [s]',filename='TIME_CYCLE')
+
+		self.figure.MeanBoxPlot(self.time_31_df,dir='Motion',ylabel='Task time [s]\nbetween the third and the first time',filename='TIME_31')
+
+		self.figure.MeanBoxPlot(self.time_3_df,dir='Motion',ylabel='Task time [s]',filename='TIME_3')
+
+	def A_points(self):
+		self.points = self.performance_df[self.performance_df['Evaluation']=='points']
+
+		# --- exportExcel --- #
+		self.points_df = self.make_df(self.points,key='all')
+		self.points_mean_df = self.make_df(self.points,key='mean')
+		self.points_31_df = self.make_df(self.points,key='3-1')
+		self.points_3_df = self.make_df(self.points,key='3')
+		self.points_df.to_excel('Analysis/ExData/Performance/CutData/All_POINT.xlsx')
+		self.points_mean_df.to_excel('Analysis/ExData/Performance/CutData/Mean_POINT.xlsx')
+		self.points_31_df.to_excel('Analysis/ExData/Performance/CutData/31_POINT.xlsx')
+		self.points_3_df.to_excel('Analysis/ExData/Performance/CutData/3_POINT.xlsx')
+
+		# --- figure --- #
+		self.figure.MeanBoxPlot(self.points_mean_df,dir='Motion',ylabel='Task points',filename='POINT_MEAN')
+
+		self.figure.CycleBoxPlot(self.points_df,dir='Motion',ylabel='Task points',filename='POINT_CYCLE')
+
+		self.figure.MeanBoxPlot(self.points_31_df,dir='Motion',ylabel='Task points\nbetween the third and the first points',filename='POINT_31')
+
+		self.figure.MeanBoxPlot(self.points_3_df,dir='Motion',ylabel='Task points',filename='POINT_3')
 
 	def A_dtw(self):
 		self.dtw = self.data[self.data['Evaluation']=='dtw']
@@ -133,9 +209,11 @@ class MOTION_FIG:
 		self.dtw_df = self.make_df(self.dtw,key='all')
 		self.dtw_mean_df = self.make_df(self.dtw,key='mean')
 		self.dtw_31_df = self.make_df(self.dtw,key='3-1')
+		self.dtw_3_df = self.make_df(self.dtw,key='3')
 		self.dtw_df.to_excel('Analysis/ExData/Motion/CutData/All_DTW.xlsx')
 		self.dtw_mean_df.to_excel('Analysis/ExData/Motion/CutData/Mean_DTW.xlsx')
 		self.dtw_31_df.to_excel('Analysis/ExData/Motion/CutData/31_DTW.xlsx')
+		self.dtw_3_df.to_excel('Analysis/ExData/Motion/CutData/3_DTW.xlsx')
 
 		# --- figure --- #
 		self.figure.MeanBoxPlot(self.dtw_mean_df,dir='Motion',ylabel='DTW Score',filename='DTW_MEAN')
@@ -144,6 +222,8 @@ class MOTION_FIG:
 
 		self.figure.MeanBoxPlot(self.dtw_31_df,dir='Motion',ylabel='DTW Score\nbetween the third and the first time',filename='DTW_31')
 
+		self.figure.MeanBoxPlot(self.dtw_3_df,dir='Motion',ylabel='DTW Score',filename='DTW_3')
+
 	def A_jrk(self):
 		self.jrk = self.data[self.data['Evaluation']=='jrk']
 
@@ -151,9 +231,11 @@ class MOTION_FIG:
 		self.jrk_df = self.make_df(self.jrk,key='all')
 		self.jrk_mean_df = self.make_df(self.jrk,key='mean')
 		self.jrk_31_df = self.make_df(self.jrk,key='3-1')
+		self.jrk_3_df = self.make_df(self.jrk,key='3')
 		self.jrk_df.to_excel('Analysis/ExData/Motion/CutData/All_JRK.xlsx')
 		self.jrk_mean_df.to_excel('Analysis/ExData/Motion/CutData/Mean_JRK.xlsx')
 		self.jrk_31_df.to_excel('Analysis/ExData/Motion/CutData/31_JRK.xlsx')
+		self.jrk_3_df.to_excel('Analysis/ExData/Motion/CutData/3_JRK.xlsx')
 
 		# --- figure --- #
 		self.figure.MeanBoxPlot(self.jrk_mean_df,dir='Motion',ylabel='Jerk Index',filename='JRK_MEAN')
@@ -162,6 +244,8 @@ class MOTION_FIG:
 
 		self.figure.MeanBoxPlot(self.jrk_31_df,dir='Motion',ylabel='Jerk Index\nbetween the third and the first time',filename='JRK_31')
 
+		self.figure.MeanBoxPlot(self.jrk_3_df,dir='Motion',ylabel='Jerk Index',filename='JRK_3')
+
 	def A_cot(self):
 		self.cot = self.data[self.data['Evaluation']=='cot']
 
@@ -169,9 +253,11 @@ class MOTION_FIG:
 		self.cot_df = self.make_df(self.cot,key='all')
 		self.cot_mean_df = self.make_df(self.cot,key='mean')
 		self.cot_31_df = self.make_df(self.cot,key='3-1')
+		self.cot_3_df = self.make_df(self.cot,key='3')
 		self.cot_df.to_excel('Analysis/ExData/Motion/CutData/All_COT.xlsx')
 		self.cot_mean_df.to_excel('Analysis/ExData/Motion/CutData/Mean_COT.xlsx')
 		self.cot_31_df.to_excel('Analysis/ExData/Motion/CutData/31_COT.xlsx')
+		self.cot_3_df.to_excel('Analysis/ExData/Motion/CutData/3_COT.xlsx')
 
 		# --- figure --- #
 		self.figure.MeanBoxPlot(self.cot_mean_df,dir='Motion',ylabel='Difference Time [s]',filename='COT_MEAN')
@@ -179,6 +265,8 @@ class MOTION_FIG:
 		self.figure.CycleBoxPlot(self.cot_df,dir='Motion',ylabel='Difference Time [s]',filename='COT_CYCLE')
 
 		self.figure.MeanBoxPlot(self.cot_31_df,dir='Motion',ylabel='Difference Time [s]\nbetween the third and the first time',filename='COT_31')
+
+		self.figure.MeanBoxPlot(self.cot_3_df,dir='Motion',ylabel='Difference Time [s]',filename='COT_3')
 
 if __name__ in '__main__':
 	# motionAnalysis = MOTIONAN_ALYSIS()
