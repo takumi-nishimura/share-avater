@@ -277,11 +277,11 @@ class QUESTIONNAIRE_Analysis:
 		self.SE_Q3_31_df.to_excel('Analysis/ExData/Questionnaire/CutData/31_Q3.xlsx')
 
 		# --- figure --- #
-		self.figure.MeanBoxPlot(df=self.SE_Q1_mean_df,ylabel='Questionnaire rating',filename='Q1_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q2_mean_df,ylabel='Questionnaire rating',filename='Q2_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q3_mean_df,ylabel='Questionnaire rating',filename='Q3_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q4_mean_df,ylabel='Questionnaire rating',filename='Q4_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q5_mean_df,ylabel='Questionnaire rating',filename='Q5_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q1_mean_df,ylabel='Questionnaire 1 rating',filename='Q1_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q2_mean_df,ylabel='Questionnaire 2 rating',filename='Q2_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q3_mean_df,ylabel='Questionnaire 3 rating',filename='Q3_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q4_mean_df,ylabel='Questionnaire 4 rating',filename='Q4_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q5_mean_df,ylabel='Questionnaire 5 rating',filename='Q5_MEAN')
 
 		self.figure.CycleBoxPlot(df=self.SE_Q1_df,ylabel='Questionnaire rating',filename='Q1_CYCLE')
 		self.figure.CycleBoxPlot(df=self.SE_Q3_df,ylabel='Questionnaire rating',filename='Q3_CYCLE')
