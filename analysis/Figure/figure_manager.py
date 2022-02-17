@@ -28,7 +28,7 @@ class FIG:
 
 	def CycleBoxPlot(self,df,dir:str='Questionnaire',ylabel:str='Questionnaire rating',filename:str='',min:float=999,max:float=999):
 		sns.set_palette('Set2')
-		self.ax = sns.swarmplot(x='Cycle', y='Score', hue='Condition',data=df, dodge=True)
+		self.ax = sns.boxplot(x='Cycle', y='Score', hue='Condition',data=df, dodge=True)
 		plt.ylabel(ylabel,labelpad=5)
 		plt.xlabel('Cycle',labelpad=10)
 		if not min == 999 and not max == 999:
@@ -50,6 +50,23 @@ class FIG:
 			plt.ylim(min,max)
 		self.filename = 'Analysis/Figure/' + dir + '/' + filename + '.jpg'
 		plt.savefig(self.filename, dpi=600, format='jpg', bbox_extra_artists=(self.lg,), bbox_inches='tight')
+		plt.close()
+
+	def pairplot(self,df,dir:str='Questionnaire',ylabel:str='Questionnaire rating',filename:str='',min:float=999,max:float=999):
+		sns.set_palette('Set2')
+		self.ax = sns.pairplot(df,hue='Condition')
+		if not min == 999 and not max == 999:
+			plt.ylim(min,max)
+		self.filename = 'Analysis/Figure/' + dir + '/' + filename + '.jpg'
+		plt.savefig(self.filename, dpi=600, format='jpg')
+		plt.close()
+
+	def heatplot(self,df,dir:str='Questionnaire',ylabel:str='Questionnaire rating',filename:str='',min:float=999,max:float=999):
+		sns.set_palette('Set2')
+		sns.set(rc = {'figure.figsize':(10,10)})
+		self.ax = sns.heatmap(df, linewidths=.5,square=True, annot=True)
+		self.filename = 'Analysis/Figure/' + dir + '/' + filename + '.jpg'
+		plt.savefig(self.filename, dpi=600, format='jpg')
 		plt.close()
 
 	def filt_setting(self,x,vy1,vy1_filt):

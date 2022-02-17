@@ -4,11 +4,14 @@
 # Summary:  Motion analysis manager
 # -----------------------------------------------------------------------
 
+from fileinput import filename
 import os
 import glob
+from isort import file
 import pandas as pd
 import numpy as np
 import re
+from scipy.stats import spearmanr
 from Figure.figure_manager import FIG
 from MotionAnalysisDTW import DTW
 from MotionAnalysisJRK import JRK
@@ -36,14 +39,18 @@ class MOTIONAN_ALYSIS:
 				for self.cycle in self.cycle_list:
 					self.read_csv()
 					print('participant: '+self.name+'  condition: '+self.condition+'  cycle: '+self.cycle)
-					self.dtw_s = self.dtw.DTW_C(self.d_1,self.d_2)
-					self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'dtw','Score':self.dtw_s},ignore_index=True)
+					# self.dtw_s = self.dtw.DTW_C(self.d_1,self.d_2)
+					# self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'dtw','Score':self.dtw_s},ignore_index=True)
+					# self.dtw_v = self.dtw.DTW_V(self.d_1,self.d_2)
+					# self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'dtw_v','Score':self.dtw_v},ignore_index=True)
+					self.dtw_n = self.dtw.DTW_N(self.d_1,self.d_2)
+					self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'dtw_n','Score':self.dtw_n},ignore_index=True)
 					self.jrk_s = self.jrk.JRK_C(self.d_r)
 					self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'jrk','Score':self.jrk_s},ignore_index=True)
-					self.cot_s = self.cot.CoT_C(self.d_r,self.d_1,self.d_2)
-					self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'cot','Score':self.cot_s},ignore_index=True)
+					# self.cot_s = self.cot.CoT_C(self.d_r,self.d_1,self.d_2)
+					# self.export_df = self.export_df.append({'Participant':self.name,'Condition':self.condition,'Cycle':self.cycle,'Evaluation':'cot','Score':self.cot_s},ignore_index=True)
 
-		self.export_df.to_excel('Analysis/ExData/Motion/CutData/Analysis_Result.xlsx')
+		self.export_df.to_excel('Analysis/ExData/Motion/CutData/Analysis_Result_notCOT.xlsx')
 
 		print('--- finish --- : Motion Analysis')
 
@@ -96,8 +103,12 @@ class MOTION_FIG:
 		self.A_time()
 		self.A_points()
 		self.A_dtw()
+		self.A_dtw_N()
 		self.A_jrk()
 		self.A_cot()
+		self.perXjrk()
+		# self.perXdtw()
+		# self.perXcot()
 
 	def read_performance(self):
 		self.performance_df = pd.DataFrame(columns=['Participant','Condition','Cycle','Evaluation','Score'])
@@ -155,8 +166,60 @@ class MOTION_FIG:
 		self.ex_df.replace({'A':'without feedback','B':'partner velocity','C':'robot velocity'},inplace=True)
 		return self.ex_df
 
+	def calculate_pvalues(self,df):
+		df = df.dropna()._get_numeric_data()
+		dfcols = pd.DataFrame(columns=df.columns)
+		correlation = dfcols.transpose().join(dfcols, how='outer')
+		pvalues = dfcols.transpose().join(dfcols, how='outer')
+		for r in df.columns:
+			for c in df.columns:
+				correlation[r][c] = spearmanr(df[r], df[c])[0]
+				pvalues[r][c] = spearmanr(df[r], df[c])[1]
+		return correlation, pvalues
+
 	def A_performance(self):
 		self.figure.ScatterPlot(self.A_performance_df,dir='Motion',filename='Performance_Plot')
+
+	def perXjrk(self):
+		self.t = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Performance/CutData/All_TIME.xlsx')
+		self.p = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Performance/CutData/All_POINT.xlsx')
+		self.md = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_MD.xlsx')
+		self.tlx = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_TLX.xlsx')
+		self.ag = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Agency.xlsx')
+		self.ow = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Ownership.xlsx')
+		self.Q1 = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Q1.xlsx')
+		self.Q2 = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Q2.xlsx')
+		self.Q3 = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Q3.xlsx')
+		self.Q4 = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Q4.xlsx')
+		self.Q5 = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/All_Q5.xlsx')
+
+		self.pair = pd.DataFrame({'Task time':self.t['Score'].values,'Points':self.p['Score'].values,'Jerk Index':self.jrk['Score'].values,'Condition':self.t['Condition'],'DTW Score':self.dtw_n['Score'].values,'Difference Time':self.cot['Score'].values,'Mental Distance':self.md['Score'],'TLX':self.tlx['Score'],'Agency':self.ag['Score'],'Ownership':self.ow['Score'],'Q1':self.Q1['Score'].values,'Q2':self.Q2['Score'].values,'Q3':self.Q3['Score'].values,'Q4':self.Q4['Score'].values,'Q5':self.Q5['Score'].values})
+		self.perjrk = pd.DataFrame({'Task time':self.t['Score'].values,'Points':self.p['Score'].values,'Jerk Index':self.jrk['Score'].values,'Condition':self.t['Condition']})
+		self.pair_woFB = self.pair[self.pair['Condition']=='without feedback']
+		self.pair_partner = self.pair[self.pair['Condition']=='partner velocity']
+		self.figure.pairplot(self.pair,dir='Motion',filename='PAIR')
+		self.corr = self.pair.corr(method="spearman")
+		self.correlation,self.p_value = self.calculate_pvalues(self.pair)
+		# print(self.corr['Q1'])
+		# print(self.p_value['Q1'])
+		# self.figure.heatplot(self.p_value,dir='Motion',filename='pValue_HEAT')
+		self.correlation.to_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/correlation.xlsx')
+		self.p_value.to_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Questionnaire/CutData/p_value.xlsx')
+		self.figure.heatplot(self.corr,dir='Motion',filename='PAIR_HEAT')
+		self.figure.pairplot(self.pair_woFB,dir='Motion',filename='PAIR_WOFB')
+		self.corr = self.pair_woFB.corr()
+		self.figure.heatplot(self.corr,dir='Motion',filename='PAIR_HEAT_WOFB')
+		self.figure.pairplot(self.pair_partner,dir='Motion',filename='PAIR_PARTNER')
+		self.corr = self.pair_partner.corr()
+		self.figure.heatplot(self.corr,dir='Motion',filename='PAIR_HEAT_PARTNER')
+
+	def perXdtw(self):
+		self.perdtw = pd.DataFrame({'Task time [s]':self.t['Score'].values,'Points':self.p['Score'].values,'DTW Score':self.dtw['Score'].values,'Condition':self.t['Condition']})
+		self.figure.pairplot(self.perdtw,dir='Motion',filename='perXdtw')
+
+	def perXcot(self):
+		self.percot = pd.DataFrame({'Task time [s]':self.t['Score'].values,'Points':self.p['Score'].values,'Difference Time [s]':self.cot['Score'].values,'Condition':self.t['Condition']})
+		self.figure.pairplot(self.percot,dir='Motion',filename='perXcot')
 	
 	def A_time(self):
 		self.time = self.performance_df[self.performance_df['Evaluation']=='time']
@@ -202,6 +265,21 @@ class MOTION_FIG:
 
 		self.figure.MeanBoxPlot(self.points_3_df,dir='Motion',ylabel='Task points',filename='POINT_3')
 
+	def A_dtw_N(self):
+		print('aaa')
+		self.d = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Motion/CutData/Analysis_Result_notCOT.xlsx')
+		print(self.d)
+		self.dtw_n = self.d[self.d['Evaluation']=='dtw_n']
+
+		self.dtw_n_df = self.make_df(self.dtw_n,key='all')
+		self.dtw_n_mean_df = self.make_df(self.dtw_n,key='mean')
+
+		self.dtw_n_df.to_excel('Analysis/ExData/Motion/CutData/All_DTW_N.xlsx')
+		self.dtw_n_mean_df.to_excel('Analysis/ExData/Motion/CutData/Mean_DTW_N.xlsx')
+
+		self.figure.MeanBoxPlot(self.dtw_n_mean_df,dir='Motion',ylabel='DTW Score',filename='DTW_N_MEAN')
+		self.figure.CycleBoxPlot(self.dtw_n_df,dir='Motion',ylabel='DTW Score',filename='DTW_N_CYCLE')
+
 	def A_dtw(self):
 		self.dtw = self.data[self.data['Evaluation']=='dtw']
 
@@ -210,6 +288,11 @@ class MOTION_FIG:
 		self.dtw_mean_df = self.make_df(self.dtw,key='mean')
 		self.dtw_31_df = self.make_df(self.dtw,key='3-1')
 		self.dtw_3_df = self.make_df(self.dtw,key='3')
+
+		self.dtw_time_df = pd.read_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Performance/CutData/All_DTWperTIME.xlsx')
+		self.dtw_time_mean_df = self.make_df(self.dtw,key='mean')
+		self.dtw_time_mean_df.to_excel('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Analysis/ExData/Performance/CutData/All_DTWperTIME.xlsx')
+
 		self.dtw_df.to_excel('Analysis/ExData/Motion/CutData/All_DTW.xlsx')
 		self.dtw_mean_df.to_excel('Analysis/ExData/Motion/CutData/Mean_DTW.xlsx')
 		self.dtw_31_df.to_excel('Analysis/ExData/Motion/CutData/31_DTW.xlsx')
@@ -269,5 +352,5 @@ class MOTION_FIG:
 		self.figure.MeanBoxPlot(self.cot_3_df,dir='Motion',ylabel='Difference Time [s]',filename='COT_3')
 
 if __name__ in '__main__':
-	# motionAnalysis = MOTIONAN_ALYSIS()
+	motionAnalysis = MOTIONAN_ALYSIS()
 	motionFig = MOTION_FIG()

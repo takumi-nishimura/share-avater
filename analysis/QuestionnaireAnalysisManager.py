@@ -4,6 +4,7 @@
 # Summary:  Questionnaire analysis manager
 # -----------------------------------------------------------------------
 
+from fileinput import filename
 import os
 import glob
 import pandas as pd
@@ -259,6 +260,8 @@ class QUESTIONNAIRE_Analysis:
 		self.SE_Q3_31_df = self.make_df(self.SE_Q3_df,key='3-1')
 
 		self.SE_Q1_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q1.xlsx')
+		self.SE_Q2_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q2.xlsx')
+		self.SE_Q3_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q3.xlsx')
 		self.SE_Q4_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q4.xlsx')
 		self.SE_Q5_df.to_excel('Analysis/ExData/Questionnaire/CutData/All_Q5.xlsx')
 
@@ -277,13 +280,14 @@ class QUESTIONNAIRE_Analysis:
 		self.SE_Q3_31_df.to_excel('Analysis/ExData/Questionnaire/CutData/31_Q3.xlsx')
 
 		# --- figure --- #
-		self.figure.MeanBoxPlot(df=self.SE_Q1_mean_df,ylabel='Questionnaire 1 rating',filename='Q1_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q2_mean_df,ylabel='Questionnaire 2 rating',filename='Q2_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q3_mean_df,ylabel='Questionnaire 3 rating',filename='Q3_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q4_mean_df,ylabel='Questionnaire 4 rating',filename='Q4_MEAN')
-		self.figure.MeanBoxPlot(df=self.SE_Q5_mean_df,ylabel='Questionnaire 5 rating',filename='Q5_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q1_mean_df,ylabel='Questionnaire1 rating',filename='Q1_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q2_mean_df,ylabel='Questionnaire2 rating',filename='Q2_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q3_mean_df,ylabel='Questionnaire3 rating',filename='Q3_MEAN')
+		self.figure.MeanBoxPlot(df=self.SE_Q4_mean_df,ylabel='Questionnaire4 rating',filename='Q4_MEAN',max=140,min=0)
+		self.figure.MeanBoxPlot(df=self.SE_Q5_mean_df,ylabel='Questionnaire5 rating',filename='Q5_MEAN')
 
 		self.figure.CycleBoxPlot(df=self.SE_Q1_df,ylabel='Questionnaire rating',filename='Q1_CYCLE')
+		self.figure.CycleBoxPlot(df=self.SE_Q2_df,ylabel='Questionnaire rating',filename='Q2_CYCLE')
 		self.figure.CycleBoxPlot(df=self.SE_Q3_df,ylabel='Questionnaire rating',filename='Q3_CYCLE')
 		self.figure.CycleBoxPlot(df=self.SE_Q4_df,ylabel='Questionnaire rating',filename='Q4_CYCLE')
 		self.figure.CycleBoxPlot(df=self.SE_Q5_df,ylabel='Questionnaire rating',filename='Q5_CYCLE')
