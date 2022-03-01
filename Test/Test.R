@@ -5,9 +5,10 @@ library(ggplot2)
 library(gridExtra)
 library(outliers)
 
-source('anovakun_450.txt')
+setwd('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Test')
+source('/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/Test/anovakun_450.txt')
 
-filename <- 'jerk_index.xlsx'
+filename <- '/Users/sprout/OneDrive - 名古屋工業大学/学校/研究室/code/ExData/Processing/graduated/Mean_Q4.xlsx'
 str(filename)
 dat <- read.xlsx(filename)
 shapiro <- tapply(dat$Score,dat$Condition,shapiro.test)
