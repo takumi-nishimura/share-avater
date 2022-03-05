@@ -27,9 +27,9 @@ if __name__ == '__main__':
 	SUBJECTIVEEVALUATION_manager = SUBJECTIVE_EVALUATION()
 
 	r_tlx = TLX_manager.main()
-	# r_MS = MINIMALSELF_manager.main()
-	# r_MD = MENTALDISTANCE_manager.main()
-	# r_SE = SUBJECTIVEEVALUATION_manager.main()
-	# r_Q = r_tlx|r_MS|r_MD|r_SE
-	r_Q = r_tlx
+	r_MS = MINIMALSELF_manager.main()
+	r_MD = MENTALDISTANCE_manager.main()
+	r_SE = SUBJECTIVEEVALUATION_manager.main()
+	r_Q = r_tlx|r_MS|r_MD|r_SE
+	# r_Q = r_tlx
 	write(os.path.join('questionnaire','q_data',''),r_Q)
