@@ -1,6 +1,4 @@
 import tkinter as tk
-from turtle import position
-import prometheus_client
 import pyautogui as pg
 from xarm.wrapper import XArmAPI
 import time
@@ -36,13 +34,16 @@ class BUTTON:
 		self.x = 0
 		self.y = 0
 
-	def draw(self,canvas):
+	def draw(self,canvas,reset=True):
 		canvas.delete(self.button)
 		if self.on:
 			canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2,outline='red',fill='red',tag=self.button)
 		else:
 			canvas.create_rectangle(self.x1,self.y1,self.x2,self.y2,outline='blue',fill='blue',tag=self.button)
-		self.on = False
+		if reset:
+			self.on = False
+		else:
+			pass
 
 	def change(self,on_limit=200):
 		self.s_on = 0
@@ -132,7 +133,7 @@ class BREAK_OUT:
 		self.b_down.draw(self.canvas)
 		self.b_left.draw(self.canvas)
 		self.b_right.draw(self.canvas)
-		self.b_start.draw(self.canvas)
+		self.b_start.draw(self.canvas,reset=False)
 		self.eye.draw(self.canvas)
 		self.canvas.pack()
 
