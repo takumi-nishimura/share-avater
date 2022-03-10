@@ -1,7 +1,8 @@
 import tkinter as tk
 import pyautogui as pg
+from screeninfo import get_monitors
 from xarm.wrapper import XArmAPI
-import time
+# import tobii_research as tr
 
 class EYE:
 	def __init__(self,x,y,size=30,color='blue'):
@@ -68,6 +69,9 @@ class BREAK_OUT:
 
 		self.window_width = self.master.winfo_screenwidth()
 		self.window_height = self.master.winfo_screenheight()
+		print(self.window_width,self.window_height)
+		s = get_monitors()
+		print(s[0].width)
 
 		self.is_playing = False
 
@@ -143,6 +147,18 @@ class BREAK_OUT:
 	def keybind(self):
 		self.master.bind("q", self.quit)
 
+class EyeTracking:
+	def __init__(self):
+		# self.Found_EyeTrackers = tr.find_all_eyetrackers()
+		# self.My_EyeTracker =  self.Found_EyeTrackers[0]
+
+		self.e_x = []
+		self.e_y = []
+		
+		self.s_info = get_monitors()[0]
+		self.w_width = self.s_info.width
+		self.w_height = self.s_info.height
+
 class RobotControl:
 	def __init__(self,isEnableArm=False) -> None:
 		self.xArmIP = '192.168.1.240'
@@ -183,8 +199,9 @@ class RobotControl:
 		robotArm.set_state(state=0)
 
 if __name__ in '__main__':
-	xarm = RobotControl(isEnableArm=False)
-	BREAK_OUT().show(xarm)
+	# xarm = RobotControl(isEnableArm=False)
+	# BREAK_OUT().show(xarm)
+	eyetracking = EyeTracking()
 	# keycode = input('Input > "s": start control \n')
 	# if keycode == 's':					
 	# 	taskStartTime = time.perf_counter()
